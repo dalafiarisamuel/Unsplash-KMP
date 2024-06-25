@@ -1,0 +1,63 @@
+<resources>
+    <string name="searched_term_not_found">Searched term not found</string>
+    <string name="unsplash_images">Unsplash Images</string>
+    <string name="search_images">Search Images</string>
+    <string name="search_image_hint">Type a term, e.g dog</string>
+    <string name="nature">Nature</string>
+    <string name="fashion">Fashion</string>
+    <string name="people">People</string>
+    <string name="film">Film</string>
+    <string name="travel">Travel</string>
+    <string name="history">History</string>
+    <string name="food_and_drink">Food &amp; Drink</string>
+    <string name="architecture">Architecture</string>
+    <string name="spirituality">Spirituality</string>
+    <string name="animals">Animals</string>
+    <string name="athletics">Athletics</string>
+    <string name="business_and_work">Business &amp; Work</string>
+    <string name="interior">Interior</string>
+    <string name="technology">Technology</string>
+    <string name="current_events">Current Events</string>
+    <string name="experimental">Experimental</string>
+    <string name="textures_and_patterns">Textures &amp; Patterns</string>
+    <string name="nigeria">Nigeria</string>
+    <string name="loading">Loading…</string>
+    <string name="nature_emoji">🌅</string>
+    <string name="fashion_emoji">🥻</string>
+    <string name="people_emoji">👨‍👩‍👧‍👦</string>
+    <string name="film_emoji">🎬</string>
+    <string name="travel_emoji">🚗✈️</string>
+    <string name="history_emoji">🗿</string>
+    <string name="food_and_drink_emoji">🍔</string>
+    <string name="architecture_emoji">🏯</string>
+    <string name="spirituality_emoji">🙏</string>
+    <string name="animals_emoji">🐶</string>
+    <string name="athletics_emoji">🏋️‍</string>
+    <string name="business_and_work_emoji">💼</string>
+    <string name="interior_emoji">🎊</string>
+    <string name="technology_emoji">💻</string>
+    <string name="current_events_emoji">📈</string>
+    <string name="experimental_emoji">🧪</string>
+    <string name="textures_and_patterns_emoji">🌅</string>
+    <string name="nigeria_emoji">🇳🇬</string>
+    <string name="download_has_started">Download has started</string>
+    <string name="download">Download</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="download_image">Download Image</string>
+    <string name="are_you_sure_you_want_to_download_this_image">Are you sure you want to download this image?</string>
+    <string name="photo_detail">Photo Detail</string>
+    <string name="an_unknown_error_occurred">An unknown error was encountered. please try again!</string>
+    <string name="description">Description</string>
+    <plurals name="collection_plural">
+        <item quantity="one">%1$d Collection</item>
+        <item quantity="other">%1$d Collections</item>
+    </plurals>
+    <plurals name="like_plural">
+        <item quantity="one">%1$d Like</item>
+        <item quantity="other">%1$d Likes</item>
+    </plurals>
+    <plurals name="photo_plural">
+        <item quantity="one">%1$d Photo</item>
+        <item quantity="other">%1$d Photos</item>
+    </plurals>
+</resources>

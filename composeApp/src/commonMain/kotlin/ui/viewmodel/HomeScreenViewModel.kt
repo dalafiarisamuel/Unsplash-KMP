@@ -1,0 +1,136 @@
+package ui.viewmodel
+
+
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import data.mapper.PhotoMapper
+import data.repository.ImageRepository
+import data.source.ImagePagingSource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.launchIn
+import org.koin.core.component.KoinComponent
+import ui.event.HomeScreenEvent
+import ui.state.HomeScreenState
+import kotlin.time.Duration.Companion.seconds
+
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
+class HomeScreenViewModel(
+    private val repository: ImageRepository,
+    private val photoMapper: PhotoMapper,
+) : MviViewModel<HomeScreenEvent, HomeScreenState>(HomeScreenState()), KoinComponent {
+
+    companion object {
+        private val DEFAULT_QUERY = listOf("Nigeria", "Egypt", "Africa", "Dreams", "Husky")
+    }
+
+    private var currentQuery: MutableStateFlow<String>
+    private val randomDefaultQuery get() = DEFAULT_QUERY.random()
+
+    init {
+        currentQuery = MutableStateFlow(randomDefaultQuery)
+        watchCurrentQueryField()
+
+        handleSelectImage()
+        handleSearchEvent()
+
+        handleSelectChipEvent()
+        handleUpdateSearchFieldEvent()
+
+        handleOpenImagePreviewDialogEvent()
+        handleDismissImagePreviewDialogEvent()
+
+        handleOnImageClicked()
+    }
+
+    private fun setSearchTerm(query: String) {
+        currentQuery.value = query.ifEmpty { randomDefaultQuery }
+    }
+
+    private fun watchCurrentQueryField() {
+        currentQuery
+            .debounce(1.seconds)
+            .flatMapLatest {
+                state = state.copy(searchFieldValue = it)
+                flowOf(Unit)
+            }.launchIn(viewModelScope)
+    }
+
+    val photos = currentQuery
+        .debounce(1.5.seconds)
+        .flatMapLatest { queryString ->
+            getImageSearchResult(queryString)
+        }.cachedIn(viewModelScope)
+
+    private fun getImageSearchResult(query: String) = Pager(
+        config = PagingConfig(
+            pageSize = ImagePagingSource.PAGE_SIZE,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            ImagePagingSource(
+                repository = repository,
+                photoMapper = photoMapper,
+                query = query
+            )
+        }
+    ).flow
+
+    private fun handleSelectChipEvent() {
+        on<HomeScreenEvent.SelectChip> {
+            state = state.copy(
+                searchFieldValue = it.chipValue
+            )
+            setSearchTerm(state.searchFieldValue)
+        }
+    }
+
+    private fun handleSelectImage() {
+        on<HomeScreenEvent.SelectImage> {
+            state = state.copy(selectedImage = it.image)
+        }
+    }
+
+    private fun handleSearchEvent() {
+        on<HomeScreenEvent.Search> {
+            setSearchTerm(state.searchFieldValue)
+        }
+    }
+
+    private fun handleUpdateSearchFieldEvent() {
+        on<HomeScreenEvent.UpdateSearchField> {
+            state = state.copy(
+                searchFieldValue = it.searchTerm
+            )
+            setSearchTerm(state.searchFieldValue)
+        }
+    }
+
+    private fun handleDismissImagePreviewDialogEvent() {
+        on<HomeScreenEvent.ImagePreviewDialog.Dismiss> {
+            state = state.copy(isImagePreviewDialogVisible = false)
+        }
+    }
+
+    private fun handleOpenImagePreviewDialogEvent() {
+        on<HomeScreenEvent.ImagePreviewDialog.Open> {
+            state = state.copy(isImagePreviewDialogVisible = true)
+        }
+    }
+
+    private fun handleOnImageClicked() {
+        on<HomeScreenEvent.OnImageClicked> {
+            state = state.copy(
+                selectedImage = it.image,
+                isImagePreviewDialogVisible = true
+            )
+        }
+    }
+
+}
