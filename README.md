@@ -1,4 +1,4 @@
-## Unsplash-API-KMP
+## Unsplash-API-KMP [![CI](https://github.com/dalafiarisamuel/unsplash-kmp/actions/workflows/workflow.yml/badge.svg?branch=master)](https://github.com/dalafiarisamuel/unsplash-kmp/actions/workflows/workflow.yml)
 
 A project to display images from [Unsplash](https://unsplash.com) API using Kotlin Multiplatform
 
