@@ -1,8 +1,5 @@
 package ui.navigation
 
-import ng.devtamuno.unsplash.compose.ui.navigation.argumentCount
-import ng.devtamuno.unsplash.compose.ui.navigation.arguments
-
 const val ARG_PHOTO_ID = "photo_id"
 
 enum class PhotoScreen(val route: String) {

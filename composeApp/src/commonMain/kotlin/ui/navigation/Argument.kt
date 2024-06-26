@@ -1,4 +1,4 @@
-package ng.devtamuno.unsplash.compose.ui.navigation
+package ui.navigation
 
 inline val String.argumentCount: Int get() = arguments().count()
 
