@@ -20,6 +20,8 @@ kotlin {
         }
     }
 
+    jvm("desktop")
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -32,6 +34,8 @@ kotlin {
     }
 
     sourceSets {
+
+        val desktopMain by getting
 
         sourceSets.commonMain {
             kotlin.srcDir("build/generated/ksp/metadata")
@@ -68,7 +72,12 @@ kotlin {
             implementation(libs.koin.composeVM)
             implementation(libs.kotlin.navigation.compose)
             implementation(libs.nappier.logging)
-
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.material3.window.size.multiplatform)
+        }
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            runtimeOnly(libs.kotlinx.coroutines.swing)
         }
     }
 }
@@ -107,6 +116,18 @@ android {
     }
     dependencies {
         debugImplementation(compose.uiTooling)
+    }
+}
+
+compose.desktop {
+    application {
+        mainClass = "MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "com.tamuno.unsplash.kmp"
+            packageVersion = "1.0.0"
+        }
     }
 }
 

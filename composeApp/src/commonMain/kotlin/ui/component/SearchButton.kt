@@ -15,7 +15,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import ui.theme.appDark
 import ui.theme.appWhite
 import ui.theme.colorDisabledGray
 import ui.theme.colorGrayDivider
@@ -36,13 +35,13 @@ fun SearchButton(
         modifier =
         modifier
             .background(
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(27.5.dp),
                 color = colorDisabledGray
             )
             .border(
                 width = 1.dp,
                 color = colorGrayDivider,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(27.5.dp)
             )
     ) {
         Image(
