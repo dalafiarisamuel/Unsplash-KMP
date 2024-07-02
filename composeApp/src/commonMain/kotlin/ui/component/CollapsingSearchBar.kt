@@ -2,13 +2,16 @@ package ui.component
 
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -31,7 +34,7 @@ fun CollapsibleSearchBar(
     minShrinkHeight: Dp = 0.dp,
     textValue: String? = null,
     keyboardAction: (() -> Unit)? = null,
-    textValueChange: ((String) -> Unit)? = null
+    textValueChange: ((String) -> Unit)? = null,
 ) {
 
     val keyboard = LocalSoftwareKeyboardController.current
@@ -63,25 +66,12 @@ fun CollapsibleSearchBar(
 
                 UnsplashSearchBox(
                     modifier = Modifier
-                        .wrapContentHeight()
-                        .weight(weight = 3f)
-                        .padding(end = 10.dp),
+                        .wrapContentHeight(),
                     textValue = textValue,
                     keyboard = keyboard,
                     keyboardAction = keyboardAction
                 ) {
                     textValueChange?.invoke(it)
-                }
-
-                SearchButton(
-                    modifier = Modifier
-                        .testTag("search_button")
-                        .size(55.dp)
-                        .weight(weight = 0.6f)
-
-                ) {
-                    keyboard?.hide()
-                    keyboardAction?.invoke()
                 }
             }
         }
@@ -93,8 +83,8 @@ fun CollapsibleSearchBar(
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
-private fun PreviewCollapsibleSearchBar(){
-    UnsplashKMPTheme{
+private fun PreviewCollapsibleSearchBar() {
+    UnsplashKMPTheme {
         CollapsibleSearchBar()
     }
 }

@@ -23,6 +23,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -45,6 +48,7 @@ import kotlinx.coroutines.flow.Flow
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import ui.theme.appDark
 import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.ic_image_search
@@ -83,6 +87,7 @@ fun UnsplashImageList(
     }
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @ExperimentalFoundationApi
 @Composable
 private fun PhotosList(
@@ -93,6 +98,15 @@ private fun PhotosList(
     onItemClicked: (Photo?) -> Unit,
     onItemLongClicked: (Photo?) -> Unit,
 ) {
+
+    val windowSizeClass = calculateWindowSizeClass()
+
+    val gridSize = when (windowSizeClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> 2
+        WindowWidthSizeClass.Medium -> 3
+        else -> 4
+    }
+
     LazyVerticalStaggeredGrid(
         state = lazyGridState,
         verticalItemSpacing = 8.dp,
@@ -101,7 +115,7 @@ private fun PhotosList(
             .padding(top = 15.dp)
             .nestedScroll(nestedScrollConnection)
             .then(modifier),
-        columns = StaggeredGridCells.Fixed(2)
+        columns = StaggeredGridCells.Fixed(gridSize)
     ) {
         lazyItems(imageList) { photo ->
             UnsplashImageStaggered(
@@ -130,7 +144,7 @@ fun EmptyListStateComponent(
         Image(
             modifier = Modifier
                 .size(100.dp)
-                .background(color = appWhite, shape = CircleShape),
+                .background(color = appDark, shape = CircleShape),
             painter = painterResource(Res.drawable.ic_image_search),
             contentScale = ContentScale.Inside,
             contentDescription = null

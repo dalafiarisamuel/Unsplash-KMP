@@ -4,7 +4,12 @@ package ui.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -43,19 +48,19 @@ fun UnsplashSearchBox(
     textValue: String? = null,
     keyboard: SoftwareKeyboardController? = null,
     keyboardAction: (() -> Unit)? = null,
-    textValueChange: ((String) -> Unit)? = null
+    textValueChange: ((String) -> Unit)? = null,
 ) {
 
     Row(
         modifier = modifier
             .background(
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(27.5.dp),
                 color = colorDisabledGray
             )
             .border(
                 width = 1.dp,
                 color = colorGrayDivider,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(27.5.dp)
             )
             .wrapContentHeight()
     ) {
@@ -106,6 +111,16 @@ fun UnsplashSearchBox(
                         .padding(start = 21.dp)
                         .align(Alignment.CenterVertically)
                 )
+            },
+            trailingIcon = {
+                SearchButton(
+                    modifier = Modifier
+                        .testTag("search_button")
+                        .size(55.dp)
+                ) {
+                    keyboard?.hide()
+                    keyboardAction?.invoke()
+                }
             }
         )
     }
