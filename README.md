@@ -40,12 +40,17 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 * To successfully make API calls to [Unsplash](https://unsplash.com) Endpoint, use a valid API Token from Unsplash.
 * Enter your valid API token [here](./composeApp/src/commonMain/kotlin/env/Env.kt)
 
-## App Screenshots
+## Mobile App Screenshots
 
 | ![Screenshot 1](./images/screenshot_1.png) | ![Screenshot 2](./images/screenshot_2.png) |
 |--------------------------------------------|--------------------------------------------|
 
 | ![Screenshot 3](./images/screenshot_3.png) | ![Screenshot 4](./images/screenshot_4.png) |
 |--------------------------------------------|--------------------------------------------|
+
+## Desktop App Screenshots
+
+| ![Desktop Screenshot 1](./images/desktop_screenshot_1.png) | ![Desktop Screenshot 2](./images/desktop_screenshot_2.png) |
+|------------------------------------------------------------|------------------------------------------------------------|
 
 <br>
