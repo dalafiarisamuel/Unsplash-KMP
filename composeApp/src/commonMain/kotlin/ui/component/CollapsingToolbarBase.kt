@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +33,7 @@ fun CollapsingToolbarBase(
         mutableStateOf(MutableTransitionState(true))
     }
 
-    val scrollDp = toolbarHeight + toolbarOffset.dp
+    val scrollDp by derivedStateOf { toolbarHeight + toolbarOffset.dp }
 
     val animatedCardSize by animateDpAsState(
         targetValue = if (scrollDp <= minShrinkHeight) minShrinkHeight else scrollDp,
