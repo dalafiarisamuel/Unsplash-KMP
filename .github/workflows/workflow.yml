@@ -12,6 +12,8 @@ jobs:
             os: macos-latest
           - target: testReleaseUnitTest
             os: ubuntu-latest
+          - target: desktopTest
+            os: macos-latest
     runs-on: ${{ matrix.os }}
 
     steps:
