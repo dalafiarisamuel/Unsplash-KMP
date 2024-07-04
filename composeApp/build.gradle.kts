@@ -74,6 +74,12 @@ kotlin {
             implementation(libs.nappier.logging)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.material3.window.size.multiplatform)
+
+            //test implementations
+            implementation(libs.koin.test)
+            implementation(libs.combine)
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlin.coroutine.test)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
