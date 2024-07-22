@@ -37,7 +37,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 // called by iOS etc
 fun initKoin() = initKoin() {}
 
-fun networkModule() = module {
+private fun networkModule() = module {
 
     single {
         HttpClient {
@@ -66,17 +66,17 @@ fun networkModule() = module {
     single<ApiInterface> { get<Ktorfit>().createApiInterface() }
 }
 
-fun mapperModule() = module {
+private fun mapperModule() = module {
     single { PhotoCreatorMapper() }
     single { PhotosUrlsMapper() }
     single { PhotoMapper(get(), get()) }
 }
 
-fun repositoryModule() = module {
+private fun repositoryModule() = module {
     single<ImageRepository> { ImageRepositoryImpl(get()) }
 }
 
-fun viewModelModule() = module {
+private fun viewModelModule() = module {
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::PhotoDetailViewModel)
 }

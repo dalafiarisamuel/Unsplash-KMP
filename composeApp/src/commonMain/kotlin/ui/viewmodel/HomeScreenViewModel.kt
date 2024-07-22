@@ -13,8 +13,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.launchIn
 import org.koin.core.component.KoinComponent
 import ui.event.HomeScreenEvent
 import ui.state.HomeScreenState
@@ -35,7 +33,6 @@ class HomeScreenViewModel(
 
     init {
         currentQuery = MutableStateFlow(randomDefaultQuery)
-        watchCurrentQueryField()
 
         handleSelectImage()
         handleSearchEvent()
@@ -53,18 +50,10 @@ class HomeScreenViewModel(
         currentQuery.value = query.ifEmpty { randomDefaultQuery }
     }
 
-    private fun watchCurrentQueryField() {
-        currentQuery
-            .debounce(1.seconds)
-            .flatMapLatest {
-                state = state.copy(searchFieldValue = it)
-                flowOf(Unit)
-            }.launchIn(viewModelScope)
-    }
-
     val photos = currentQuery
         .debounce(1.5.seconds)
         .flatMapLatest { queryString ->
+            state = state.copy(searchFieldValue = queryString)
             getImageSearchResult(queryString)
         }.cachedIn(viewModelScope)
 
