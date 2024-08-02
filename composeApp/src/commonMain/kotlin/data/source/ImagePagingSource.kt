@@ -1,12 +1,13 @@
- package data.source
+package data.source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import data.mapper.PhotoMapper
 import data.model.ui.Photo
 import data.repository.ImageRepository
+import data.repository.Resource
 
- class ImagePagingSource(
+class ImagePagingSource(
     private val repository: ImageRepository,
     private val photoMapper: PhotoMapper,
     private val query: String,
@@ -23,18 +24,17 @@ import data.repository.ImageRepository
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         val position = params.key ?: STARTING_PAGE_INDEX
 
-        return try {
-            val response = repository.getImageSearchResult(query, position, params.loadSize)
-            val photos = photoMapper.mapToUIList(response.results)
-
-            LoadResult.Page(
-                data = photos,
-                prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = if (position >= response.totalPages) null else position + 1
-            )
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-            LoadResult.Error(exception)
+        return when (val response =
+            repository.getImageSearchResult(query, position, params.loadSize)) {
+            is Resource.Failure -> LoadResult.Error(response.error)
+            is Resource.Success -> {
+                val photos = photoMapper.mapToUIList(response.result.results)
+                LoadResult.Page(
+                    data = photos,
+                    prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
+                    nextKey = if (position >= response.result.totalPages) null else position + 1
+                )
+            }
         }
     }
 }

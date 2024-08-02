@@ -8,7 +8,7 @@ interface ImageRepository {
         query: String,
         page: Int,
         loadSize: Int
-    ): UnsplashResponseRemote
+    ): Resource<UnsplashResponseRemote>
 
     suspend fun getPhoto(photoId: String): Resource<UnsplashPhotoRemote>
 }

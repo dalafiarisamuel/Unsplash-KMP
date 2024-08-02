@@ -10,8 +10,8 @@ internal class ImageRepositoryImpl(private val api: ApiInterface) : ImageReposit
         query: String,
         page: Int,
         loadSize: Int,
-    ): UnsplashResponseRemote {
-        return api.searchPhotos(query = query, page = page, perPage = loadSize)
+    ): Resource<UnsplashResponseRemote> {
+        return resourceHelper { api.searchPhotos(query = query, page = page, perPage = loadSize) }
     }
 
     override suspend fun getPhoto(photoId: String): Resource<UnsplashPhotoRemote> {
