@@ -22,7 +22,7 @@ fun HomeScreenEntryPoint(
         state = viewModel.state,
         imageList = viewModel.photos,
         onLongClicked = {
-            navController.navigate(PhotoScreen.PHOTO_DETAIL.createPath(it.id))
+            navController.navigate(PhotoScreen.DetailScreen(it.id))
         },
         dispatch = viewModel::dispatch
     )

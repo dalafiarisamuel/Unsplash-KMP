@@ -1,19 +1,11 @@
 package ui.navigation
 
-const val ARG_PHOTO_ID = "photo_id"
+import kotlinx.serialization.Serializable
 
-enum class PhotoScreen(val route: String) {
-    PHOTO_LIST("home_screen"),
-    PHOTO_DETAIL("photo_detail_screen/{$ARG_PHOTO_ID}/detail");
+sealed interface PhotoScreen {
+    @Serializable
+    data object HomeScreen : PhotoScreen
 
-    fun createPath(vararg args: Any): String {
-        var route = route
-        require(args.size == route.argumentCount) {
-            "Provided ${args.count()} parameters, was expected ${route.argumentCount} parameters!"
-        }
-        route.arguments().forEachIndexed { index, matchResult ->
-            route = route.replace(matchResult.value, args[index].toString())
-        }
-        return route
-    }
+    @Serializable
+    data class DetailScreen(val id: String) : PhotoScreen
 }
