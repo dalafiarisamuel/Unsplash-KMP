@@ -58,7 +58,7 @@ fun ImagePreviewDialog(photo: Photo?, onDismissCLicked: () -> Unit) {
         )
     ) {
         DialogContent(
-            imageUrl = photo?.urls?.full,
+            imageUrl = photo?.urls?.regular,
             imageColor = photo?.color,
             blurHash = photo?.blurHash,
             imageWidth = photo?.width,

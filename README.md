@@ -53,4 +53,28 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 | ![Desktop Screenshot 1](./images/desktop_screenshot_1.png) | ![Desktop Screenshot 2](./images/desktop_screenshot_2.png) |
 |------------------------------------------------------------|------------------------------------------------------------|
 
+## Before running
+
+- Check your system with [KDoctor](https://github.com/Kotlin/kdoctor)
+- Install JDK 17 or higher on your machine
+
+#### Android
+
+To run the application on android device/emulator:
+
+- open project in Android Studio and run imported android run configuration
+
+#### Desktop
+
+Run the desktop application: `./gradlew :composeApp:run` or `./gradlew run`
+
+#### iOS
+
+To run the application on iPhone device/simulator:
+
+- Open `iosApp/iosApp.xcproject` in Xcode and run standard configuration
+- Or use [Kotlin Multiplatform Mobile plugin](https://plugins.jetbrains.com/plugin/14936-kotlin-multiplatform-mobile)
+  for Android Studio
+  Run iOS simulator UI tests: `./gradlew :composeApp:iosSimulatorArm64Test`
+
 <br>
