@@ -6,34 +6,32 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import ng.devtamuno.unsplash.compose.ui.theme.Shapes
 
 private val DarkColorPalette = darkColors(
     primary = ColorWhite,
     primaryVariant = ColorWhite,
     secondary = ColorMatteBlack,
+    background = ColorMatteBlack,
+    onSecondary = ColorMatteBlack,
+    secondaryVariant = Color(0xFFF5F5FD)
 )
 
 private val LightColorPalette = lightColors(
     primary = ColorMatteBlack,
     primaryVariant = ColorMatteBlack,
     secondary = ColorWhite,
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    background = ColorWhite,
+    onSecondary = Color(0xFFF5F5FD),
+    secondaryVariant = Color(0xFFD4D8EB)
 )
 
 @ExperimentalFoundationApi
 @Composable
 fun UnsplashKMPTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     val colors = if (darkTheme) {
         DarkColorPalette

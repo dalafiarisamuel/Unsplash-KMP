@@ -209,3 +209,18 @@ private fun <T : Any> LazyStaggeredGridScope.lazyItems(
         itemContent(lazyPagingItems[index])
     }
 }
+
+@ExperimentalFoundationApi
+private fun <T : Any> LazyStaggeredGridScope.lazyItemsIndexed(
+    lazyPagingItems: LazyPagingItems<T>,
+    key: ((item: T?) -> Any)? = null,
+    itemContent: @Composable LazyStaggeredGridItemScope.(value: T?) -> Unit,
+) {
+    items(
+        lazyPagingItems.itemCount,
+        key?.let { { index -> key(lazyPagingItems[index]) } }
+    ) { index ->
+        itemContent(lazyPagingItems[index])
+    }
+}
+

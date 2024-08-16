@@ -50,6 +50,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
+            implementation(compose.materialIconsExtended)
             implementation(compose.ui)
             implementation(libs.coil)
             implementation(libs.coil.network.ktor)
@@ -74,6 +75,8 @@ kotlin {
             implementation(libs.nappier.logging)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.material3.window.size.multiplatform)
+            api(libs.datastore.preferences)
+            api(libs.datastore)
         }
         commonTest.dependencies {
             implementation(libs.koin.test)

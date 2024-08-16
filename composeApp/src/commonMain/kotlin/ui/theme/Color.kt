@@ -1,6 +1,7 @@
 package ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
@@ -23,22 +24,22 @@ val ColorMatteBlack = Color(0xFF212121)
 val appWhite
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) ColorWhite else ColorMatteBlack
+    get() = MaterialTheme.colors.primary
 
 val appDark
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) ColorMatteBlack else ColorWhite
+    get() = MaterialTheme.colors.secondary
 
 val colorDisabledGray
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) ColorMatteBlack else Color(0xFFF5F5FD)
+    get() = MaterialTheme.colors.onSecondary
 
 val colorGrayDivider
     @Composable
     @ReadOnlyComposable
-    get() = if (isSystemInDarkTheme()) Color(0xFFF5F5FD) else Color(0xFFD4D8EB)
+    get() = MaterialTheme.colors.secondaryVariant
 
 fun Color.complementary() = Color(
     red = 1F - red,

@@ -5,6 +5,7 @@ import data.mapper.PhotoMapper
 import data.mapper.PhotosUrlsMapper
 import data.repository.ImageRepository
 import data.repository.ImageRepositoryImpl
+import data.repository.SharedRepository
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -74,6 +75,7 @@ private fun mapperModule() = module {
 
 private fun repositoryModule() = module {
     single<ImageRepository> { ImageRepositoryImpl(get()) }
+    single { SharedRepository() }
 }
 
 private fun viewModelModule() = module {
