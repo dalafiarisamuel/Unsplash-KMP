@@ -1,5 +1,6 @@
 package ui.viewmodel
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,14 +10,23 @@ import data.repository.ImageRepository
 import data.repository.Resource
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
+import ui.download.PlatformDownloadImage
+import ui.state.ImageDownloadState
 import ui.state.PhotoDetailState
 
 
 class PhotoDetailViewModel(
     private val repository: ImageRepository,
+    private val platformDownloadImage: PlatformDownloadImage,
 ) : ViewModel(), KoinComponent {
 
     var uiState by mutableStateOf(PhotoDetailState())
+
+    var imageDownloadState by mutableStateOf<ImageDownloadState>(ImageDownloadState.Idle)
+
+    val isDownloading by derivedStateOf { imageDownloadState is ImageDownloadState.Loading }
+
+    val isDownloadError by derivedStateOf { imageDownloadState is ImageDownloadState.Failure }
 
     fun getSelectedPhotoById(photoId: String) {
         uiState.intentPhotoId = photoId
@@ -42,4 +52,10 @@ class PhotoDetailViewModel(
         }
     }
 
+    fun startDownload(photoUrl: String) {
+        viewModelScope.launch {
+            imageDownloadState = ImageDownloadState.Loading
+            imageDownloadState = platformDownloadImage.downloadImage(photoUrl)
+        }
+    }
 }

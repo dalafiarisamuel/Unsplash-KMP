@@ -20,6 +20,14 @@ kotlin {
         }
     }
 
+    targets.configureEach {
+        compilations.configureEach {
+            compileTaskProvider.get().compilerOptions {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
+    }
+
     jvm("desktop")
 
     listOf(
@@ -77,6 +85,7 @@ kotlin {
             implementation(libs.material3.window.size.multiplatform)
             api(libs.datastore.preferences)
             api(libs.datastore)
+            implementation(libs.calf.permissions)
         }
         commonTest.dependencies {
             implementation(libs.koin.test)

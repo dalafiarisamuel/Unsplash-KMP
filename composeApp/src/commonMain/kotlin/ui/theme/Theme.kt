@@ -6,7 +6,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import ng.devtamuno.unsplash.compose.ui.theme.Shapes
 
 private val DarkColorPalette = darkColors(
@@ -27,6 +31,10 @@ private val LightColorPalette = lightColors(
     secondaryVariant = Color(0xFFD4D8EB)
 )
 
+val LocalNavController = compositionLocalOf<NavHostController> {
+    error("NavController not provided")
+}
+
 @ExperimentalFoundationApi
 @Composable
 fun UnsplashKMPTheme(
@@ -42,7 +50,8 @@ fun UnsplashKMPTheme(
     MaterialTheme(
         colors = colors,
         typography = getTypography(),
-        shapes = Shapes,
-        content = content
-    )
+        shapes = Shapes
+    ) {
+        CompositionLocalProvider(LocalNavController provides rememberNavController(), content = content)
+    }
 }

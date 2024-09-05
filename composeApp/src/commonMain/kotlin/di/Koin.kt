@@ -32,7 +32,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             networkModule(),
             mapperModule(),
             repositoryModule(),
-            viewModelModule()
+            viewModelModule(),
+            platformModule()
         )
     }
 
