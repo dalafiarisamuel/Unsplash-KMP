@@ -26,7 +26,7 @@ actual class PlatformDownloadImage(private val client: HttpClient) {
             val body = response.bodyAsChannel()
             val result = body.toByteArray()
             saveImageToFile(result, fileName)
-            ImageDownloadState.Successful
+            ImageDownloadState.Success
         } catch (e: Exception) {
             ImageDownloadState.Failure(e)
         }

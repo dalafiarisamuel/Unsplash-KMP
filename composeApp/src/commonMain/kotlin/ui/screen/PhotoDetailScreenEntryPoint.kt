@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,11 +19,11 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
 import com.mohamedrejeb.calf.permissions.Permission
-import com.mohamedrejeb.calf.permissions.PermissionStatus
 import com.mohamedrejeb.calf.permissions.rememberPermissionState
 import getPlatform
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import ui.navigation.runWithPermission
 import ui.theme.appDark
 import ui.viewmodel.PhotoDetailViewModel
 
@@ -45,6 +46,8 @@ fun PhotoDetailScreenEntryPoint(
         Permission.Gallery
     )
 
+    val currentPlatform = remember { getPlatform() }
+
     var showDialog = viewModel.isDownloading
 
     PhotoDetail(
@@ -52,40 +55,19 @@ fun PhotoDetailScreenEntryPoint(
         state = viewModel.uiState,
         onBackPressed = { navController.popBackStack() }
     ) {
-        when (getPlatform()) {
+        when (currentPlatform) {
             Platform.Android -> {
-
-                when (val status = writeStorage.status) {
-                    is PermissionStatus.Denied -> {
-                        if (status.shouldShowRationale) {
-                            writeStorage.launchPermissionRequest()
-                        } else {
-                            writeStorage.openAppSettings()
-                        }
-                    }
-
-                    is PermissionStatus.Granted -> {
-                        if (it != null) {
-                            viewModel.startDownload(it)
-                        }
+                runWithPermission(writeStorage) {
+                    if (it != null) {
+                        viewModel.startDownload(it)
                     }
                 }
             }
 
             Platform.Apple -> {
-                when (val status = gallery.status) {
-                    is PermissionStatus.Denied -> {
-                        if (status.shouldShowRationale) {
-                            gallery.launchPermissionRequest()
-                        } else {
-                            gallery.openAppSettings()
-                        }
-                    }
-
-                    is PermissionStatus.Granted -> {
-                        if (it != null) {
-                            viewModel.startDownload(it)
-                        }
+                runWithPermission(gallery) {
+                    if (it != null) {
+                        viewModel.startDownload(it)
                     }
                 }
             }
@@ -104,7 +86,7 @@ fun PhotoDetailScreenEntryPoint(
             properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
         ) {
             Column(
-                modifier = Modifier.size(100.dp).background(appDark, RoundedCornerShape(8.dp)),
+                modifier = Modifier.size(100.dp).background(appDark, RoundedCornerShape(10.dp)),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

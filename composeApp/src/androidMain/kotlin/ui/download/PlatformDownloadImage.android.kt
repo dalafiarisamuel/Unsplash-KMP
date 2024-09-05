@@ -26,7 +26,7 @@ actual class PlatformDownloadImage(private val context: Context) {
 
                 (context.getSystemService(Context.DOWNLOAD_SERVICE)
                         as DownloadManager).enqueue(request)
-                ImageDownloadState.Successful
+                ImageDownloadState.Success
             } catch (e: Exception) {
                 ImageDownloadState.Failure(e)
             }

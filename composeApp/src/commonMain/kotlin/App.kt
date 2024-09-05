@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import data.repository.SharedRepository
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -12,6 +11,7 @@ import org.koin.compose.koinInject
 import ui.navigation.PhotoScreen
 import ui.screen.HomeScreenEntryPoint
 import ui.screen.PhotoDetailScreenEntryPoint
+import ui.theme.LocalNavController
 import ui.theme.UnsplashKMPTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -28,7 +28,7 @@ fun App() {
 
     UnsplashKMPTheme(darkTheme = sharedRepository.isDarkThemeEnabled) {
 
-        val navController = rememberNavController()
+        val navController = LocalNavController.current
 
         NavHost(navController = navController, startDestination = PhotoScreen.HomeScreen) {
 
