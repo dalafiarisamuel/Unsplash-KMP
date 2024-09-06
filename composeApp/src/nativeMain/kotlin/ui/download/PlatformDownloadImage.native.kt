@@ -12,7 +12,6 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSURLErrorDomain
 import platform.Foundation.NSURLResponse
 import platform.Foundation.NSURLSession
-import platform.Foundation.NSURLSessionConfiguration
 import platform.Foundation.dataTaskWithURL
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageWriteToSavedPhotosAlbum
@@ -48,8 +47,6 @@ actual class PlatformDownloadImage {
 
     private suspend fun fetchData(url: NSURL): Pair<NSData?, NSURLResponse?> =
         suspendCancellableCoroutine { continuation ->
-            val configuration = NSURLSessionConfiguration.defaultSessionConfiguration
-            configuration.timeoutIntervalForRequest = 30.0
             val session = NSURLSession.sharedSession
             val task = session.dataTaskWithURL(url) { data, response, error ->
                 if (error != null) {
