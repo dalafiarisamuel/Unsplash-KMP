@@ -47,6 +47,8 @@ fun UnsplashKMPTheme(
         LightColorPalette
     }
 
+    PlatformAppearance(darkTheme)
+
     MaterialTheme(
         colors = colors,
         typography = getTypography(),
