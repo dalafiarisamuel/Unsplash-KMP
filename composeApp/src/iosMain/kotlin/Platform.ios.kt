@@ -1,3 +1,3 @@
 actual fun getPlatform(): Platform {
-    return Platform.Apple
+    return Platform.Ios
 }

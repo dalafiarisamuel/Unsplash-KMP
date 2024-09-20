@@ -64,7 +64,7 @@ fun PhotoDetailScreenEntryPoint(
                 }
             }
 
-            Platform.Apple -> {
+            Platform.Ios -> {
                 runWithPermission(gallery) {
                     if (it != null) {
                         viewModel.startDownload(it)
