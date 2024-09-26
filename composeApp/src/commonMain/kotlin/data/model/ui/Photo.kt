@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Stable
 @Serializable
-data class Photo(
+internal data class Photo(
     val id: String,
     val blurHash: String?,
     val width: Int,
@@ -19,7 +19,7 @@ data class Photo(
 
 @Stable
 @Serializable
-data class PhotoUrls(
+internal data class PhotoUrls(
     val raw: String,
     val full: String,
     val regular: String,
@@ -29,14 +29,14 @@ data class PhotoUrls(
 
 @Stable
 @Serializable
-data class PhotoCreator(
+internal data class PhotoCreator(
     val name: String,
     val username: String,
     val attributionUrl: String,
 )
 
 
-val dummyPhoto = Photo(
+internal val dummyPhoto = Photo(
     id = "ldLty8YYYP4",
     color = "#0c2640",
     alternateDescription = "blue sky with stars during night time",

@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowInsetsControllerCompat
 
 @Composable
-actual fun PlatformAppearance(isDarkTheme: Boolean) {
+internal actual fun PlatformAppearance(isDarkTheme: Boolean) {
     val view = LocalView.current
     LaunchedEffect(isDarkTheme) {
         val window = (view.context as Activity).window

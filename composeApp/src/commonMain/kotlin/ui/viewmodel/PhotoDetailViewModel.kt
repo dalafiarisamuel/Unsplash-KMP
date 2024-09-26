@@ -15,7 +15,7 @@ import ui.state.ImageDownloadState
 import ui.state.PhotoDetailState
 
 
-class PhotoDetailViewModel(
+internal class PhotoDetailViewModel(
     private val repository: ImageRepository,
     private val platformDownloadImage: PlatformDownloadImage,
 ) : ViewModel(), KoinComponent {

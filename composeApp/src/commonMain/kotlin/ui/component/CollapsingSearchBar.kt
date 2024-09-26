@@ -27,7 +27,7 @@ import unsplashkmp.composeapp.generated.resources.search_images
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
-fun CollapsibleSearchBar(
+internal fun CollapsibleSearchBar(
     modifier: Modifier = Modifier,
     toolbarOffset: Float = 0f,
     toolbarHeight: Dp = 100.dp,

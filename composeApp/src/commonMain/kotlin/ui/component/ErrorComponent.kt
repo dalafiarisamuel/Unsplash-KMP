@@ -18,7 +18,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.appWhite
 
 @Composable
-fun ErrorComponent(modifier: Modifier = Modifier, message: String) {
+internal fun ErrorComponent(modifier: Modifier = Modifier, message: String) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

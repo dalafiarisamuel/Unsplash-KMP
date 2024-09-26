@@ -29,7 +29,7 @@ import ui.viewmodel.PhotoDetailViewModel
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalPermissionsApi::class)
 @Composable
-fun PhotoDetailScreenEntryPoint(
+internal fun PhotoDetailScreenEntryPoint(
     navController: NavController,
     photoId: String,
     viewModel: PhotoDetailViewModel = koinViewModel(),

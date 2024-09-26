@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import ui.theme.color
 
 @Composable
-fun shimmerBrush(
+internal fun shimmerBrush(
     shimmerColorFrame: String?,
     showShimmer: Boolean = true,
     targetValue: Float = 1000f,

@@ -10,7 +10,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun LoadingView(
+internal fun LoadingView(
     modifier: Modifier = Modifier
 ) {
     Column(

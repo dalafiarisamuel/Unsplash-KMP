@@ -20,7 +20,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 @OptIn(ExperimentalForeignApi::class)
-actual class PlatformDownloadImage {
+internal actual class PlatformDownloadImage {
 
     actual suspend fun downloadImage(imageLink: String): ImageDownloadState {
         return withContext(Dispatchers.IO) {

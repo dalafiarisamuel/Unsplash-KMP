@@ -52,7 +52,7 @@ import unsplashkmp.composeapp.generated.resources.unsplash_images
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
     state: HomeScreenState = HomeScreenState(),
     imageList: Flow<PagingData<Photo>> = flowOf(PagingData.empty()),
     onLongClicked: (Photo) -> Unit = {},

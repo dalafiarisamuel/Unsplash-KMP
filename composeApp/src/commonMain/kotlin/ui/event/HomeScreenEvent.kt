@@ -3,7 +3,7 @@ package ui.event
 import data.model.ui.Photo
 
 
-sealed class HomeScreenEvent {
+internal sealed class HomeScreenEvent {
 
     data class SelectChip(val chipValue: String) : HomeScreenEvent()
 

@@ -1,4 +1,4 @@
-sealed class Platform {
+internal sealed class Platform {
     data object Android : Platform()
 
     data object Ios : Platform()
@@ -6,4 +6,4 @@ sealed class Platform {
     data object Desktop : Platform()
 }
 
-expect fun getPlatform(): Platform
+internal expect fun getPlatform(): Platform

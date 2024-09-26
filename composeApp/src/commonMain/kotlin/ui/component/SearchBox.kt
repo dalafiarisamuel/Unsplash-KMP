@@ -44,7 +44,7 @@ import unsplashkmp.composeapp.generated.resources.search_image_hint
 @ExperimentalComposeUiApi
 @Preview
 @Composable
-fun UnsplashSearchBox(
+internal fun UnsplashSearchBox(
     modifier: Modifier = Modifier,
     textValue: String? = null,
     keyboard: SoftwareKeyboardController? = null,

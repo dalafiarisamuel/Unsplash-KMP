@@ -1,3 +1,3 @@
-actual fun getPlatform(): Platform {
+internal actual fun getPlatform(): Platform {
     return Platform.Ios
 }

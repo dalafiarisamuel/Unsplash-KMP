@@ -46,7 +46,7 @@ import unsplashkmp.composeapp.generated.resources.unsplash_svg
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ArtistCard(modifier: Modifier = Modifier, unsplashUser: UnsplashUser) {
+internal fun ArtistCard(modifier: Modifier = Modifier, unsplashUser: UnsplashUser) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

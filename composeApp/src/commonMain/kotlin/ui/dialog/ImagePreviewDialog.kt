@@ -48,7 +48,7 @@ import unsplashkmp.composeapp.generated.resources.ic_image
 
 
 @Composable
-fun ImagePreviewDialog(photo: Photo?, onDismissCLicked: () -> Unit) {
+internal fun ImagePreviewDialog(photo: Photo?, onDismissCLicked: () -> Unit) {
 
     Dialog(
         onDismissRequest = onDismissCLicked,

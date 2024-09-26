@@ -3,7 +3,7 @@ package data.repository
 import data.model.remote.UnsplashPhotoRemote
 import data.model.remote.UnsplashResponseRemote
 
-interface ImageRepository {
+internal interface ImageRepository {
     suspend fun getImageSearchResult(
         query: String,
         page: Int,

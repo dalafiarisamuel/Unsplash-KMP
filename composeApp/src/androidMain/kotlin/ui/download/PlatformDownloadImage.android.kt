@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import ui.state.ImageDownloadState
 import kotlin.time.Duration.Companion.seconds
 
-actual class PlatformDownloadImage(private val context: Context) {
+internal actual class PlatformDownloadImage(private val context: Context) {
     actual suspend fun downloadImage(imageLink: String): ImageDownloadState {
         withContext(Dispatchers.Default) {
             delay(3.seconds)

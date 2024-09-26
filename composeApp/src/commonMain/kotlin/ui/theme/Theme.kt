@@ -11,7 +11,6 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import ng.devtamuno.unsplash.compose.ui.theme.Shapes
 
 private val DarkColorPalette = darkColors(
     primary = ColorWhite,
@@ -37,7 +36,7 @@ val LocalNavController = compositionLocalOf<NavHostController> {
 
 @ExperimentalFoundationApi
 @Composable
-fun UnsplashKMPTheme(
+internal fun UnsplashKMPTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {

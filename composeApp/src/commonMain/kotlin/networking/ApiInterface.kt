@@ -10,7 +10,7 @@ import de.jensklingenberg.ktorfit.http.Query
 import env.Env
 
 
-interface ApiInterface {
+internal interface ApiInterface {
 
     @Headers("Accept-Version: v1")
     @GET("search/photos")

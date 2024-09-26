@@ -2,4 +2,4 @@ package di
 
 import org.koin.core.module.Module
 
-expect fun platformModule(): Module
+internal expect fun platformModule(): Module

@@ -3,7 +3,7 @@ package data.mapper
 import data.model.remote.UnsplashPhotoRemote
 import data.model.ui.Photo
 
-class PhotoMapper constructor(
+internal class PhotoMapper constructor(
     private val photosUrlsMapper: PhotosUrlsMapper,
     private val photoCreatorMapper: PhotoCreatorMapper
 ) : UIModelMapper<UnsplashPhotoRemote, Photo>() {

@@ -2,6 +2,6 @@ package ui.download
 
 import ui.state.ImageDownloadState
 
-expect class PlatformDownloadImage {
+internal expect class PlatformDownloadImage {
     suspend fun downloadImage(imageLink: String): ImageDownloadState
 }

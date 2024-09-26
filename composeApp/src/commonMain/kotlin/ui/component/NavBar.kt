@@ -26,7 +26,7 @@ import unsplashkmp.composeapp.generated.resources.photo_detail
 
 @Preview
 @Composable
-fun NavBar(modifier: Modifier = Modifier, onBackPressed: () -> Unit = {}) {
+internal fun NavBar(modifier: Modifier = Modifier, onBackPressed: () -> Unit = {}) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().then(modifier)

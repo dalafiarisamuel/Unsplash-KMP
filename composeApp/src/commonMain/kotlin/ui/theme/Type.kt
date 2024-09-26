@@ -16,7 +16,7 @@ import unsplashkmp.composeapp.generated.resources.poppins_semi_bold
 
 
 @Composable
-fun getPoppinsFontFamily() = FontFamily(
+internal fun getPoppinsFontFamily() = FontFamily(
     Font(Res.font.poppins_regular, FontWeight.Normal),
     Font(Res.font.poppins_medium, FontWeight.Medium),
     Font(Res.font.poppins_light, FontWeight.Light),
@@ -26,7 +26,7 @@ fun getPoppinsFontFamily() = FontFamily(
 
 // Set of Material typography styles to start with
 @Composable
-fun  getTypography() = Typography(
+internal fun getTypography() = Typography(
     defaultFontFamily = getPoppinsFontFamily(),
     body1 = TextStyle(
         fontFamily = FontFamily.Default,
