@@ -13,7 +13,7 @@ import java.lang.Exception
 import java.nio.file.Paths
 import ui.state.ImageDownloadState
 
-actual class PlatformDownloadImage(private val client: HttpClient) {
+internal actual class PlatformDownloadImage(private val client: HttpClient) {
     actual suspend fun downloadImage(imageLink: String): ImageDownloadState {
         return try {
             val fileName = "${Url(imageLink).pathSegments[1]}.jpeg"

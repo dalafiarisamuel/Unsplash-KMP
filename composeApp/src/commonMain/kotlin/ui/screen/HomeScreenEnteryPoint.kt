@@ -28,7 +28,7 @@ import ui.viewmodel.HomeScreenViewModel
     KoinExperimentalAPI::class
 )
 @Composable
-fun HomeScreenEntryPoint(
+internal fun HomeScreenEntryPoint(
     navController: NavController,
     viewModel: HomeScreenViewModel = koinViewModel(),
     sharedRepository: SharedRepository = koinInject<SharedRepository>()

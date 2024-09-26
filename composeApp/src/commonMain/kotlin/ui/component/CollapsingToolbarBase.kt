@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun CollapsingToolbarBase(
+internal fun CollapsingToolbarBase(
     modifier: Modifier = Modifier,
     toolbarHeight: Dp,
     minShrinkHeight: Dp = 0.dp,

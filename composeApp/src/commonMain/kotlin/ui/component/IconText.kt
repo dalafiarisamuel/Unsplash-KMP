@@ -19,7 +19,7 @@ import org.jetbrains.compose.resources.painterResource
 import ui.theme.appWhite
 
 @Composable
-fun IconText(drawableId: DrawableResource, display: String) {
+internal fun IconText(drawableId: DrawableResource, display: String) {
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,

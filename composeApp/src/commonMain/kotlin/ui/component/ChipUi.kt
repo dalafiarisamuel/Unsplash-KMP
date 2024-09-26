@@ -28,7 +28,7 @@ import unsplashkmp.composeapp.generated.resources.Res
 
 @Preview
 @Composable
-fun Chip(
+internal fun Chip(
     chip: ChipData = ChipData(
         stringResource(Res.string.current_events_emoji),
         stringResource(Res.string.current_events)
@@ -69,7 +69,7 @@ fun Chip(
 
 @Preview
 @Composable
-fun ChipGroup(
+internal fun ChipGroup(
     modifier: Modifier = Modifier,
     itemList: ImmutableList<ChipData> = persistentListOf(
         ChipData(

@@ -1,6 +1,6 @@
 package data.mapper
 
-abstract class UIModelMapper<D, U> {
+internal abstract class UIModelMapper<D, U> {
 
     abstract fun mapToUI(entity: D): U
 

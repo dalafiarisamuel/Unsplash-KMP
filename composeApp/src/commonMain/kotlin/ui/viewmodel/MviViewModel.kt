@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-abstract class MviViewModel<Event, State>(defaultState: State) : ViewModel() {
+internal abstract class MviViewModel<Event, State>(defaultState: State) : ViewModel() {
 
     protected val events = MutableSharedFlow<Event>()
 

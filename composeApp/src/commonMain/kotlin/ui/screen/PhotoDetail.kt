@@ -50,7 +50,7 @@ import unsplashkmp.composeapp.generated.resources.round_downloading
 
 @Preview
 @Composable
-fun PhotoDetail(
+internal fun PhotoDetail(
     modifier: Modifier = Modifier,
     state: PhotoDetailState = PhotoDetailState(),
     onBackPressed: () -> Unit = {},

@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 
 
 @Serializable
-data class UnsplashPhotoRemote(
+internal data class UnsplashPhotoRemote(
     val id: String,
     @SerialName("blur_hash")
     val blurHash: String?,
@@ -23,7 +23,7 @@ data class UnsplashPhotoRemote(
 )
 
 @Serializable
-data class UnsplashPhotoUrls(
+internal data class UnsplashPhotoUrls(
     val raw: String,
     val full: String,
     val regular: String,
@@ -32,7 +32,7 @@ data class UnsplashPhotoUrls(
 )
 
 @Serializable
-data class UnsplashUser(
+internal data class UnsplashUser(
     val id: String,
     val name: String,
     val username: String,
@@ -52,7 +52,7 @@ data class UnsplashUser(
 }
 
 @Serializable
-data class ProfileImage(
+internal data class ProfileImage(
     val small: String,
     val medium: String,
     val large: String

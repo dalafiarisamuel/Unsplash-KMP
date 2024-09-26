@@ -1,5 +1,5 @@
 package data.repository
 
-interface SharedRepository {
+internal interface SharedRepository {
     var isDarkThemeEnabled: Boolean
 }

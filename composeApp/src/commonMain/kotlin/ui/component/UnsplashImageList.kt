@@ -57,7 +57,7 @@ import unsplashkmp.composeapp.generated.resources.searched_term_not_found
 
 @ExperimentalFoundationApi
 @Composable
-fun UnsplashImageList(
+internal fun UnsplashImageList(
     modifier: Modifier,
     imageList: Flow<PagingData<Photo>>,
     lazyGridState: LazyStaggeredGridState,

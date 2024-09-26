@@ -24,7 +24,7 @@ import unsplashkmp.composeapp.generated.resources.ic_search
 @ExperimentalComposeUiApi
 @Preview
 @Composable
-fun SearchButton(
+internal fun SearchButton(
     modifier: Modifier = Modifier,
     onSearchButtonClicked: (() -> Unit)? = null,
 ) {

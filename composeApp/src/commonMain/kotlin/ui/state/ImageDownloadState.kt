@@ -1,6 +1,6 @@
 package ui.state
 
-sealed class ImageDownloadState {
+internal sealed class ImageDownloadState {
     data object Idle : ImageDownloadState()
     data object Loading : ImageDownloadState()
     data object Success : ImageDownloadState()

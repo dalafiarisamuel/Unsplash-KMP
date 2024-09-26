@@ -3,5 +3,5 @@ package ui.component
 import androidx.compose.ui.unit.Dp
 
 
-expect fun getEdgeToEdgeTopPadding(): Dp
+internal expect fun getEdgeToEdgeTopPadding(): Dp
 

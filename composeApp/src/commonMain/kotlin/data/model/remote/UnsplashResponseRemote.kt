@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UnsplashResponseRemote(
+internal data class UnsplashResponseRemote(
     val total: Long,
     @SerialName( "total_pages")
     val totalPages: Long,

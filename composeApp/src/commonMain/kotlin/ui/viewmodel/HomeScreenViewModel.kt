@@ -19,7 +19,7 @@ import ui.state.HomeScreenState
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-class HomeScreenViewModel(
+internal class HomeScreenViewModel(
     private val repository: ImageRepository,
     private val photoMapper: PhotoMapper,
 ) : MviViewModel<HomeScreenEvent, HomeScreenState>(HomeScreenState()), KoinComponent {

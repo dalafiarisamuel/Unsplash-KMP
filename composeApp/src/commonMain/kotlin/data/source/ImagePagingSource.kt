@@ -7,7 +7,7 @@ import data.model.ui.Photo
 import data.repository.ImageRepository
 import data.repository.Resource
 
-class ImagePagingSource(
+internal class ImagePagingSource(
     private val repository: ImageRepository,
     private val photoMapper: PhotoMapper,
     private val query: String,

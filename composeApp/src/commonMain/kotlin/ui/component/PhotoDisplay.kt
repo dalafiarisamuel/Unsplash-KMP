@@ -29,7 +29,7 @@ import coil3.compose.rememberAsyncImagePainter
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PhotoLargeDisplay(
+internal fun PhotoLargeDisplay(
     modifier: Modifier,
     imageUrl: String,
     imageColor: String? = null,
