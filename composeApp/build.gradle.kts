@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.kotlinSymbolicProcessor)
     alias(libs.plugins.ktorfitPlugin)
     alias(libs.plugins.kotlinSerializationPlugin)
+    alias(libs.plugins.kmpIconGeneratorPlugin)
 }
 
 kotlin {

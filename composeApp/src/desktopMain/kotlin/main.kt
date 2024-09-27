@@ -7,6 +7,9 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import di.initKoin
 import java.awt.Dimension
+import org.jetbrains.compose.resources.painterResource
+import unsplashkmp.composeapp.generated.resources.Res
+import unsplashkmp.composeapp.generated.resources.icon
 
 fun main() {
     initKoin()
@@ -21,6 +24,7 @@ fun main() {
         Window(
             onCloseRequest = ::exitApplication,
             title = "UnsplashKMP",
+            icon = painterResource(Res.drawable.icon),
             state = windowState
         ) {
             window.minimumSize = Dimension(950, 900)

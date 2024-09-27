@@ -27,6 +27,7 @@ nappier-logging = "2.7.1"
 combineVersion = "0.13.0"
 dataStorePreferences = "1.1.1"
 kotlinxAtomic = "0.24.0"
+kmpIconGenerator = "1.2.6"
 
 
 [libraries]
@@ -77,3 +78,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 ktorfitPlugin = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 kotlinSymbolicProcessor = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinSerializationPlugin = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kmpIconGeneratorPlugin = { id = "io.github.qamarelsafadi.kmp.app.icon.generator", version.ref = "kmpIconGenerator" }
