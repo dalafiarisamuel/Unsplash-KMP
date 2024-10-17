@@ -76,7 +76,6 @@ kotlin {
             implementation(libs.cashapp.paging.common)
             implementation(libs.kotlin.collection.immutable)
             implementation(libs.colormath)
-            api(libs.androidx.lifecycle.viewmodel)
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.composeVM)
@@ -84,8 +83,8 @@ kotlin {
             implementation(libs.nappier.logging)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.material3.window.size.multiplatform)
-            api(libs.datastore.preferences)
-            api(libs.datastore)
+            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.calf.permissions)
         }
         commonTest.dependencies {
@@ -117,7 +116,7 @@ kotlin {
                 because("navigation version >=2.8.0 requires skiko version 0.8.15 to work correctly on desktops")
             }
             implementation(compose.desktop.currentOs)
-            runtimeOnly(libs.kotlinx.coroutines.swing)
+            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }
