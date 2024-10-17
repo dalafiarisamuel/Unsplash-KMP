@@ -111,10 +111,10 @@ kotlin {
                 else -> error("Unsupported arch: $osArch")
             }
 
-            val version = "0.8.9"
+            val version = "0.8.15"
             val target = "${targetOs}-${targetArch}"
             implementation("org.jetbrains.skiko:skiko-awt-runtime-$target:$version") {
-                because("navigation version >=2.8.0 requires skiko version 0.8.9 to work correctly on desktops")
+                because("navigation version >=2.8.0 requires skiko version 0.8.15 to work correctly on desktops")
             }
             implementation(compose.desktop.currentOs)
             runtimeOnly(libs.kotlinx.coroutines.swing)

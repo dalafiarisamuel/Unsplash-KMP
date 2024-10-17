@@ -91,7 +91,7 @@ internal fun UnsplashSearchBox(
             value = textValue ?: "",
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
-                autoCorrect = false,
+                autoCorrectEnabled = false,
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Search
             ),

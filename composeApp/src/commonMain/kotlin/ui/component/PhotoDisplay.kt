@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +49,8 @@ internal fun PhotoLargeDisplay(
         derivedStateOf { (imageSize.width / imageSize.height) }
     }
     val painter: AsyncImagePainter = rememberAsyncImagePainter(imageUrl)
-    if (painter.state is AsyncImagePainter.State.Success) {
+    val painterState by painter.state.collectAsState()
+    if (painterState is AsyncImagePainter.State.Success) {
         showShimmer = false
     }
 
