@@ -38,7 +38,7 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 ## Prerequisite
 
 * To successfully make API calls to [Unsplash](https://unsplash.com) Endpoint, use a valid API Token from Unsplash.
-* Enter your valid API token [here](./composeApp/src/commonMain/kotlin/env/Env.kt)
+* Enter your valid API token [here](./composeApp/src/commonMain/kotlin/di/Koin.kt#L63)
 
 ## Mobile App Screenshots
 

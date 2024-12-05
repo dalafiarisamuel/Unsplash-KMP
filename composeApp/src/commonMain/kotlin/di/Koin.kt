@@ -17,6 +17,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import networking.ApiInterface
+import networking.AuthorizationTokenInterceptor
 import networking.createApiInterface
 import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.core.context.startKoin
@@ -56,6 +57,10 @@ private fun networkModule() = module {
             install(Logging) {
                 logger = Logger.DEFAULT
                 level = LogLevel.ALL
+            }
+
+            install(AuthorizationTokenInterceptor) {
+                tokenProvider = { "" }
             }
         }
     }
