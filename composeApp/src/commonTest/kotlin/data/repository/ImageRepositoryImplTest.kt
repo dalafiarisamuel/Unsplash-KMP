@@ -27,7 +27,7 @@ class ImageRepositoryImplTest : KoinTest {
     @Test
     fun givenSuccessResponse_whenGetImageSearchResultIsCalled_successStateIsReturned() = runTest {
         val ktorfit = NetworkHelper.createKtorfitWithMockResponse(
-            HttpStatusCode.OK,NetworkHelper.successfulImageListResponse
+            HttpStatusCode.OK, NetworkHelper.successfulImageListResponse
         )
 
         val apiService = ktorfit.createApiInterface()
@@ -41,7 +41,7 @@ class ImageRepositoryImplTest : KoinTest {
     @Test
     fun givenSuccessResponse_whenGetPhotoIsCalled_successStateIsReturned() = runTest {
         val ktorfit = NetworkHelper.createKtorfitWithMockResponse(
-            HttpStatusCode.OK,NetworkHelper.successfulImageResponse
+            HttpStatusCode.OK, NetworkHelper.successfulImageResponse
         )
 
         val apiService = ktorfit.createApiInterface()
@@ -55,7 +55,7 @@ class ImageRepositoryImplTest : KoinTest {
     @Test
     fun givenErrorResponse_whenGetPhotoIsCalled_failureStateIsReturned() = runTest {
         val ktorfit = NetworkHelper.createKtorfitWithMockResponse(
-            HttpStatusCode.Unauthorized,NetworkHelper.authorizationError
+            HttpStatusCode.Unauthorized, NetworkHelper.authorizationError
         )
 
         val apiService = ktorfit.createApiInterface()
@@ -69,7 +69,7 @@ class ImageRepositoryImplTest : KoinTest {
     @Test
     fun givenErrorResponse_whenGetImageSearchResultIsCalled_failureStateIsReturned() = runTest {
         val ktorfit = NetworkHelper.createKtorfitWithMockResponse(
-            HttpStatusCode.OK,NetworkHelper.authorizationError
+            HttpStatusCode.OK, NetworkHelper.authorizationError
         )
 
         val apiService = ktorfit.createApiInterface()

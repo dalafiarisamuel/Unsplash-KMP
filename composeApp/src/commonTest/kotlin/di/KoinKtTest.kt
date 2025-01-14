@@ -9,7 +9,6 @@ import org.koin.dsl.module
 
 fun networkModule() = module {
     single {
-
         Json {
             ignoreUnknownKeys = true
             prettyPrint = true

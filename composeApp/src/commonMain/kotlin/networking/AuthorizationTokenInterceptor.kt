@@ -17,7 +17,8 @@ class AuthorizationTokenInterceptor(
         var tokenProvider: suspend () -> String = { "" }
     }
 
-    companion object : HttpClientPlugin<Config, AuthorizationTokenInterceptor> {
+    @KtorDsl
+    companion object Plugin: HttpClientPlugin<Config, AuthorizationTokenInterceptor> {
         override val key: AttributeKey<AuthorizationTokenInterceptor> =
             AttributeKey("AuthorizationTokenInterceptor")
 
