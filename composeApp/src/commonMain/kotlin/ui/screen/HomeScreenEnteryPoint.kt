@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package ui.screen
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -25,12 +30,13 @@ import ui.viewmodel.HomeScreenViewModel
 
 @OptIn(
     ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class,
-    KoinExperimentalAPI::class
+    KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class
 )
 @Composable
-internal fun HomeScreenEntryPoint(
+internal fun SharedTransitionScope.HomeScreenEntryPoint(
     navController: NavController,
-    viewModel: HomeScreenViewModel = koinViewModel(),
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    viewModel: HomeScreenViewModel = koinViewModel<HomeScreenViewModel>(),
     sharedRepository: SharedRepository = koinInject<SharedRepository>()
 ) {
 
@@ -53,12 +59,12 @@ internal fun HomeScreenEntryPoint(
         floatingActionButtonPosition = FabPosition.End
     ) {
         HomeScreen(
+            animatedVisibilityScope = animatedVisibilityScope,
             state = viewModel.state,
             imageList = viewModel.photos,
-            onLongClicked = {
-                navController.navigate(PhotoScreen.DetailScreen(it.id))
-            },
             dispatch = viewModel::dispatch
-        )
+        ) { image ->
+            navController.navigate(PhotoScreen.DetailScreen(image.id))
+        }
     }
 }

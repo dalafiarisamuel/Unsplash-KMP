@@ -1,6 +1,11 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package ui.screen
 
 import Platform
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,10 +34,11 @@ import ui.viewmodel.PhotoDetailViewModel
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalPermissionsApi::class)
 @Composable
-internal fun PhotoDetailScreenEntryPoint(
+internal fun SharedTransitionScope.PhotoDetailScreenEntryPoint(
     navController: NavController,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     photoId: String,
-    viewModel: PhotoDetailViewModel = koinViewModel(),
+    viewModel: PhotoDetailViewModel = koinViewModel<PhotoDetailViewModel>(),
 ) {
     LaunchedEffect(Unit) {
         viewModel.getSelectedPhotoById(photoId)
@@ -51,7 +57,10 @@ internal fun PhotoDetailScreenEntryPoint(
     var showDialog = viewModel.isDownloading
 
     PhotoDetail(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().sharedBounds(
+            sharedContentState = rememberSharedContentState("photo_image"),
+            animatedVisibilityScope = animatedVisibilityScope
+        ),
         state = viewModel.uiState,
         onBackPressed = { navController.popBackStack() }
     ) {

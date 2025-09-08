@@ -9,7 +9,7 @@ internal sealed class HomeScreenEvent {
 
     data class SelectImage(val image: Photo?) : HomeScreenEvent()
 
-    data class OnImageClicked(val image: Photo?) : HomeScreenEvent()
+    data class OnImageLongClicked(val image: Photo?) : HomeScreenEvent()
 
     data class UpdateSearchField(val searchTerm: String) : HomeScreenEvent()
 

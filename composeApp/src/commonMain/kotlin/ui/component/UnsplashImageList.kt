@@ -1,7 +1,12 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package ui.component
 
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,6 +34,7 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,8 +63,9 @@ import unsplashkmp.composeapp.generated.resources.searched_term_not_found
 
 @ExperimentalFoundationApi
 @Composable
-internal fun UnsplashImageList(
+internal fun SharedTransitionScope.UnsplashImageList(
     modifier: Modifier,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     imageList: Flow<PagingData<Photo>>,
     lazyGridState: LazyStaggeredGridState,
     nestedScrollConnection: NestedScrollConnection,
@@ -76,6 +83,7 @@ internal fun UnsplashImageList(
             } else {
                 PhotosList(
                     modifier = modifier,
+                    animatedVisibilityScope = animatedVisibilityScope,
                     imageList = list,
                     lazyGridState = lazyGridState,
                     nestedScrollConnection = nestedScrollConnection,
@@ -90,8 +98,9 @@ internal fun UnsplashImageList(
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @ExperimentalFoundationApi
 @Composable
-private fun PhotosList(
+private fun SharedTransitionScope.PhotosList(
     modifier: Modifier,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     imageList: LazyPagingItems<Photo>,
     lazyGridState: LazyStaggeredGridState,
     nestedScrollConnection: NestedScrollConnection,
@@ -114,16 +123,23 @@ private fun PhotosList(
         modifier = Modifier
             .padding(top = 15.dp)
             .nestedScroll(nestedScrollConnection)
-            .then(modifier),
+            .then(
+                modifier.sharedBounds(
+                    sharedContentState = rememberSharedContentState("photo_image"),
+                    animatedVisibilityScope = animatedVisibilityScope
+                )
+            ),
         columns = StaggeredGridCells.Fixed(gridSize)
     ) {
         lazyItems(imageList) { photo ->
-            UnsplashImageStaggered(
-                modifier = Modifier,
-                data = photo,
-                onImageClicked = onItemClicked,
-                onImageLongClicked = onItemLongClicked
-            )
+            key(photo?.id) {
+                UnsplashImageStaggered(
+                    modifier = Modifier.animateItem(),
+                    data = photo,
+                    onImageClicked = onItemClicked,
+                    onImageLongClicked = onItemLongClicked
+                )
+            }
         }
     }
 }

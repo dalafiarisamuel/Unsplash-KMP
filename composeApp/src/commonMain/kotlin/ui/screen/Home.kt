@@ -1,6 +1,11 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package ui.screen
 
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -29,13 +34,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.PagingData
 import data.model.ui.Photo
-import data.model.ui.dummyPhoto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.component.ChipComponent
 import ui.component.CollapsibleSearchBar
 import ui.component.HomeScreenTitleAlignment
@@ -44,7 +47,6 @@ import ui.component.getEdgeToEdgeTopPadding
 import ui.dialog.ImagePreviewDialog
 import ui.event.HomeScreenEvent
 import ui.state.HomeScreenState
-import ui.theme.UnsplashKMPTheme
 import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.unsplash_images
@@ -52,11 +54,12 @@ import unsplashkmp.composeapp.generated.resources.unsplash_images
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
-internal fun HomeScreen(
+internal fun SharedTransitionScope.HomeScreen(
     state: HomeScreenState = HomeScreenState(),
+    animatedVisibilityScope: AnimatedVisibilityScope,
     imageList: Flow<PagingData<Photo>> = flowOf(PagingData.empty()),
-    onLongClicked: (Photo) -> Unit = {},
     dispatch: (HomeScreenEvent) -> Unit = {},
+    onImageClicked: (Photo) -> Unit = {},
 ) {
 
     val lazyGridState = rememberLazyStaggeredGridState()
@@ -126,14 +129,15 @@ internal fun HomeScreen(
 
         UnsplashImageList(
             modifier = Modifier.fillMaxSize(),
+            animatedVisibilityScope = animatedVisibilityScope,
             imageList = imageList,
             lazyGridState = lazyGridState,
             nestedScrollConnection = nestedScrollConnection,
             onItemClicked = {
-                dispatch(HomeScreenEvent.OnImageClicked(it))
+                it?.let { onImageClicked(it) }
             },
             onItemLongClicked = {
-                it?.let { onLongClicked(it) }
+                dispatch(HomeScreenEvent.OnImageLongClicked(it))
             }
         )
 
@@ -146,23 +150,4 @@ internal fun HomeScreen(
         }
     }
 
-}
-
-@ExperimentalComposeUiApi
-@OptIn(ExperimentalFoundationApi::class)
-@Preview
-@Composable
-private fun PreviewHomeScreen() {
-
-    UnsplashKMPTheme {
-        HomeScreen(
-            state = HomeScreenState(
-                selectedImage = dummyPhoto,
-                isImagePreviewDialogVisible = true,
-                isDownloadImageDialogVisible = false,
-                searchFieldValue = "Comet"
-            ),
-            imageList = flowOf(PagingData.from(listOf(dummyPhoto)))
-        )
-    }
 }

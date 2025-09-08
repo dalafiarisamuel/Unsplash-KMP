@@ -114,7 +114,7 @@ internal class HomeScreenViewModel(
     }
 
     private fun handleOnImageClicked() {
-        on<HomeScreenEvent.OnImageClicked> {
+        on<HomeScreenEvent.OnImageLongClicked> {
             state = state.copy(
                 selectedImage = it.image,
                 isImagePreviewDialogVisible = true

@@ -45,6 +45,7 @@ internal class PhotoDetailViewModel(
                 is Resource.Failure -> {
                     uiState = uiState.copy(
                         isLoading = false,
+                        photo = null,
                         error = result.error
                     )
                 }

@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -30,16 +34,24 @@ fun App() {
 
         val navController = LocalNavController.current
 
-        NavHost(navController = navController, startDestination = PhotoScreen.HomeScreen) {
+        SharedTransitionLayout {
+            NavHost(navController = navController, startDestination = PhotoScreen.HomeScreen) {
 
-            composable<PhotoScreen.HomeScreen> { HomeScreenEntryPoint(navController) }
+                composable<PhotoScreen.HomeScreen> {
+                    HomeScreenEntryPoint(
+                        navController,
+                        animatedVisibilityScope = this
+                    )
+                }
 
-            composable<PhotoScreen.DetailScreen> { backStackEntry ->
-                val id = backStackEntry.toRoute<PhotoScreen.DetailScreen>().id
-                PhotoDetailScreenEntryPoint(
-                    navController = navController,
-                    photoId = id
-                )
+                composable<PhotoScreen.DetailScreen> { backStackEntry ->
+                    val id = backStackEntry.toRoute<PhotoScreen.DetailScreen>().id
+                    PhotoDetailScreenEntryPoint(
+                        navController = navController,
+                        animatedVisibilityScope = this,
+                        photoId = id
+                    )
+                }
             }
         }
     }

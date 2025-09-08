@@ -54,13 +54,7 @@ internal fun PhotoLargeDisplay(
         showShimmer = false
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .then(modifier)
-    )
-    {
-
+    Box(modifier = Modifier.fillMaxWidth().then(modifier)) {
         Card(
             elevation = 24.dp,
             shape = RoundedCornerShape(10.dp),
