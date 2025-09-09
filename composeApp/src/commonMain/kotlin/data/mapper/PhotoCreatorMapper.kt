@@ -9,8 +9,4 @@ internal class PhotoCreatorMapper : UIModelMapper<UnsplashUser, PhotoCreator>() 
             PhotoCreator(name, username, attributionUrl)
         }
     }
-
-    override fun mapFromUI(model: PhotoCreator): UnsplashUser {
-        throw Exception("Doesn't work that way")
-    }
 }

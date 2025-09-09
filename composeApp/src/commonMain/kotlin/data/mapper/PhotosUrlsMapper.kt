@@ -9,8 +9,4 @@ internal class PhotosUrlsMapper : UIModelMapper<UnsplashPhotoUrls, PhotoUrls>() 
             PhotoUrls(raw, full, regular, small, thumb)
         }
     }
-
-    override fun mapFromUI(model: PhotoUrls): UnsplashPhotoUrls {
-        throw Exception("Doesn't work that way")
-    }
 }

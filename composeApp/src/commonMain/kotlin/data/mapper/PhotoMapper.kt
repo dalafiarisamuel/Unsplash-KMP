@@ -22,8 +22,4 @@ internal class PhotoMapper constructor(
             )
         }
     }
-
-    override fun mapFromUI(model: Photo): UnsplashPhotoRemote {
-        throw Exception("Doesn't work that way")
-    }
 }
