@@ -26,8 +26,6 @@ internal class PhotoDetailViewModel(
 
     val isDownloading by derivedStateOf { imageDownloadState is ImageDownloadState.Loading }
 
-    val isDownloadError by derivedStateOf { imageDownloadState is ImageDownloadState.Failure }
-
     fun getSelectedPhotoById(photoId: String) {
         uiState.intentPhotoId = photoId
 

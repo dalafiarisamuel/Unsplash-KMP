@@ -42,7 +42,6 @@ import unsplashkmp.composeapp.generated.resources.ic_image
 import unsplashkmp.composeapp.generated.resources.search_image_hint
 
 @ExperimentalComposeUiApi
-@Preview
 @Composable
 internal fun UnsplashSearchBox(
     modifier: Modifier = Modifier,

@@ -19,25 +19,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import data.repository.SharedRepository
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import ui.navigation.PhotoScreen
 import ui.theme.appWhite
 import ui.viewmodel.HomeScreenViewModel
 
 @OptIn(
     ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class,
-    KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class
+    KoinExperimentalAPI::class
 )
 @Composable
 internal fun SharedTransitionScope.HomeScreenEntryPoint(
-    navController: NavController,
+    navigateToDetailScreen: (imageId: String) -> Unit = {},
     animatedVisibilityScope: AnimatedVisibilityScope,
+    flipTheme: () -> Unit = {},
+    isDarkTheme: Boolean,
     viewModel: HomeScreenViewModel = koinViewModel<HomeScreenViewModel>(),
-    sharedRepository: SharedRepository = koinInject<SharedRepository>()
 ) {
 
     Scaffold(
@@ -45,12 +42,13 @@ internal fun SharedTransitionScope.HomeScreenEntryPoint(
         floatingActionButton = {
             FloatingActionButton(
                 modifier = Modifier.size(50.dp),
-                onClick = {
-                    sharedRepository.isDarkThemeEnabled = sharedRepository.isDarkThemeEnabled.not()
-                },
+                onClick = flipTheme
             ) {
+                val icon = if (isDarkTheme) Icons.Rounded.LightMode
+                else Icons.Rounded.DarkMode
+
                 Icon(
-                    if (sharedRepository.isDarkThemeEnabled) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
+                    imageVector = icon,
                     tint = appWhite,
                     contentDescription = null,
                 )
@@ -64,7 +62,7 @@ internal fun SharedTransitionScope.HomeScreenEntryPoint(
             imageList = viewModel.photos,
             dispatch = viewModel::dispatch
         ) { image ->
-            navController.navigate(PhotoScreen.DetailScreen(image.id))
+            navigateToDetailScreen(image.id)
         }
     }
 }

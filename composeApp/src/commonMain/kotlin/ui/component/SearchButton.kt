@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.appWhite
 import ui.theme.colorDisabledGray
 import ui.theme.colorGrayDivider
@@ -22,7 +21,6 @@ import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.ic_search
 
 @ExperimentalComposeUiApi
-@Preview
 @Composable
 internal fun SearchButton(
     modifier: Modifier = Modifier,

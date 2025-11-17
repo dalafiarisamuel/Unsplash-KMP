@@ -35,7 +35,7 @@ import ui.viewmodel.PhotoDetailViewModel
 @OptIn(KoinExperimentalAPI::class, ExperimentalPermissionsApi::class)
 @Composable
 internal fun SharedTransitionScope.PhotoDetailScreenEntryPoint(
-    navController: NavController,
+    navigateBack: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope,
     photoId: String,
     viewModel: PhotoDetailViewModel = koinViewModel<PhotoDetailViewModel>(),
@@ -62,7 +62,7 @@ internal fun SharedTransitionScope.PhotoDetailScreenEntryPoint(
             animatedVisibilityScope = animatedVisibilityScope
         ),
         state = viewModel.uiState,
-        onBackPressed = { navController.popBackStack() }
+        onBackPressed = navigateBack
     ) {
         when (currentPlatform) {
             Platform.Android -> {

@@ -1,5 +1,6 @@
 package ui.screen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -41,6 +42,7 @@ import ui.component.NavBar
 import ui.component.PhotoLargeDisplay
 import ui.component.getEdgeToEdgeTopPadding
 import ui.state.PhotoDetailState
+import ui.theme.UnsplashKMPTheme
 import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.an_unknown_error_occurred
@@ -48,7 +50,6 @@ import unsplashkmp.composeapp.generated.resources.download_image
 import unsplashkmp.composeapp.generated.resources.round_downloading
 
 
-@Preview
 @Composable
 internal fun PhotoDetail(
     modifier: Modifier = Modifier,
@@ -163,6 +164,15 @@ internal fun PhotoDetail(
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Preview
+@Composable
+private fun PreviewPhotoDetail() {
+    UnsplashKMPTheme {
+        PhotoDetail()
     }
 }
 

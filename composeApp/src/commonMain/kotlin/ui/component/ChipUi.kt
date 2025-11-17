@@ -1,5 +1,6 @@
 package ui.component
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,13 +21,13 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import ui.theme.UnsplashKMPTheme
 import ui.theme.appDark
 import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.*
 import unsplashkmp.composeapp.generated.resources.Res
 
 
-@Preview
 @Composable
 internal fun Chip(
     chip: ChipData = ChipData(
@@ -43,7 +44,8 @@ internal fun Chip(
         shape = RoundedCornerShape(50),
         color = if (isSelected) appWhite else appDark
     ) {
-        Row(modifier = Modifier
+        Row(
+            modifier = Modifier
             .toggleable(
                 value = isSelected,
                 onValueChange = {
@@ -67,7 +69,6 @@ internal fun Chip(
 }
 
 
-@Preview
 @Composable
 internal fun ChipGroup(
     modifier: Modifier = Modifier,
@@ -100,7 +101,6 @@ internal fun ChipGroup(
     }
 }
 
-@Preview
 @Composable
 fun ChipComponent(
     modifier: Modifier = Modifier,
@@ -185,4 +185,13 @@ fun ChipComponent(
         textValueChange?.invoke(it)
     }
 
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Preview
+@Composable
+private fun PreviewChipComponent() {
+    UnsplashKMPTheme {
+        ChipComponent()
+    }
 }

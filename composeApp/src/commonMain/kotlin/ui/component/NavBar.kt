@@ -24,7 +24,6 @@ import unsplashkmp.composeapp.generated.resources.arrow_back
 import unsplashkmp.composeapp.generated.resources.photo_detail
 
 
-@Preview
 @Composable
 internal fun NavBar(modifier: Modifier = Modifier, onBackPressed: () -> Unit = {}) {
     Row(

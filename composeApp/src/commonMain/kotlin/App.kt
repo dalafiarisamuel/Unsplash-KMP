@@ -39,15 +39,21 @@ fun App() {
 
                 composable<PhotoScreen.HomeScreen> {
                     HomeScreenEntryPoint(
-                        navController,
-                        animatedVisibilityScope = this
+                        navigateToDetailScreen = {
+                            navController.navigate(PhotoScreen.DetailScreen(it))
+                        },
+                        animatedVisibilityScope = this,
+                        isDarkTheme = sharedRepository.isDarkThemeEnabled,
+                        flipTheme = {
+                            sharedRepository.flipTheme()
+                        }
                     )
                 }
 
                 composable<PhotoScreen.DetailScreen> { backStackEntry ->
                     val id = backStackEntry.toRoute<PhotoScreen.DetailScreen>().id
                     PhotoDetailScreenEntryPoint(
-                        navController = navController,
+                        navigateBack = { navController.popBackStack() },
                         animatedVisibilityScope = this,
                         photoId = id
                     )
