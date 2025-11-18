@@ -5,7 +5,7 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.util.*
+import io.ktor.utils.io.toByteArray
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -16,7 +16,7 @@ import ui.state.ImageDownloadState
 internal actual class PlatformDownloadImage(private val client: HttpClient) {
     actual suspend fun downloadImage(imageLink: String): ImageDownloadState {
         return try {
-            val fileName = "${Url(imageLink).pathSegments[1]}.jpeg"
+            val fileName = "${Url(imageLink).rawSegments[1]}.jpeg"
 
             val response = client.get(imageLink) {
                 onDownload { bytesSentTotal, contentLength ->

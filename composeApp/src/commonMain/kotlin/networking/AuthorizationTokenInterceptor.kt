@@ -4,9 +4,9 @@ package networking
 import io.ktor.client.HttpClient
 import io.ktor.util.AttributeKey
 import io.ktor.client.request.*
-import io.ktor.util.*
 import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.http.HttpHeaders
+import io.ktor.utils.io.KtorDsl
 
 class AuthorizationTokenInterceptor(
     private val tokenProvider: suspend () -> String

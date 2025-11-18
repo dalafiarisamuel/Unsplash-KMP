@@ -19,8 +19,8 @@ import kotlinx.serialization.json.Json
 import networking.ApiInterface
 import networking.AuthorizationTokenInterceptor
 import networking.createApiInterface
-import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import ui.viewmodel.HomeScreenViewModel
