@@ -1,8 +1,10 @@
 package ui.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
-internal sealed interface PhotoScreen {
+@Serializable
+internal sealed interface PhotoScreen: NavKey {
     @Serializable
     data object HomeScreen : PhotoScreen
 

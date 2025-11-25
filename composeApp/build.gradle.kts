@@ -86,6 +86,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.calf.permissions)
+            implementation(libs.compose.navigation.v3)
         }
         commonTest.dependencies {
             implementation(libs.koin.test)

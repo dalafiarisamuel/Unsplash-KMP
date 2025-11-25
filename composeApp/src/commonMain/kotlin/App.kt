@@ -1,21 +1,19 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class)
-
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.saveable.rememberSerializable
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
+import androidx.savedstate.compose.serialization.serializers.SnapshotStateListSerializer
 import data.repository.SharedRepository
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import ui.navigation.PhotoScreen
 import ui.screen.HomeScreenEntryPoint
 import ui.screen.PhotoDetailScreenEntryPoint
-import ui.theme.LocalNavController
 import ui.theme.UnsplashKMPTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -32,33 +30,35 @@ fun App() {
 
     UnsplashKMPTheme(darkTheme = sharedRepository.isDarkThemeEnabled) {
 
-        val navController = LocalNavController.current
+        val backStack: MutableList<PhotoScreen> =
+            rememberSerializable(serializer = SnapshotStateListSerializer()) {
+                mutableStateListOf(PhotoScreen.HomeScreen)
+            }
 
-        SharedTransitionLayout {
-            NavHost(navController = navController, startDestination = PhotoScreen.HomeScreen) {
-
-                composable<PhotoScreen.HomeScreen> {
+        NavDisplay(
+            backStack = backStack,
+            onBack = { backStack.removeLastOrNull() },
+            entryDecorators = listOf(
+                rememberSaveableStateHolderNavEntryDecorator()
+            ),
+            entryProvider = entryProvider {
+                entry<PhotoScreen.HomeScreen> {
                     HomeScreenEntryPoint(
                         navigateToDetailScreen = {
-                            navController.navigate(PhotoScreen.DetailScreen(it))
+                            backStack.add(PhotoScreen.DetailScreen(it))
                         },
-                        animatedVisibilityScope = this,
                         isDarkTheme = sharedRepository.isDarkThemeEnabled,
-                        flipTheme = {
-                            sharedRepository.flipTheme()
-                        }
+                        flipTheme = { sharedRepository.flipTheme() }
                     )
                 }
 
-                composable<PhotoScreen.DetailScreen> { backStackEntry ->
-                    val id = backStackEntry.toRoute<PhotoScreen.DetailScreen>().id
+                entry<PhotoScreen.DetailScreen> { backStackEntry ->
                     PhotoDetailScreenEntryPoint(
-                        navigateBack = { navController.popBackStack() },
-                        animatedVisibilityScope = this,
-                        photoId = id
+                        navigateBack = { backStack.removeLastOrNull() },
+                        photoId = backStackEntry.id
                     )
                 }
             }
-        }
+        )
     }
 }

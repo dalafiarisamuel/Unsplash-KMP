@@ -12,7 +12,7 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 * Kotlin Gradle DSL
 * Cashapp Paging
 * Ktorfit
-* Compose Multiplatform Navigation
+* Compose Navigation v3
 
 ## Libraries
 
@@ -30,9 +30,8 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
   coroutines
 - [Cashapp Paging](https://github.com/cashapp/multiplatform-paging) - The Paging Library
   makes it easier for you to load data gradually and gracefully within your app based off Google's Paging3 Library
-- [Compose Multiplatform navigation](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-navigation-routing.html) -
-  Google's official Navigation
-  library that is compatible with KMP
+- [Compose Navigation v3](https://developer.android.com/guide/navigation/navigation-3) -
+  Google's official Navigation for compose library that is compatible with KMP
 - [Koin](https://insert-koin.io/docs/reference/koin-mp/kmp/) - Kotlin Multiplatform Dependency Injection
 
 ## Prerequisite

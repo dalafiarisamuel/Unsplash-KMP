@@ -1,12 +1,6 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class)
-
 package ui.component
 
-
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -63,12 +57,11 @@ import unsplashkmp.composeapp.generated.resources.searched_term_not_found
 
 @ExperimentalFoundationApi
 @Composable
-internal fun SharedTransitionScope.UnsplashImageList(
+internal fun UnsplashImageList(
     modifier: Modifier,
-    animatedVisibilityScope: AnimatedVisibilityScope,
     imageList: Flow<PagingData<Photo>>,
     lazyGridState: LazyStaggeredGridState,
-    nestedScrollConnection: NestedScrollConnection,
+    nestedScrollConnection: () -> NestedScrollConnection,
     onItemClicked: (Photo?) -> Unit,
     onItemLongClicked: (Photo?) -> Unit,
 ) {
@@ -83,7 +76,6 @@ internal fun SharedTransitionScope.UnsplashImageList(
             } else {
                 PhotosList(
                     modifier = modifier,
-                    animatedVisibilityScope = animatedVisibilityScope,
                     imageList = list,
                     lazyGridState = lazyGridState,
                     nestedScrollConnection = nestedScrollConnection,
@@ -98,12 +90,11 @@ internal fun SharedTransitionScope.UnsplashImageList(
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @ExperimentalFoundationApi
 @Composable
-private fun SharedTransitionScope.PhotosList(
+private fun PhotosList(
     modifier: Modifier,
-    animatedVisibilityScope: AnimatedVisibilityScope,
     imageList: LazyPagingItems<Photo>,
     lazyGridState: LazyStaggeredGridState,
-    nestedScrollConnection: NestedScrollConnection,
+    nestedScrollConnection: () -> NestedScrollConnection,
     onItemClicked: (Photo?) -> Unit,
     onItemLongClicked: (Photo?) -> Unit,
 ) {
@@ -122,13 +113,7 @@ private fun SharedTransitionScope.PhotosList(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .padding(top = 15.dp)
-            .nestedScroll(nestedScrollConnection)
-            .then(
-                modifier.sharedBounds(
-                    sharedContentState = rememberSharedContentState("photo_image"),
-                    animatedVisibilityScope = animatedVisibilityScope
-                )
-            ),
+            .nestedScroll(nestedScrollConnection()),
         columns = StaggeredGridCells.Fixed(gridSize)
     ) {
         lazyItems(imageList) { photo ->

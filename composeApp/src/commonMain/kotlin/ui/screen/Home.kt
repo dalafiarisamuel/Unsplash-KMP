@@ -1,11 +1,5 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class)
-
 package ui.screen
 
-
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -54,9 +48,8 @@ import unsplashkmp.composeapp.generated.resources.unsplash_images
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
-internal fun SharedTransitionScope.HomeScreen(
+internal fun HomeScreen(
     state: HomeScreenState = HomeScreenState(),
-    animatedVisibilityScope: AnimatedVisibilityScope,
     imageList: Flow<PagingData<Photo>> = flowOf(PagingData.empty()),
     dispatch: (HomeScreenEvent) -> Unit = {},
     onImageClicked: (Photo) -> Unit = {},
@@ -129,10 +122,9 @@ internal fun SharedTransitionScope.HomeScreen(
 
         UnsplashImageList(
             modifier = Modifier.fillMaxSize(),
-            animatedVisibilityScope = animatedVisibilityScope,
             imageList = imageList,
             lazyGridState = lazyGridState,
-            nestedScrollConnection = nestedScrollConnection,
+            nestedScrollConnection = { nestedScrollConnection },
             onItemClicked = {
                 it?.let { onImageClicked(it) }
             },

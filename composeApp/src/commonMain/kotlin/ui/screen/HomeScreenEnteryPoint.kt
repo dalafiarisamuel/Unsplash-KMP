@@ -1,10 +1,5 @@
-@file:OptIn(ExperimentalSharedTransitionApi::class)
-
 package ui.screen
 
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -20,18 +15,16 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 import ui.theme.appWhite
 import ui.viewmodel.HomeScreenViewModel
 
 @OptIn(
-    ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class,
-    KoinExperimentalAPI::class
+    ExperimentalFoundationApi::class,
+    ExperimentalComposeUiApi::class,
 )
 @Composable
-internal fun SharedTransitionScope.HomeScreenEntryPoint(
+internal fun HomeScreenEntryPoint(
     navigateToDetailScreen: (imageId: String) -> Unit = {},
-    animatedVisibilityScope: AnimatedVisibilityScope,
     flipTheme: () -> Unit = {},
     isDarkTheme: Boolean,
     viewModel: HomeScreenViewModel = koinViewModel<HomeScreenViewModel>(),
@@ -57,7 +50,6 @@ internal fun SharedTransitionScope.HomeScreenEntryPoint(
         floatingActionButtonPosition = FabPosition.End
     ) {
         HomeScreen(
-            animatedVisibilityScope = animatedVisibilityScope,
             state = viewModel.state,
             imageList = viewModel.photos,
             dispatch = viewModel::dispatch

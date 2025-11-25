@@ -3,9 +3,7 @@
 package ui.screen
 
 import Platform
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.navigation.NavController
 import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
 import com.mohamedrejeb.calf.permissions.Permission
 import com.mohamedrejeb.calf.permissions.rememberPermissionState
@@ -34,9 +31,8 @@ import ui.viewmodel.PhotoDetailViewModel
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalPermissionsApi::class)
 @Composable
-internal fun SharedTransitionScope.PhotoDetailScreenEntryPoint(
+internal fun PhotoDetailScreenEntryPoint(
     navigateBack: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope,
     photoId: String,
     viewModel: PhotoDetailViewModel = koinViewModel<PhotoDetailViewModel>(),
 ) {
@@ -57,10 +53,7 @@ internal fun SharedTransitionScope.PhotoDetailScreenEntryPoint(
     var showDialog = viewModel.isDownloading
 
     PhotoDetail(
-        modifier = Modifier.fillMaxSize().sharedBounds(
-            sharedContentState = rememberSharedContentState("photo_image"),
-            animatedVisibilityScope = animatedVisibilityScope
-        ),
+        modifier = Modifier.fillMaxSize(),
         state = viewModel.uiState,
         onBackPressed = navigateBack
     ) {
