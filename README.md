@@ -65,7 +65,7 @@ To run the application on android device/emulator:
 
 #### Desktop
 
-Run the desktop application: `./gradlew :composeApp:run` or `./gradlew run`
+Run the desktop application: `./gradlew :composeApp:run` or `./gradlew run` or `./gradlew hotRunDesktop` for hot reload
 
 #### iOS
 

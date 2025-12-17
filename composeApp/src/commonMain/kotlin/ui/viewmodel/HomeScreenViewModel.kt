@@ -25,14 +25,12 @@ internal class HomeScreenViewModel(
 ) : MviViewModel<HomeScreenEvent, HomeScreenState>(HomeScreenState()), KoinComponent {
 
     companion object {
-        private val DEFAULT_QUERY = listOf("Nigeria", "Egypt", "Africa", "Dreams", "Husky", "Travel", "Fashion")
+        private val DEFAULT_QUERY = listOf("Nigeria", "Cameras", "History", "Architecture", "Animals", "Travel", "Fashion")
     }
-
-    private var currentQuery: MutableStateFlow<String>
     private val randomDefaultQuery get() = DEFAULT_QUERY.random()
+    private var currentQuery: MutableStateFlow<String> = MutableStateFlow(randomDefaultQuery)
 
     init {
-        currentQuery = MutableStateFlow(randomDefaultQuery)
 
         handleSelectImage()
         handleSearchEvent()

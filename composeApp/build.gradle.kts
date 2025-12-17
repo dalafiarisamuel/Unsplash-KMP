@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.ktorfitPlugin)
     alias(libs.plugins.kotlinSerializationPlugin)
     alias(libs.plugins.kmpIconGeneratorPlugin)
+    alias(libs.plugins.composeHotReload)
 }
 
 kotlin {
@@ -19,6 +20,10 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
+    }
+
+    sourceSets.all {
+        languageSettings.enableLanguageFeature("ExplicitBackingFields")
     }
 
     targets.configureEach {
@@ -82,11 +87,11 @@ kotlin {
             implementation(libs.kotlin.navigation.compose)
             implementation(libs.nappier.logging)
             implementation(libs.kotlinx.coroutines.core)
-            implementation(libs.material3.window.size.multiplatform)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.calf.permissions)
             implementation(libs.compose.navigation.v3)
+            implementation(libs.adaptive)
         }
         commonTest.dependencies {
             implementation(libs.koin.test)

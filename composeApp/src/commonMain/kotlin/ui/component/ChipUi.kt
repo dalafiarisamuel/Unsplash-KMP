@@ -31,8 +31,8 @@ import unsplashkmp.composeapp.generated.resources.Res
 @Composable
 internal fun Chip(
     chip: ChipData = ChipData(
-        stringResource(Res.string.current_events_emoji),
-        stringResource(Res.string.current_events)
+        stringResource(Res.string.photography_emoji),
+        stringResource(Res.string.photography)
     ),
     isSelected: Boolean = true,
     onSelectionChanged: (String) -> Unit = {},
@@ -74,8 +74,8 @@ internal fun ChipGroup(
     modifier: Modifier = Modifier,
     itemList: ImmutableList<ChipData> = persistentListOf(
         ChipData(
-            stringResource(Res.string.current_events_emoji),
-            stringResource(Res.string.current_events)
+            stringResource(Res.string.photography_emoji),
+            stringResource(Res.string.photography)
         ),
         ChipData(
             stringResource(Res.string.nature_emoji),
@@ -113,8 +113,8 @@ fun ChipComponent(
         selectedText = selectedText,
         itemList = persistentListOf(
             ChipData(
-                stringResource(Res.string.current_events_emoji),
-                stringResource(Res.string.current_events)
+                stringResource(Res.string.photography_emoji),
+                stringResource(Res.string.photography)
             ),
             ChipData(
                 stringResource(Res.string.nigeria_emoji),

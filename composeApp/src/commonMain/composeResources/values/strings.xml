@@ -17,9 +17,9 @@
     <string name="business_and_work">Business &amp; Work</string>
     <string name="interior">Interior</string>
     <string name="technology">Technology</string>
-    <string name="current_events">Current Events</string>
     <string name="experimental">Experimental</string>
     <string name="textures_and_patterns">Textures &amp; Patterns</string>
+    <string name="photography">Photography</string>
     <string name="nigeria">Nigeria</string>
     <string name="loading">Loading…</string>
     <string name="nature_emoji">🌅</string>
@@ -36,7 +36,7 @@
     <string name="business_and_work_emoji">💼</string>
     <string name="interior_emoji">🎊</string>
     <string name="technology_emoji">💻</string>
-    <string name="current_events_emoji">📈</string>
+    <string name="photography_emoji">📷</string>
     <string name="experimental_emoji">🧪</string>
     <string name="textures_and_patterns_emoji">🌅</string>
     <string name="nigeria_emoji">🇳🇬</string>

@@ -18,9 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -37,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.window.core.layout.WindowSizeClass
 import coil3.compose.AsyncImage
 import data.model.ui.Photo
 import org.jetbrains.compose.resources.painterResource
@@ -70,7 +69,7 @@ internal fun ImagePreviewDialog(photo: Photo?, onDismissCLicked: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3WindowSizeClassApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 private fun DialogContent(
@@ -87,14 +86,14 @@ private fun DialogContent(
         derivedStateOf { (imageWidth?.toFloat() ?: 1.0F) / (imageHeight?.toFloat() ?: 1.0F) }
     }
 
-    val windowSizeClass = calculateWindowSizeClass()
-
+    val windowInfo = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true)
     val frameSize: Pair<Float, Float> by remember {
         derivedStateOf {
-            when (windowSizeClass.widthSizeClass) {
-                WindowWidthSizeClass.Compact -> 400F to 500F
-                WindowWidthSizeClass.Medium -> 400F to 500F
-                else -> 600F to 700F
+            when {
+                windowInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND) -> 600F to 700F
+                windowInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> 600F to 700F
+                windowInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) -> 400F to 500F
+                else -> 400F to 500F
             }
         }
     }
