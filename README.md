@@ -30,8 +30,7 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
   coroutines
 - [Cashapp Paging](https://github.com/cashapp/multiplatform-paging) - The Paging Library
   makes it easier for you to load data gradually and gracefully within your app based off Google's Paging3 Library
-- [Compose Navigation v3](https://developer.android.com/guide/navigation/navigation-3) -
-  Google's official Navigation for compose library that is compatible with KMP
+- [Compose Navigation v3](https://developer.android.com/guide/navigation/navigation-3) - Navigation 3 is a new navigation library designed to work with Compose
 - [Koin](https://insert-koin.io/docs/reference/koin-mp/kmp/) - Kotlin Multiplatform Dependency Injection
 
 ## Prerequisite
@@ -41,11 +40,11 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 
 ## Mobile App Screenshots
 
-| ![Screenshot 1](./images/screenshot_1.png) | ![Screenshot 2](./images/screenshot_2.png) |
-|--------------------------------------------|--------------------------------------------|
+| ![Android Portrait Screenshot](./images/screenshot_1.png) | ![Android Foldable Screenshot](./images/screenshot_2.png) |
+|-----------------------------------------------------------|-----------------------------------------------------------|
 
-| ![Screenshot 3](./images/screenshot_3.png) | ![Screenshot 4](./images/screenshot_4.png) |
-|--------------------------------------------|--------------------------------------------|
+| ![iPhone Dark Theme screenshot](./images/screenshot_3.png) | ![iPhone Light Theme screenshot](./images/screenshot_4.png) |
+|------------------------------------------------------------|-------------------------------------------------------------|
 
 ## Desktop App Screenshots
 
