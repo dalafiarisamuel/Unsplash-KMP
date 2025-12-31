@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -52,6 +53,7 @@ internal fun HomeScreen(
     state: HomeScreenState = HomeScreenState(),
     imageList: Flow<PagingData<Photo>> = flowOf(PagingData.empty()),
     dispatch: (HomeScreenEvent) -> Unit = {},
+    resetSearchInput: () -> Unit = {},
     onImageClicked: (Photo) -> Unit = {},
 ) {
 
@@ -59,7 +61,7 @@ internal fun HomeScreen(
     val coroutine = rememberCoroutineScope()
     val toolbarHeight = 105.dp
     val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
-    var toolbarOffsetHeightPx by remember { mutableStateOf(0f) }
+    var toolbarOffsetHeightPx by rememberSaveable { mutableStateOf(0f) }
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(
@@ -101,10 +103,12 @@ internal fun HomeScreen(
                     lazyGridState.scrollToItem(0)
                 }
                 dispatch(HomeScreenEvent.Search)
+                resetSearchInput()
             },
             textValue = state.searchFieldValue,
             textValueChange = {
                 dispatch(HomeScreenEvent.UpdateSearchField(it))
+                resetSearchInput()
             },
         )
 
@@ -118,6 +122,7 @@ internal fun HomeScreen(
                 lazyGridState.scrollToItem(0)
             }
             dispatch(HomeScreenEvent.SelectChip(it))
+            resetSearchInput()
         }
 
         UnsplashImageList(

@@ -56,7 +56,7 @@ internal fun PhotoLargeDisplay(
 
     Box(modifier = Modifier.fillMaxWidth().then(modifier)) {
         Card(
-            elevation = 24.dp,
+            elevation = 1.dp,
             shape = RoundedCornerShape(10.dp),
             modifier = modifier,
             onClick = { isScaled = !isScaled }) {

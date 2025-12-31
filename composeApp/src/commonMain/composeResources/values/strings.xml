@@ -60,4 +60,5 @@
         <item quantity="one">%1$d Photo</item>
         <item quantity="other">%1$d Photos</item>
     </plurals>
+    <string name="select_an_image_from_the_list">Select an image from the list</string>
 </resources>

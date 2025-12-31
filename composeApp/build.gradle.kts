@@ -89,9 +89,12 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.viewmodel.navigation3)
             implementation(libs.calf.permissions)
             implementation(libs.compose.navigation.v3)
             implementation(libs.adaptive)
+            implementation(libs.adaptive.layout)
+            implementation(libs.adaptive.navigation)
         }
         commonTest.dependencies {
             implementation(libs.koin.test)

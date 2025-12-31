@@ -32,7 +32,6 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -54,6 +53,7 @@ import unsplashkmp.composeapp.generated.resources.round_downloading
 internal fun PhotoDetail(
     modifier: Modifier = Modifier,
     state: PhotoDetailState = PhotoDetailState(),
+    showNavigationBackIcon: Boolean = true,
     onBackPressed: () -> Unit = {},
     onDownloadImageClicked: (String?) -> Unit = {},
 ) {
@@ -71,8 +71,9 @@ internal fun PhotoDetail(
 
         NavBar(
             modifier = Modifier
-                .defaultMinSize(minWidth = 25.dp)
+                .defaultMinSize(minHeight = 30.dp)
                 .fillMaxWidth(),
+            showNavigationBackIcon = showNavigationBackIcon,
             onBackPressed = onBackPressed
         )
 
@@ -114,7 +115,7 @@ internal fun PhotoDetail(
                     PhotoLargeDisplay(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .zIndex(2f),
+                            ,
                         imageUrl = state.photo?.urls?.full.orEmpty(),
                         imageColor = state.photo?.color,
                         imageSize = Size(

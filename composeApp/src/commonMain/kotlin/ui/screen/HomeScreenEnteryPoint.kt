@@ -10,7 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,6 +26,7 @@ import ui.viewmodel.HomeScreenViewModel
 internal fun HomeScreenEntryPoint(
     navigateToDetailScreen: (imageId: String) -> Unit = {},
     flipTheme: () -> Unit = {},
+    resetSearchInput: () -> Unit = {},
     isDarkTheme: Boolean,
     viewModel: HomeScreenViewModel = koinViewModel<HomeScreenViewModel>(),
 ) {
@@ -52,7 +53,8 @@ internal fun HomeScreenEntryPoint(
         HomeScreen(
             state = viewModel.state,
             imageList = viewModel.photos,
-            dispatch = viewModel::dispatch
+            dispatch = viewModel::dispatch,
+            resetSearchInput = resetSearchInput
         ) { image ->
             navigateToDetailScreen(image.id)
         }

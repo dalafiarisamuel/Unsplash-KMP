@@ -44,7 +44,7 @@ internal fun CollapsingToolbarBase(
     AnimatedVisibility(
         visibleState = visibility,
         enter = fadeIn(initialAlpha = 0.4f),
-        exit = fadeOut(tween(durationMillis = 250))
+        exit = fadeOut(tween(durationMillis = 150))
     ) {
 
         Box(

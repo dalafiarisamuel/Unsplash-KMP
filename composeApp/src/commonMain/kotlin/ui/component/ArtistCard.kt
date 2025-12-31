@@ -37,9 +37,12 @@ import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.UnsplashKMPTheme
 import ui.theme.appWhite
-import unsplashkmp.composeapp.generated.resources.*
 import unsplashkmp.composeapp.generated.resources.Res
+import unsplashkmp.composeapp.generated.resources.collection_plural
+import unsplashkmp.composeapp.generated.resources.collections
+import unsplashkmp.composeapp.generated.resources.ic_image
 import unsplashkmp.composeapp.generated.resources.like_plural
+import unsplashkmp.composeapp.generated.resources.photo_plural
 import unsplashkmp.composeapp.generated.resources.round_favorite
 import unsplashkmp.composeapp.generated.resources.unsplash_svg
 
@@ -51,7 +54,7 @@ internal fun ArtistCard(modifier: Modifier = Modifier, unsplashUser: UnsplashUse
         modifier = Modifier
             .fillMaxWidth()
             .then(modifier),
-        elevation = 24.dp,
+        elevation = 1.dp,
         shape = RoundedCornerShape(10.dp),
     ) {
 

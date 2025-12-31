@@ -74,7 +74,6 @@ internal fun UnsplashImageList(
                 EmptyListStateComponent(modifier = Modifier.fillMaxSize())
             } else {
                 PhotosList(
-                    modifier = modifier,
                     imageList = list,
                     lazyGridState = lazyGridState,
                     nestedScrollConnection = nestedScrollConnection,
@@ -89,7 +88,6 @@ internal fun UnsplashImageList(
 @ExperimentalFoundationApi
 @Composable
 private fun PhotosList(
-    modifier: Modifier,
     imageList: LazyPagingItems<Photo>,
     lazyGridState: LazyStaggeredGridState,
     nestedScrollConnection: () -> NestedScrollConnection,
@@ -99,9 +97,9 @@ private fun PhotosList(
 
     val wind = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true)
     val gridSize = when {
-        wind.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND) -> 5
-        wind.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> 4
-        wind.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) -> 3
+        wind.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND) -> 2
+        wind.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> 2
+        wind.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) -> 2
         else -> 2
     }
 

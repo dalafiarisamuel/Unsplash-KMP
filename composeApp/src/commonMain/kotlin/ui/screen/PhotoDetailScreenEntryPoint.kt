@@ -34,6 +34,7 @@ import ui.viewmodel.PhotoDetailViewModel
 @Composable
 internal fun PhotoDetailScreenEntryPoint(
     navigateBack: () -> Unit,
+    showNavigationBackIcon: Boolean = true,
     photoId: String,
     viewModel: PhotoDetailViewModel = koinViewModel<PhotoDetailViewModel>(),
 ) {
@@ -51,11 +52,12 @@ internal fun PhotoDetailScreenEntryPoint(
 
     val currentPlatform = remember { getPlatform() }
 
-    var showDialog = viewModel.isDownloading.collectAsState().value
+    val showDialog = viewModel.isDownloading.collectAsState().value
 
     PhotoDetail(
         modifier = Modifier.fillMaxSize(),
         state = viewModel.uiState.collectAsState().value,
+        showNavigationBackIcon = showNavigationBackIcon,
         onBackPressed = navigateBack
     ) {
         when (currentPlatform) {
@@ -85,11 +87,13 @@ internal fun PhotoDetailScreenEntryPoint(
 
     if (showDialog) {
         Dialog(
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = { },
             properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
         ) {
             Column(
-                modifier = Modifier.size(100.dp).background(appDark, RoundedCornerShape(10.dp)),
+                modifier = Modifier
+                    .size(100.dp)
+                    .background(appDark, RoundedCornerShape(10.dp)),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

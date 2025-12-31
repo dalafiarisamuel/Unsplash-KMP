@@ -25,28 +25,40 @@ import unsplashkmp.composeapp.generated.resources.photo_detail
 
 
 @Composable
-internal fun NavBar(modifier: Modifier = Modifier, onBackPressed: () -> Unit = {}) {
+internal fun NavBar(
+    modifier: Modifier = Modifier,
+    showNavigationBackIcon: Boolean = true,
+    navigationBarTitle: String = stringResource(Res.string.photo_detail),
+    onBackPressed: () -> Unit = {}
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth().then(modifier)
     ) {
 
-        IconButton(onClick = onBackPressed, modifier = Modifier.testTag("back_icon")) {
-            Icon(
-                painterResource(Res.drawable.arrow_back),
-                tint = appWhite,
-                contentDescription = null,
-            )
+        if (showNavigationBackIcon) {
+            IconButton(
+                onClick = onBackPressed,
+                modifier = Modifier.testTag("back_icon")
+            ) {
+                Icon(
+                    painterResource(Res.drawable.arrow_back),
+                    tint = appWhite,
+                    contentDescription = null,
+                )
+            }
         }
+
         Text(
-            text = stringResource(Res.string.photo_detail),
+            text = navigationBarTitle,
             color = appWhite,
-            fontSize = 17.sp,
+            fontSize = 22.sp,
             fontStyle = FontStyle.Normal,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .testTag("toolbar_title")
-                .padding(start = 24.dp)
+                .align(Alignment.CenterVertically)
+                .padding(start = if (showNavigationBackIcon) 24.dp else 0.dp)
         )
     }
 
