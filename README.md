@@ -10,7 +10,7 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 * Kotlin Coroutines with Flow
 * Koin
 * Kotlin Gradle DSL
-* Cashapp Paging
+* Google Paging3
 * Ktorfit
 * Compose Navigation v3
 
@@ -18,18 +18,13 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - Android’s modern toolkit for
   building native UI.
-- [Coil KMP](https://github.com/coil-kt/coil) - An image loading library for Android & KMP
-  backed by Kotlin Coroutines.
-- [View Model](https://developer.android.com/topic/libraries/architecture/viewmodel) - Presenter for
-  persisting view state across config changes
-- [Ktorfit](https://foso.github.io/Ktorfit/installation/) - type safe http client and supports coroutines out
-  of the box.
-- [Kotlin Serialization](https://kotlinlang.org/docs/serialization.html#serialize-and-deserialize-json) - JSON
-  Parser,used to parse requests from the API
-- [kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Library Support for
-  coroutines
-- [Cashapp Paging](https://github.com/cashapp/multiplatform-paging) - The Paging Library
-  makes it easier for you to load data gradually and gracefully within your app based off Google's Paging3 Library
+- [Coil KMP](https://github.com/coil-kt/coil) - An image loading library for Android & KMP backed by Kotlin Coroutines.
+- [View Model](https://developer.android.com/topic/libraries/architecture/viewmodel) - Presenter for persisting view state across config changes
+- [Ktorfit](https://foso.github.io/Ktorfit/installation/) - type safe http client and supports coroutines out of the box.
+- [Kotlin Serialization](https://kotlinlang.org/docs/serialization.html#serialize-and-deserialize-json) - JSON Parser,used to parse requests from the API
+- [kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Library Support for coroutines
+- [Paging3](https://developer.android.com/jetpack/androidx/releases/paging) - The Paging Library
+  makes it easier for you to load data gradually and gracefully within your app
 - [Compose Navigation v3](https://developer.android.com/guide/navigation/navigation-3) - Navigation 3 is a new navigation library designed to work with Compose
 - [Koin](https://insert-koin.io/docs/reference/koin-mp/kmp/) - Kotlin Multiplatform Dependency Injection
 

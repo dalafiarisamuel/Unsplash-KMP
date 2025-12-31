@@ -19,16 +19,15 @@ kotlinx-collection = "0.4.0"
 color-math = "3.6.1"
 koin = "4.1.1"
 ktor = "3.3.2"
-koinCompose = "4.1.1"
 koinComposeMultiplatform = "4.1.1"
 kotlin-navigation-compose = "2.9.1"
-material3WindowSizeClassMultiplatform = "0.5.0"
 nappier-logging = "2.7.1"
 combineVersion = "1.2.1"
 kmpIconGenerator = "1.2.6"
 androidx-lifecycle = "2.10.0-alpha07"
 compose-navigation-v3 = "1.0.0-alpha06"
 composeHotReload = "1.1.0-alpha02"
+androidx-paging = "3.4.0-beta01"
 
 
 [libraries]
@@ -45,8 +44,8 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinxCoroutinesCore" }
 ktorfit = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
-cashapp-paging-common = { module = "app.cash.paging:paging-common", version.ref = "cashapp-paging" }
-cashapp-paging-compose = { module = "app.cash.paging:paging-compose-common", version.ref = "cashapp-paging" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging"}
+androidx-paging-compose= { module = "androidx.paging:paging-compose", version.ref = "androidx-paging"}
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
@@ -54,11 +53,9 @@ coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 kotlin-collection-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collection" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "color-math" }
 kotlin-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "kotlin-navigation-compose" }
-material3-window-size-multiplatform = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "material3WindowSizeClassMultiplatform" }
 nappier-logging = { module = "io.github.aakira:napier", version.ref = "nappier-logging" }
 combine = { module = "app.cash.turbine:turbine", version.ref = "combineVersion" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinCompose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinComposeMultiplatform" }
 koin-composeVM = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koinComposeMultiplatform" }

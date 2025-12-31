@@ -28,6 +28,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -38,9 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.window.core.layout.WindowSizeClass
-import app.cash.paging.compose.LazyPagingItems
-import app.cash.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import data.model.ui.Photo
 import kotlinx.coroutines.flow.Flow
@@ -65,7 +66,7 @@ internal fun UnsplashImageList(
     onItemLongClicked: (Photo?) -> Unit,
 ) {
     val list = imageList.collectAsLazyPagingItems()
-    val isListEmpty by remember { derivedStateOf { list.itemCount <= 0 } }
+    val isListEmpty by rememberSaveable { derivedStateOf { list.itemCount <= 0 } }
     if (list.loadState.refresh is LoadState.Loading) {
         LoadingView(modifier = Modifier.fillMaxSize())
     } else {
