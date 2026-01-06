@@ -90,3 +90,4 @@ kotlinSerializationPlugin = { id = "org.jetbrains.kotlin.plugin.serialization", 
 kmpIconGeneratorPlugin = { id = "io.github.qamarelsafadi.kmp.app.icon.generator", version.ref = "kmpIconGenerator" }
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload"}
 room = { id = "androidx.room", version.ref = "room" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
