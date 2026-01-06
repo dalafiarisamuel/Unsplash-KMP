@@ -1,0 +1,182 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "9722ce6346843b51890e738dc022bd71",
+    "entities": [
+      {
+        "tableName": "UnsplashPhotoLocal",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`databaseId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT NOT NULL, `blurHash` TEXT, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `color` TEXT NOT NULL, `likes` INTEGER NOT NULL, `alternateDescription` TEXT, `createdAt` TEXT NOT NULL, `description` TEXT, `databaseCreatedDate` INTEGER NOT NULL, `urls_raw` TEXT NOT NULL, `urls_full` TEXT NOT NULL, `urls_regular` TEXT NOT NULL, `urls_small` TEXT NOT NULL, `urls_thumb` TEXT NOT NULL, `user_id` TEXT NOT NULL, `user_name` TEXT NOT NULL, `user_username` TEXT NOT NULL, `user_bio` TEXT, `user_totalCollections` INTEGER NOT NULL, `user_totalPhotos` INTEGER NOT NULL, `user_totalLikes` INTEGER NOT NULL, `user_portfolioUrl` TEXT, `user_small` TEXT NOT NULL, `user_medium` TEXT NOT NULL, `user_large` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "databaseId",
+            "columnName": "databaseId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "blurHash",
+            "columnName": "blurHash",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "width",
+            "columnName": "width",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "height",
+            "columnName": "height",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "likes",
+            "columnName": "likes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alternateDescription",
+            "columnName": "alternateDescription",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "databaseCreatedDate",
+            "columnName": "databaseCreatedDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "urls.raw",
+            "columnName": "urls_raw",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "urls.full",
+            "columnName": "urls_full",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "urls.regular",
+            "columnName": "urls_regular",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "urls.small",
+            "columnName": "urls_small",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "urls.thumb",
+            "columnName": "urls_thumb",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user.id",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user.name",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user.username",
+            "columnName": "user_username",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user.bio",
+            "columnName": "user_bio",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "user.totalCollections",
+            "columnName": "user_totalCollections",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user.totalPhotos",
+            "columnName": "user_totalPhotos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user.totalLikes",
+            "columnName": "user_totalLikes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user.portfolioUrl",
+            "columnName": "user_portfolioUrl",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "user.profileImage.small",
+            "columnName": "user_small",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user.profileImage.medium",
+            "columnName": "user_medium",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user.profileImage.large",
+            "columnName": "user_large",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "databaseId"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9722ce6346843b51890e738dc022bd71')"
+    ]
+  }
+}
