@@ -1,6 +1,6 @@
-package data.repository
+package data.remote.repository
 
-internal sealed class Resource<out R> {
+sealed class Resource<out R> {
     data class Success<out R>(val result: R) : Resource<R>()
     data class Failure(val error: Throwable) : Resource<Nothing>()
 }

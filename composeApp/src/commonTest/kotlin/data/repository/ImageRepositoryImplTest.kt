@@ -1,5 +1,7 @@
 package data.repository
 
+import data.model.remote.repository.ImageRepository
+import data.model.remote.repository.Resource
 import di.mapperModule
 import di.networkModule
 import io.ktor.http.HttpStatusCode

@@ -1,7 +1,8 @@
 package data.mapper
 
-import data.model.remote.UnsplashPhotoRemote
-import data.model.ui.Photo
+import data.remote.model.UnsplashPhotoRemote
+import data.ui.model.Photo
+
 
 internal class PhotoMapper constructor(
     private val photosUrlsMapper: PhotosUrlsMapper,

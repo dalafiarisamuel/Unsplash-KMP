@@ -1,7 +1,11 @@
 package data.repository
 
-import data.model.remote.UnsplashPhotoRemote
-import data.model.remote.UnsplashResponseRemote
+
+import data.remote.model.UnsplashPhotoRemote
+import data.remote.model.UnsplashResponseRemote
+import data.remote.repository.ImageRepository
+import data.remote.repository.Resource
+import data.remote.repository.resourceHelper
 import networking.ApiInterface
 
 internal class ImageRepositoryImpl(private val api: ApiInterface) : ImageRepository {

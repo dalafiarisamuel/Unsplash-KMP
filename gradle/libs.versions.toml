@@ -9,9 +9,10 @@ calfPermissions = "0.5.5"
 compose-plugin = "1.9.3"
 junit = "4.13.2"
 kotlin = "2.2.10"
+kotlinxDatetime = "0.6.0"
 kotlinxCoroutinesCore = "1.10.2"
 ktorfit = "2.6.4"
-ksp = "2.2.10-2.0.2"
+ksp = "2.2.21-2.0.4"
 kotlinSerialization = "1.9.0"
 cashapp-paging = "3.3.0-alpha02-0.5.1"
 coil = "3.3.0"
@@ -28,6 +29,8 @@ androidx-lifecycle = "2.10.0-alpha07"
 compose-navigation-v3 = "1.0.0-alpha06"
 composeHotReload = "1.1.0-alpha02"
 androidx-paging = "3.4.0-beta01"
+room = "2.8.4"
+sqlite = "2.6.2"
 
 
 [libraries]
@@ -51,6 +54,7 @@ coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 kotlin-collection-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collection" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 colormath = { module = "com.github.ajalt.colormath:colormath", version.ref = "color-math" }
 kotlin-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "kotlin-navigation-compose" }
 nappier-logging = { module = "io.github.aakira:napier", version.ref = "nappier-logging" }
@@ -68,6 +72,10 @@ androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", nam
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 compose-navigation-v3 = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "compose-navigation-v3" }
 androidx-lifecycle-viewmodel-navigation3 = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidx-lifecycle" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
 
 
 [plugins]
@@ -81,3 +89,4 @@ kotlinSymbolicProcessor = { id = "com.google.devtools.ksp", version.ref = "ksp" 
 kotlinSerializationPlugin = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kmpIconGeneratorPlugin = { id = "io.github.qamarelsafadi.kmp.app.icon.generator", version.ref = "kmpIconGenerator" }
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload"}
+room = { id = "androidx.room", version.ref = "room" }

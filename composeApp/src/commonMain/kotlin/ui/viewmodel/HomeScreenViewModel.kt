@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import data.mapper.PhotoMapper
-import data.repository.ImageRepository
+import data.remote.repository.ImageRepository
 import data.source.ImagePagingSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

@@ -1,4 +1,4 @@
-package data.repository
+package data.ui.repository
 
 internal interface SharedRepository {
     var isDarkThemeEnabled: Boolean

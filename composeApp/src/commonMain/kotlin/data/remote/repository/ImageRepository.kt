@@ -1,7 +1,8 @@
-package data.repository
+package data.remote.repository
 
-import data.model.remote.UnsplashPhotoRemote
-import data.model.remote.UnsplashResponseRemote
+import data.remote.model.UnsplashPhotoRemote
+import data.remote.model.UnsplashResponseRemote
+
 
 internal interface ImageRepository {
     suspend fun getImageSearchResult(

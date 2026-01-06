@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import data.model.ui.ChipData
+import data.ui.model.ChipData
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
@@ -24,8 +24,41 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.UnsplashKMPTheme
 import ui.theme.appDark
 import ui.theme.appWhite
-import unsplashkmp.composeapp.generated.resources.*
 import unsplashkmp.composeapp.generated.resources.Res
+import unsplashkmp.composeapp.generated.resources.animals
+import unsplashkmp.composeapp.generated.resources.animals_emoji
+import unsplashkmp.composeapp.generated.resources.architecture
+import unsplashkmp.composeapp.generated.resources.architecture_emoji
+import unsplashkmp.composeapp.generated.resources.business_and_work
+import unsplashkmp.composeapp.generated.resources.business_and_work_emoji
+import unsplashkmp.composeapp.generated.resources.experimental
+import unsplashkmp.composeapp.generated.resources.experimental_emoji
+import unsplashkmp.composeapp.generated.resources.fashion
+import unsplashkmp.composeapp.generated.resources.fashion_emoji
+import unsplashkmp.composeapp.generated.resources.film
+import unsplashkmp.composeapp.generated.resources.film_emoji
+import unsplashkmp.composeapp.generated.resources.food_and_drink
+import unsplashkmp.composeapp.generated.resources.food_and_drink_emoji
+import unsplashkmp.composeapp.generated.resources.history
+import unsplashkmp.composeapp.generated.resources.history_emoji
+import unsplashkmp.composeapp.generated.resources.interior
+import unsplashkmp.composeapp.generated.resources.interior_emoji
+import unsplashkmp.composeapp.generated.resources.nature
+import unsplashkmp.composeapp.generated.resources.nature_emoji
+import unsplashkmp.composeapp.generated.resources.nigeria
+import unsplashkmp.composeapp.generated.resources.nigeria_emoji
+import unsplashkmp.composeapp.generated.resources.people
+import unsplashkmp.composeapp.generated.resources.people_emoji
+import unsplashkmp.composeapp.generated.resources.photography
+import unsplashkmp.composeapp.generated.resources.photography_emoji
+import unsplashkmp.composeapp.generated.resources.spirituality
+import unsplashkmp.composeapp.generated.resources.spirituality_emoji
+import unsplashkmp.composeapp.generated.resources.technology
+import unsplashkmp.composeapp.generated.resources.technology_emoji
+import unsplashkmp.composeapp.generated.resources.textures_and_patterns
+import unsplashkmp.composeapp.generated.resources.textures_and_patterns_emoji
+import unsplashkmp.composeapp.generated.resources.travel
+import unsplashkmp.composeapp.generated.resources.travel_emoji
 
 
 @Composable

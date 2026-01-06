@@ -1,7 +1,8 @@
 package ui.state
 
 import androidx.compose.runtime.Stable
-import data.model.ui.Photo
+import data.ui.model.Photo
+
 
 @Stable
 internal data class HomeScreenState(

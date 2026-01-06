@@ -3,9 +3,10 @@ package data.source
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import data.mapper.PhotoMapper
-import data.model.ui.Photo
-import data.repository.ImageRepository
-import data.repository.Resource
+import data.remote.repository.ImageRepository
+import data.remote.repository.Resource
+import data.ui.model.Photo
+
 
 internal class ImagePagingSource(
     private val repository: ImageRepository,

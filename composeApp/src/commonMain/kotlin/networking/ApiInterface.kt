@@ -1,7 +1,8 @@
 package networking
 
-import data.model.remote.UnsplashPhotoRemote
-import data.model.remote.UnsplashResponseRemote
+
+import data.remote.model.UnsplashPhotoRemote
+import data.remote.model.UnsplashResponseRemote
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.Path

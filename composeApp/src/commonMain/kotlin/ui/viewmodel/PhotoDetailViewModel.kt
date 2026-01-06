@@ -2,8 +2,8 @@ package ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import data.repository.ImageRepository
-import data.repository.Resource
+import data.remote.repository.ImageRepository
+import data.remote.repository.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn

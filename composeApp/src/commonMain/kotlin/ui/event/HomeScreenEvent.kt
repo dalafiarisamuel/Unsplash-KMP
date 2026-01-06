@@ -1,6 +1,6 @@
 package ui.event
 
-import data.model.ui.Photo
+import data.ui.model.Photo
 
 
 internal sealed class HomeScreenEvent {

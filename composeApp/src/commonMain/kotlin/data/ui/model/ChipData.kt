@@ -1,4 +1,4 @@
-package data.model.ui
+package data.ui.model
 
 import androidx.compose.runtime.Stable
 

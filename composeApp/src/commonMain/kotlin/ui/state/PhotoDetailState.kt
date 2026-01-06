@@ -1,7 +1,7 @@
 package ui.state
 
 import androidx.compose.runtime.Stable
-import data.model.remote.UnsplashPhotoRemote
+import data.remote.model.UnsplashPhotoRemote
 
 @Stable
 internal data class PhotoDetailState(

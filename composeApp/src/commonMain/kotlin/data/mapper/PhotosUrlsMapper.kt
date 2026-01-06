@@ -1,7 +1,8 @@
 package data.mapper
 
-import data.model.remote.UnsplashPhotoUrls
-import data.model.ui.PhotoUrls
+import data.remote.model.UnsplashPhotoUrls
+import data.ui.model.PhotoUrls
+
 
 internal class PhotosUrlsMapper : UIModelMapper<UnsplashPhotoUrls, PhotoUrls>() {
     override fun mapToUI(entity: UnsplashPhotoUrls): PhotoUrls {
