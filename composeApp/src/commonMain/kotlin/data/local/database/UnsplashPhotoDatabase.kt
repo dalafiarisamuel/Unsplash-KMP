@@ -16,6 +16,7 @@ abstract class UnsplashPhotoDatabase: RoomDatabase() {
 
     companion object {
         const val DB_NAME = "unsplash_photo.db"
+        const val FOLDER_NAME = "UnsplashKMP"
     }
 }
 

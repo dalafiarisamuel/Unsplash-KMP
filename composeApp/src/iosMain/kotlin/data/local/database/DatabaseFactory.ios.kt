@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalForeignApi::class)
+
 package data.local.database
 
 import androidx.room.Room
@@ -10,14 +12,21 @@ import platform.Foundation.NSUserDirectory
 actual class DatabaseFactory {
 
     actual fun create(): RoomDatabase.Builder<UnsplashPhotoDatabase> {
-        val dbFile = documentDirectory() + "/${UnsplashPhotoDatabase.DB_NAME}"
+
+        val subfolderPath = "${documentDirectory()}/${UnsplashPhotoDatabase.FOLDER_NAME}"
+
+        createDirectoryIfNeeded(subfolderPath)
+
+        val dbFile = "$subfolderPath/${UnsplashPhotoDatabase.DB_NAME}"
+
 
         return Room.databaseBuilder<UnsplashPhotoDatabase>(
             name = dbFile
         )
     }
 
-    @OptIn(ExperimentalForeignApi::class)
+
+
     private fun documentDirectory(): String {
         val documentDirectory = NSFileManager.defaultManager.URLForDirectory(
             directory = NSDocumentDirectory,
@@ -27,5 +36,18 @@ actual class DatabaseFactory {
             error = null
         )
         return requireNotNull(documentDirectory?.path)
+    }
+
+
+    private fun createDirectoryIfNeeded(path: String) {
+        val fileManager = NSFileManager.defaultManager
+        if (!fileManager.fileExistsAtPath(path)) {
+            fileManager.createDirectoryAtPath(
+                path = path,
+                withIntermediateDirectories = true,
+                attributes = null,
+                error = null
+            )
+        }
     }
 }

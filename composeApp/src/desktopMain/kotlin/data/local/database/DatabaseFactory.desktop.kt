@@ -11,9 +11,16 @@ actual class DatabaseFactory {
         val userHome = System.getProperty("user.home")
 
         val appDataDir = when {
-            os.contains("win") -> File(System.getenv("AppData"), "UnsplashKMP")
-            os.contains("mac") -> File(userHome, "Library/Application Support/UnsplashKMP")
-            else -> File(userHome, ".local/share/UnsplashKMP") // Linux/Unix
+            os.contains("win") -> File(System.getenv("AppData"))
+            os.contains("mac") -> File(
+                userHome,
+                "Library/Application Support/${UnsplashPhotoDatabase.FOLDER_NAME}"
+            )
+
+            else -> File(
+                userHome,
+                ".local/share/${UnsplashPhotoDatabase.FOLDER_NAME}"
+            ) // Linux/Unix
         }
 
         if (!appDataDir.exists()) {

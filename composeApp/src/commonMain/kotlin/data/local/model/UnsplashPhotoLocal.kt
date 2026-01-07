@@ -2,10 +2,11 @@ package data.local.model
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.datetime.Clock
 
-@Entity
+@Entity(indices = [Index(value = ["id"], unique = true)])
 data class UnsplashPhotoLocal(
     @PrimaryKey(autoGenerate = true)
     val databaseId: Long = 0,

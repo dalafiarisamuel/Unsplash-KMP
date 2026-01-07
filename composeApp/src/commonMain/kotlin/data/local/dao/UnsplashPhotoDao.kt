@@ -1,7 +1,6 @@
 package data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import data.local.model.UnsplashPhotoLocal
@@ -17,10 +16,10 @@ interface UnsplashPhotoDao {
     fun getAllPhotoAsFlow(): Flow<List<UnsplashPhotoLocal>>
 
     @Query("SELECT * FROM UnsplashPhotoLocal WHERE id=:id")
-    suspend fun getPhotoById(id: Long): UnsplashPhotoLocal
+    suspend fun getPhotoById(id: String): UnsplashPhotoLocal?
 
-    @Delete
-    suspend fun deletePhoto(photoLocal: UnsplashPhotoLocal)
+    @Query("DELETE FROM UnsplashPhotoLocal WHERE id=:id")
+    suspend fun deletePhoto(id: String): Int
 
     @Query("DELETE FROM UnsplashPhotoLocal")
     suspend fun clearAllPhotos()

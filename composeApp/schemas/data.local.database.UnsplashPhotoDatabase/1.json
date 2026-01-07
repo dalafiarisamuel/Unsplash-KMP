@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9722ce6346843b51890e738dc022bd71",
+    "identityHash": "a6b11b9f430e72cedd7fec71f308c23a",
     "entities": [
       {
         "tableName": "UnsplashPhotoLocal",
@@ -171,12 +171,23 @@
           "columnNames": [
             "databaseId"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_UnsplashPhotoLocal_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_UnsplashPhotoLocal_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9722ce6346843b51890e738dc022bd71')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a6b11b9f430e72cedd7fec71f308c23a')"
     ]
   }
 }

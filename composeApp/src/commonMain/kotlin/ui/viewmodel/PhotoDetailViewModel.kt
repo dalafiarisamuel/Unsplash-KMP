@@ -2,8 +2,12 @@ package ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import data.remote.model.UnsplashPhotoRemote
 import data.remote.repository.ImageRepository
 import data.remote.repository.Resource
+import domain.usecase.DeletePhotoUseCase
+import domain.usecase.GetPhotoByIdUseCase
+import domain.usecase.SavePhotoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -20,6 +24,9 @@ import ui.state.PhotoDetailState
 internal class PhotoDetailViewModel(
     private val repository: ImageRepository,
     private val platformDownloadImage: PlatformDownloadImage,
+    private val savePhotoUseCase: SavePhotoUseCase,
+    private val deletePhotoUseCase: DeletePhotoUseCase,
+    private val getPhotoByIdUseCase: GetPhotoByIdUseCase,
 ) : ViewModel(), KoinComponent {
 
 
@@ -51,11 +58,15 @@ internal class PhotoDetailViewModel(
         viewModelScope.launch {
             when (val result = repository.getPhoto(photoId = photoId)) {
                 is Resource.Success -> {
+                    val photoFromCache = getPhotoByIdUseCase(photoId)
+                    val isFavourite =
+                        photoFromCache is Resource.Success && photoFromCache.result != null
                     uiState.update {
                         it.copy(
                             isLoading = false,
                             photo = result.result,
-                            error = null
+                            error = null,
+                            isImageFavourite = isFavourite
                         )
                     }
                 }
@@ -71,6 +82,29 @@ internal class PhotoDetailViewModel(
                 }
             }
         }
+    }
+
+    fun saveOrRemovePhotoFromFavourite(
+        photo: UnsplashPhotoRemote
+    ) {
+        viewModelScope.launch {
+            if (uiState.value.isImageFavourite) {
+                val result = deletePhotoUseCase(photo)
+                if (result is Resource.Success && result.result > 0) {
+                    uiState.update {
+                        it.copy(isImageFavourite = false)
+                    }
+                }
+            } else {
+                val result = savePhotoUseCase(photo)
+                if (result is Resource.Success) {
+                    uiState.update {
+                        it.copy(isImageFavourite = true)
+                    }
+                }
+            }
+        }
+
     }
 
     fun startDownload(photoUrl: String) {

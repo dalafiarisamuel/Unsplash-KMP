@@ -58,7 +58,8 @@ internal fun PhotoDetailScreenEntryPoint(
         modifier = Modifier.fillMaxSize(),
         state = viewModel.uiState.collectAsState().value,
         showNavigationBackIcon = showNavigationBackIcon,
-        onBackPressed = navigateBack
+        onBackPressed = navigateBack,
+        onBookmarkClicked = viewModel::saveOrRemovePhotoFromFavourite,
     ) {
         when (currentPlatform) {
             Platform.Android -> {

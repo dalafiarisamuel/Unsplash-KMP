@@ -13,6 +13,11 @@ import data.repository.SharedRepositoryImpl
 import data.repository.UnsplashImageLocalRepositoryImpl
 import data.ui.repository.SharedRepository
 import de.jensklingenberg.ktorfit.Ktorfit
+import domain.usecase.ClearAllPhotosUseCase
+import domain.usecase.DeletePhotoUseCase
+import domain.usecase.GetAllPhotoAsFlowUseCase
+import domain.usecase.GetPhotoByIdUseCase
+import domain.usecase.SavePhotoUseCase
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -44,7 +49,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             repositoryModule(),
             viewModelModule(),
             platformModule(),
-            sharedModule()
+            sharedModule(),
+            useCaseModule()
         )
     }
 
@@ -96,6 +102,14 @@ private fun repositoryModule() = module {
     singleOf(::UnsplashImageLocalRepositoryImpl).bind<UnsplashImageLocalRepository>()
 }
 
+private fun useCaseModule() = module {
+    singleOf(::ClearAllPhotosUseCase)
+    singleOf(::DeletePhotoUseCase)
+    singleOf(::GetAllPhotoAsFlowUseCase)
+    singleOf(::GetPhotoByIdUseCase)
+    singleOf(::SavePhotoUseCase)
+}
+
 private fun viewModelModule() = module {
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::PhotoDetailViewModel)
@@ -107,6 +121,7 @@ private fun sharedModule() = module {
     }
     single {
         get<DatabaseFactory>().create()
+            .fallbackToDestructiveMigration(dropAllTables = true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()

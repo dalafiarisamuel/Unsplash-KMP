@@ -9,6 +9,9 @@ import com.github.ajalt.colormath.model.RGB
 
 //light theme colors
 val ColorWhite = Color(0xFFFFFFFF)
+val ColorCrimsonRed = Color(0xFFD61A3C)
+val ColorEgyptianBlue = Color(0xFF0E26B1)
+val ColorAquamarine = Color(0xFF66DDAA)
 
 val String.color
     get() =  RGB(this).run {

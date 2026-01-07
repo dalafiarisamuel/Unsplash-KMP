@@ -2,7 +2,10 @@ package ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +24,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -32,6 +36,7 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import data.remote.model.UnsplashPhotoRemote
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -39,13 +44,20 @@ import ui.component.ArtistCard
 import ui.component.ErrorComponent
 import ui.component.NavBar
 import ui.component.PhotoLargeDisplay
+import ui.component.animateScrollPainterAsState
 import ui.component.getEdgeToEdgeTopPadding
 import ui.state.PhotoDetailState
+import ui.theme.ColorAquamarine
+import ui.theme.ColorEgyptianBlue
 import ui.theme.UnsplashKMPTheme
 import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.Res
+import unsplashkmp.composeapp.generated.resources.add_favourite
 import unsplashkmp.composeapp.generated.resources.an_unknown_error_occurred
 import unsplashkmp.composeapp.generated.resources.download_image
+import unsplashkmp.composeapp.generated.resources.ic_bookmark_add
+import unsplashkmp.composeapp.generated.resources.ic_bookmark_remove
+import unsplashkmp.composeapp.generated.resources.remove_favourite
 import unsplashkmp.composeapp.generated.resources.round_downloading
 
 
@@ -54,6 +66,7 @@ internal fun PhotoDetail(
     modifier: Modifier = Modifier,
     state: PhotoDetailState = PhotoDetailState(),
     showNavigationBackIcon: Boolean = true,
+    onBookmarkClicked: (UnsplashPhotoRemote) -> Unit = {},
     onBackPressed: () -> Unit = {},
     onDownloadImageClicked: (String?) -> Unit = {},
 ) {
@@ -113,9 +126,7 @@ internal fun PhotoDetail(
                     Spacer(modifier = Modifier.padding(top = 10.dp))
 
                     PhotoLargeDisplay(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            ,
+                        modifier = Modifier.fillMaxWidth(),
                         imageUrl = state.photo?.urls?.full.orEmpty(),
                         imageColor = state.photo?.color,
                         imageSize = Size(
@@ -143,22 +154,69 @@ internal fun PhotoDetail(
 
                     Spacer(modifier = Modifier.padding(top = 20.dp))
 
-                    OutlinedButton(
-                        modifier = Modifier
-                            .height(height = 45.dp)
-                            .width(width = 200.dp)
-                            .align(Alignment.CenterHorizontally),
-                        elevation = ButtonDefaults.elevation(0.dp),
-                        shape = RoundedCornerShape(10.dp),
-                        onClick = { onDownloadImageClicked(state.photo?.urls?.raw) }
+                    Row(
+                        modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Icon(
-                            painterResource(Res.drawable.round_downloading),
-                            tint = appWhite,
-                            contentDescription = null,
+
+                        val iconPainter = painterResource(
+                            if (state.isImageFavourite) Res.drawable.ic_bookmark_remove
+                            else Res.drawable.ic_bookmark_add
                         )
-                        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                        Text(text = stringResource(Res.string.download_image), fontSize = 12.sp)
+
+                        val iconText =
+                            stringResource(
+                                if (state.isImageFavourite) Res.string.remove_favourite
+                                else Res.string.add_favourite
+                            )
+
+                        val animatedIcon = animateScrollPainterAsState(iconPainter)
+
+                        OutlinedButton(
+                            modifier = Modifier
+                                .height(height = 45.dp)
+                                .width(width = 160.dp),
+                            elevation = ButtonDefaults.elevation(
+                                defaultElevation = 0.dp,
+                                pressedElevation = 0.dp,
+                                disabledElevation = 0.dp,
+                                hoveredElevation = 0.dp,
+                                focusedElevation = 0.dp
+                            ),
+                            interactionSource = remember { MutableInteractionSource() },
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = {
+                                onBookmarkClicked(state.photo!!)
+                            }
+                        ) {
+                            Icon(
+                                painter = animatedIcon,
+                                tint = ColorEgyptianBlue,
+                                contentDescription = null,
+                            )
+                            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                            Text(
+                                text = iconText,
+                                fontSize = 11.sp
+                            )
+                        }
+                        OutlinedButton(
+                            modifier = Modifier
+                                .height(height = 45.dp)
+                                .width(width = 190.dp),
+                            elevation = ButtonDefaults.elevation(0.dp),
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = { onDownloadImageClicked(state.photo?.urls?.raw) }
+                        ) {
+                            Icon(
+                                painter = painterResource(Res.drawable.round_downloading),
+                                tint = ColorAquamarine,
+                                contentDescription = null,
+                            )
+                            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                            Text(text = stringResource(Res.string.download_image), fontSize = 11.sp)
+                        }
+
                     }
 
                     Spacer(modifier = Modifier.padding(top = 30.dp))

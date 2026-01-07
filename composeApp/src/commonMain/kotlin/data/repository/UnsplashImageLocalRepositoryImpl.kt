@@ -17,12 +17,12 @@ class UnsplashImageLocalRepositoryImpl(private val photoDao: UnsplashPhotoDao) :
         return photoDao.getAllPhotoAsFlow()
     }
 
-    override suspend fun getPhotoById(id: Long): Resource<UnsplashPhotoLocal> {
+    override suspend fun getPhotoById(id: String): Resource<UnsplashPhotoLocal?> {
         return resourceHelper { photoDao.getPhotoById(id) }
     }
 
-    override suspend fun deletePhoto(photoLocal: UnsplashPhotoLocal): Resource<Unit> {
-        return resourceHelper { photoDao.deletePhoto(photoLocal) }
+    override suspend fun deletePhoto(photoLocal: UnsplashPhotoLocal): Resource<Int> {
+        return resourceHelper { photoDao.deletePhoto(photoLocal.id) }
     }
 
     override suspend fun clearAllPhotos(): Resource<Unit> {
