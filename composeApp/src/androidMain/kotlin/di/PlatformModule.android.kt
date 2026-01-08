@@ -8,10 +8,7 @@ import ui.download.PlatformDownloadImage
 
 internal actual fun platformModule(): Module {
     return module {
-        single {
-            PlatformDownloadImage(androidApplication())
-        }
-
+        single { PlatformDownloadImage(androidApplication()) }
         single { DatabaseFactory(androidApplication()) }
     }
 }

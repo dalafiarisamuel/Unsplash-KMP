@@ -28,7 +28,6 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.compose.serialization.serializers.SnapshotStateListSerializer
 import data.ui.repository.SharedRepository
-
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
@@ -58,76 +57,80 @@ fun App() {
         }
 
     val windowAdaptiveInfo = currentWindowAdaptiveInfo()
-    val directive = remember(windowAdaptiveInfo) {
-        calculatePaneScaffoldDirective(windowAdaptiveInfo)
-            .copy(
-                horizontalPartitionSpacerSize = 0.dp,
-            )
-    }
+    val directive =
+        remember(windowAdaptiveInfo) {
+            calculatePaneScaffoldDirective(windowAdaptiveInfo)
+                .copy(horizontalPartitionSpacerSize = 0.dp)
+        }
 
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>(directive = directive)
 
     UnsplashKMPTheme(darkTheme = sharedRepository.isDarkThemeEnabled) {
-
         NavDisplay(
             backStack = backStack,
-            entryDecorators = listOf(
-                rememberSaveableStateHolderNavEntryDecorator(),
-                rememberViewModelStoreNavEntryDecorator()
-            ),
+            entryDecorators =
+                listOf(
+                    rememberSaveableStateHolderNavEntryDecorator(),
+                    rememberViewModelStoreNavEntryDecorator(),
+                ),
             sceneStrategy = listDetailStrategy,
-            entryProvider = entryProvider {
-                entry<PhotoScreen.HomeScreen>(
-                    metadata = ListDetailSceneStrategy.listPane(
-                        detailPlaceholder = {
-                            Box(
-                                modifier = Modifier
-                                    .background(MaterialTheme.colors.background)
-                                    .fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    modifier = Modifier.align(Alignment.Center),
-                                    text = stringResource(Res.string.select_an_image_from_the_list),
-                                    color = appWhite,
-                                    fontSize = 14.sp,
-                                    fontStyle = FontStyle.Normal,
-                                    fontWeight = FontWeight.SemiBold,
-                                )
-                            }
-                        }
-                    )
-                ) {
-                    HomeScreenEntryPoint(
-                        navigateToDetailScreen = {
-                            val lastItem = backStack.lastOrNull()
-                            if (lastItem is PhotoScreen.DetailScreen) {
-                                backStack[backStack.lastIndex] = PhotoScreen.DetailScreen(it)
-                            } else {
-                                backStack.add(PhotoScreen.DetailScreen(it))
-                            }
-                        },
-                        resetSearchInput = {
-                            val lastItem = backStack.lastOrNull()
-                            if (lastItem is PhotoScreen.DetailScreen) {
-                                backStack.removeLastOrNull()
-                            }
-                        },
-                        isDarkTheme = sharedRepository.isDarkThemeEnabled,
-                        flipTheme = { sharedRepository.flipTheme() }
-                    )
-                }
+            entryProvider =
+                entryProvider {
+                    entry<PhotoScreen.HomeScreen>(
+                        metadata =
+                            ListDetailSceneStrategy.listPane(
+                                detailPlaceholder = {
+                                    Box(
+                                        modifier =
+                                            Modifier.background(MaterialTheme.colors.background)
+                                                .fillMaxSize(),
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.align(Alignment.Center),
+                                            text =
+                                                stringResource(
+                                                    Res.string.select_an_image_from_the_list
+                                                ),
+                                            color = appWhite,
+                                            fontSize = 14.sp,
+                                            fontStyle = FontStyle.Normal,
+                                            fontWeight = FontWeight.SemiBold,
+                                        )
+                                    }
+                                }
+                            )
+                    ) {
+                        HomeScreenEntryPoint(
+                            navigateToDetailScreen = {
+                                val lastItem = backStack.lastOrNull()
+                                if (lastItem is PhotoScreen.DetailScreen) {
+                                    backStack[backStack.lastIndex] = PhotoScreen.DetailScreen(it)
+                                } else {
+                                    backStack.add(PhotoScreen.DetailScreen(it))
+                                }
+                            },
+                            resetSearchInput = {
+                                val lastItem = backStack.lastOrNull()
+                                if (lastItem is PhotoScreen.DetailScreen) {
+                                    backStack.removeLastOrNull()
+                                }
+                            },
+                            navigateToBookmarks = {}
+                        )
+                    }
 
-                entry<PhotoScreen.DetailScreen>(
-                    metadata = ListDetailSceneStrategy.detailPane()
-                ) { backStackEntry ->
-                    PhotoDetailScreenEntryPoint(
-                        showNavigationBackIcon = true, //listDetailStrategy.directive.maxHorizontalPartitions == 1,
-                        navigateBack = { backStack.removeLastOrNull() },
-                        photoId = backStackEntry.id
-                    )
-                }
-            }
+                    entry<PhotoScreen.DetailScreen>(
+                        metadata = ListDetailSceneStrategy.detailPane()
+                    ) { backStackEntry ->
+                        PhotoDetailScreenEntryPoint(
+                            showNavigationBackIcon =
+                                true, // listDetailStrategy.directive.maxHorizontalPartitions == 1,
+                            navigateBack = { backStack.removeLastOrNull() },
+                            photoId = backStackEntry.id,
+                        )
+                    }
+                },
         )
     }
 }

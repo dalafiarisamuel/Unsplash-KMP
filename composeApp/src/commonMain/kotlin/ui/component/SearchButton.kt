@@ -1,6 +1,5 @@
 package ui.component
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,28 +26,18 @@ internal fun SearchButton(
     onSearchButtonClicked: (() -> Unit)? = null,
 ) {
     IconButton(
-        onClick = {
-            onSearchButtonClicked?.invoke()
-        },
+        onClick = { onSearchButtonClicked?.invoke() },
         modifier =
-        modifier
-            .background(
-                shape = RoundedCornerShape(27.5.dp),
-                color = colorDisabledGray
-            )
-            .border(
-                width = 1.dp,
-                color = colorGrayDivider,
-                shape = RoundedCornerShape(27.5.dp)
-            )
+            modifier
+                .background(shape = RoundedCornerShape(27.5.dp), color = colorDisabledGray)
+                .border(width = 1.dp, color = colorGrayDivider, shape = RoundedCornerShape(27.5.dp)),
     ) {
         Image(
-            modifier = Modifier
-                .wrapContentSize(),
+            modifier = Modifier.wrapContentSize(),
             painter = painterResource(Res.drawable.ic_search),
             colorFilter = ColorFilter.tint(appWhite),
             contentScale = ContentScale.Inside,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }

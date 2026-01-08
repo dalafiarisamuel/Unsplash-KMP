@@ -19,25 +19,20 @@ actual class DatabaseFactory {
 
         val dbFile = "$subfolderPath/${UnsplashPhotoDatabase.DB_NAME}"
 
-
-        return Room.databaseBuilder<UnsplashPhotoDatabase>(
-            name = dbFile
-        )
+        return Room.databaseBuilder<UnsplashPhotoDatabase>(name = dbFile)
     }
-
-
 
     private fun documentDirectory(): String {
-        val documentDirectory = NSFileManager.defaultManager.URLForDirectory(
-            directory = NSDocumentDirectory,
-            inDomain = NSUserDirectory,
-            appropriateForURL = null,
-            create = false,
-            error = null
-        )
+        val documentDirectory =
+            NSFileManager.defaultManager.URLForDirectory(
+                directory = NSDocumentDirectory,
+                inDomain = NSUserDirectory,
+                appropriateForURL = null,
+                create = false,
+                error = null,
+            )
         return requireNotNull(documentDirectory?.path)
     }
-
 
     private fun createDirectoryIfNeeded(path: String) {
         val fileManager = NSFileManager.defaultManager
@@ -46,7 +41,7 @@ actual class DatabaseFactory {
                 path = path,
                 withIntermediateDirectories = true,
                 attributes = null,
-                error = null
+                error = null,
             )
         }
     }

@@ -16,29 +16,22 @@ import org.koin.test.get
 
 object NetworkHelper : KoinTest {
 
-    fun createKtorfitWithMockResponse(
-        status: HttpStatusCode,
-        content: String,
-    ): Ktorfit {
+    fun createKtorfitWithMockResponse(status: HttpStatusCode, content: String): Ktorfit {
 
         val mockEngine = MockEngine { request ->
             respond(
                 content = ByteReadChannel(content),
                 status = status,
-                headers = headersOf(HttpHeaders.ContentType, "application/json")
+                headers = headersOf(HttpHeaders.ContentType, "application/json"),
             )
-
         }
 
-        val client = HttpClient(mockEngine) {
-            install(ContentNegotiation) {
-                json(get())
-            }
+        val client =
+            HttpClient(mockEngine) {
+                install(ContentNegotiation) { json(get()) }
 
-            install(AuthorizationTokenInterceptor) {
-                tokenProvider = { "12345" }
+                install(AuthorizationTokenInterceptor) { tokenProvider = { "12345" } }
             }
-        }
 
         return Ktorfit.Builder().build {
             httpClient(client)
@@ -47,7 +40,8 @@ object NetworkHelper : KoinTest {
     }
 
     val successfulImageListResponse: String
-        get() = "{\"total\":2284,\"total_pages\":1142,\"results\":[{\"id\":\"vzpEjttBI0M\",\"slug\"" +
+        get() =
+            "{\"total\":2284,\"total_pages\":1142,\"results\":[{\"id\":\"vzpEjttBI0M\",\"slug\"" +
                 ":\"text-vzpEjttBI0M\",\"alternative_slugs\":{\"en\":\"text-vzpEjttBI0M\",\"es\":" +
                 "\"texto-vzpEjttBI0M\",\"ja\":\"文章-vzpEjttBI0M\",\"fr\":\"texte-vzpEjttBI0M\",\"it\"" +
                 ":\"testo-vzpEjttBI0M\",\"ko\":\"문자-메시지-vzpEjttBI0M\",\"de\":\"text-vzpEjttBI0M\",\"pt\"" +
@@ -92,7 +86,8 @@ object NetworkHelper : KoinTest {
                 "{\"type\":\"search\",\"title\":\"lagos\"},{\"type\":\"search\",\"title\":\"protest\"}]}]}"
 
     val successfulImageResponse: String
-        get() = "{\"id\":\"vzpEjttBI0M\",\"slug\":\"text-vzpEjttBI0M\",\"alternative_slugs\":{\"en\":\"text-vzpEjttBI0M\",\"es\"" +
+        get() =
+            "{\"id\":\"vzpEjttBI0M\",\"slug\":\"text-vzpEjttBI0M\",\"alternative_slugs\":{\"en\":\"text-vzpEjttBI0M\",\"es\"" +
                 ":\"texto-vzpEjttBI0M\",\"ja\":\"文章-vzpEjttBI0M\",\"fr\":\"texte-vzpEjttBI0M\",\"it\":\"testo-vzpEjttBI0M\",\"ko\"" +
                 ":\"문자-메시지-vzpEjttBI0M\",\"de\":\"text-vzpEjttBI0M\",\"pt\":\"texto-vzpEjttBI0M\"},\"created_at\":\"2020-10-10T11:10:29Z\",\"updated_at\"" +
                 ":\"2024-07-26T09:54:31Z\",\"promoted_at\":null,\"width\":3329,\"height\":4661,\"color\":\"#262626\",\"blur_hash\"" +

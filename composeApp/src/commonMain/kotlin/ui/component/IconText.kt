@@ -1,6 +1,5 @@
 package ui.component
 
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,21 +19,18 @@ import ui.theme.appWhite
 
 @Composable
 internal fun IconText(drawableId: DrawableResource, display: String) {
-    Row(
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
+    Row(horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
         Icon(
             painter = painterResource(drawableId),
             tint = appWhite.copy(alpha = 0.6f),
             contentDescription = null,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(18.dp),
         )
         Spacer(modifier = Modifier.width(3.dp))
         Text(
             text = display,
             style = MaterialTheme.typography.caption.copy(fontSize = 10.sp, letterSpacing = 0.sp),
-            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
         )
     }
 }

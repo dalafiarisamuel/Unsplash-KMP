@@ -30,26 +30,16 @@ fun UnsplashPhotoLocal.toPhoto(): Photo {
         alternateDescription = alternateDescription,
         description = description,
         urls = urls.toPhotoUrls(),
-        user = user.toPhotoCreator()
+        user = user.toPhotoCreator(),
     )
 }
 
 private fun UnsplashPhotoUrlsLocal.toPhotoUrls(): PhotoUrls {
-    return PhotoUrls(
-        raw = raw,
-        full = full,
-        regular = regular,
-        small = small,
-        thumb = thumb
-    )
+    return PhotoUrls(raw = raw, full = full, regular = regular, small = small, thumb = thumb)
 }
 
 private fun UnsplashUserLocal.toPhotoCreator(): PhotoCreator {
-    return PhotoCreator(
-        name = name,
-        username = username,
-        attributionUrl = attributionUrl
-    )
+    return PhotoCreator(name = name, username = username, attributionUrl = attributionUrl)
 }
 
 fun UnsplashPhotoRemote.toUnsplashPhotoLocal(): UnsplashPhotoLocal {
@@ -64,7 +54,7 @@ fun UnsplashPhotoRemote.toUnsplashPhotoLocal(): UnsplashPhotoLocal {
         createdAt = createdAt,
         description = description,
         urls = urls.toUnsplashPhotoUrlsLocal(),
-        user = user.toUnsplashUserLocal()
+        user = user.toUnsplashUserLocal(),
     )
 }
 
@@ -74,9 +64,8 @@ private fun UnsplashPhotoUrls.toUnsplashPhotoUrlsLocal(): UnsplashPhotoUrlsLocal
         full = full,
         regular = regular,
         small = small,
-        thumb = thumb
+        thumb = thumb,
     )
-
 }
 
 private fun UnsplashUser.toUnsplashUserLocal(): UnsplashUserLocal {
@@ -89,14 +78,10 @@ private fun UnsplashUser.toUnsplashUserLocal(): UnsplashUserLocal {
         totalPhotos = totalPhotos,
         totalLikes = totalLikes,
         portfolioUrl = portfolioUrl,
-        profileImage = profileImage.toProfileImageLocal()
+        profileImage = profileImage.toProfileImageLocal(),
     )
 }
 
 private fun ProfileImage.toProfileImageLocal(): ProfileImageLocal {
-    return ProfileImageLocal(
-        small = small,
-        medium = medium,
-        large = large
-    )
+    return ProfileImageLocal(small = small, medium = medium, large = large)
 }

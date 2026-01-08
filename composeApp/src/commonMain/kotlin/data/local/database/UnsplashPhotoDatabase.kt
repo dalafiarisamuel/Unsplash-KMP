@@ -9,18 +9,17 @@ import data.local.model.UnsplashPhotoLocal
 
 @Database(entities = [UnsplashPhotoLocal::class], version = 1)
 @ConstructedBy(UnsplashPhotoDatabaseConstructor::class)
-abstract class UnsplashPhotoDatabase: RoomDatabase() {
+abstract class UnsplashPhotoDatabase : RoomDatabase() {
 
-    abstract fun getPhotoDao(): UnsplashPhotoDao
+  abstract fun getPhotoDao(): UnsplashPhotoDao
 
-
-    companion object {
-        const val DB_NAME = "unsplash_photo.db"
-        const val FOLDER_NAME = "UnsplashKMP"
-    }
+  companion object {
+    const val DB_NAME = "unsplash_photo.db"
+    const val FOLDER_NAME = "UnsplashKMP"
+  }
 }
 
 @Suppress("KotlinNoActualForExpect")
-expect object UnsplashPhotoDatabaseConstructor: RoomDatabaseConstructor<UnsplashPhotoDatabase> {
-    override fun initialize(): UnsplashPhotoDatabase
+expect object UnsplashPhotoDatabaseConstructor : RoomDatabaseConstructor<UnsplashPhotoDatabase> {
+  override fun initialize(): UnsplashPhotoDatabase
 }

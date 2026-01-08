@@ -23,6 +23,9 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.BookmarkAdd
+import androidx.compose.material.icons.rounded.BookmarkRemove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,22 +47,19 @@ import ui.component.ArtistCard
 import ui.component.ErrorComponent
 import ui.component.NavBar
 import ui.component.PhotoLargeDisplay
-import ui.component.animateScrollPainterAsState
+import ui.component.animateScrollIconAsState
 import ui.component.getEdgeToEdgeTopPadding
 import ui.state.PhotoDetailState
 import ui.theme.ColorAquamarine
-import ui.theme.ColorEgyptianBlue
+import ui.theme.ColorPalatinateBlue
 import ui.theme.UnsplashKMPTheme
 import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.add_favourite
 import unsplashkmp.composeapp.generated.resources.an_unknown_error_occurred
 import unsplashkmp.composeapp.generated.resources.download_image
-import unsplashkmp.composeapp.generated.resources.ic_bookmark_add
-import unsplashkmp.composeapp.generated.resources.ic_bookmark_remove
 import unsplashkmp.composeapp.generated.resources.remove_favourite
 import unsplashkmp.composeapp.generated.resources.round_downloading
-
 
 @Composable
 internal fun PhotoDetail(
@@ -75,44 +75,33 @@ internal fun PhotoDetail(
     val locale = Locale.current
 
     Column(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .fillMaxSize()
-            .padding(top = 10.dp + getEdgeToEdgeTopPadding(), start = 12.dp, end = 12.dp)
-            .then(modifier)
+        modifier =
+            Modifier.background(MaterialTheme.colors.background)
+                .fillMaxSize()
+                .padding(top = 10.dp + getEdgeToEdgeTopPadding(), start = 12.dp, end = 12.dp)
+                .then(modifier)
     ) {
-
         NavBar(
-            modifier = Modifier
-                .defaultMinSize(minHeight = 30.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.defaultMinSize(minHeight = 30.dp).fillMaxWidth(),
             showNavigationBackIcon = showNavigationBackIcon,
-            onBackPressed = onBackPressed
+            onBackPressed = onBackPressed,
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(scrollableState)
-        ) {
+        Column(modifier = Modifier.fillMaxWidth().verticalScroll(scrollableState)) {
             when {
                 state.isLoading -> {
                     LinearProgressIndicator(
                         color = appWhite,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(2.dp)
+                        modifier = Modifier.fillMaxWidth().height(2.dp),
                     )
                 }
 
                 state.error != null -> {
                     ErrorComponent(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .testTag("error_view"),
-                        message = state.error.message ?: stringResource(
-                            Res.string.an_unknown_error_occurred
-                        )
+                        modifier = Modifier.fillMaxSize().testTag("error_view"),
+                        message =
+                            state.error.message
+                                ?: stringResource(Res.string.an_unknown_error_occurred),
                     )
                 }
 
@@ -129,13 +118,17 @@ internal fun PhotoDetail(
                         modifier = Modifier.fillMaxWidth(),
                         imageUrl = state.photo?.urls?.full.orEmpty(),
                         imageColor = state.photo?.color,
-                        imageSize = Size(
-                            (state.photo?.width ?: 1).toFloat(),
-                            (state.photo?.height ?: 1).toFloat()
-                        )
+                        imageSize =
+                            Size(
+                                (state.photo?.width ?: 1).toFloat(),
+                                (state.photo?.height ?: 1).toFloat(),
+                            ),
                     )
 
-                    if (state.photo?.description != null || state.photo?.alternateDescription != null) {
+                    if (
+                        state.photo?.description != null ||
+                            state.photo?.alternateDescription != null
+                    ) {
                         Spacer(modifier = Modifier.padding(top = 16.dp))
 
                         val content = state.photo.description ?: state.photo.alternateDescription
@@ -147,8 +140,7 @@ internal fun PhotoDetail(
                             fontStyle = FontStyle.Normal,
                             fontWeight = FontWeight.SemiBold,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
                         )
                     }
 
@@ -156,13 +148,11 @@ internal fun PhotoDetail(
 
                     Row(
                         modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
-
-                        val iconPainter = painterResource(
-                            if (state.isImageFavourite) Res.drawable.ic_bookmark_remove
-                            else Res.drawable.ic_bookmark_add
-                        )
+                        val iconPainter =
+                            if (state.isImageFavourite) Icons.Rounded.BookmarkRemove
+                            else Icons.Rounded.BookmarkAdd
 
                         val iconText =
                             stringResource(
@@ -170,43 +160,43 @@ internal fun PhotoDetail(
                                 else Res.string.add_favourite
                             )
 
-                        val animatedIcon = animateScrollPainterAsState(iconPainter)
+                        val animatedIcon = animateScrollIconAsState(iconPainter)
 
                         OutlinedButton(
-                            modifier = Modifier
-                                .height(height = 45.dp)
-                                .width(width = 160.dp),
-                            elevation = ButtonDefaults.elevation(
-                                defaultElevation = 0.dp,
-                                pressedElevation = 0.dp,
-                                disabledElevation = 0.dp,
-                                hoveredElevation = 0.dp,
-                                focusedElevation = 0.dp
-                            ),
+                            modifier = Modifier.height(height = 45.dp).width(width = 160.dp),
+                            elevation =
+                                ButtonDefaults.elevation(
+                                    defaultElevation = 0.dp,
+                                    pressedElevation = 0.dp,
+                                    disabledElevation = 0.dp,
+                                    hoveredElevation = 0.dp,
+                                    focusedElevation = 0.dp,
+                                ),
                             interactionSource = remember { MutableInteractionSource() },
                             shape = RoundedCornerShape(10.dp),
-                            onClick = {
-                                onBookmarkClicked(state.photo!!)
-                            }
+                            onClick = { onBookmarkClicked(state.photo!!) },
                         ) {
                             Icon(
                                 painter = animatedIcon,
-                                tint = ColorEgyptianBlue,
+                                tint = ColorPalatinateBlue,
                                 contentDescription = null,
                             )
                             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                            Text(
-                                text = iconText,
-                                fontSize = 11.sp
-                            )
+                            Text(text = iconText, fontSize = 11.sp)
                         }
                         OutlinedButton(
-                            modifier = Modifier
-                                .height(height = 45.dp)
-                                .width(width = 190.dp),
-                            elevation = ButtonDefaults.elevation(0.dp),
+                            modifier = Modifier.height(height = 45.dp).width(width = 190.dp),
+                            elevation =
+                                ButtonDefaults.elevation(
+                                    defaultElevation = 0.dp,
+                                    pressedElevation = 0.dp,
+                                    disabledElevation = 0.dp,
+                                    hoveredElevation = 0.dp,
+                                    focusedElevation = 0.dp,
+                                ),
+                            interactionSource = remember { MutableInteractionSource() },
                             shape = RoundedCornerShape(10.dp),
-                            onClick = { onDownloadImageClicked(state.photo?.urls?.raw) }
+                            onClick = { onDownloadImageClicked(state.photo?.urls?.raw) },
                         ) {
                             Icon(
                                 painter = painterResource(Res.drawable.round_downloading),
@@ -216,7 +206,6 @@ internal fun PhotoDetail(
                             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
                             Text(text = stringResource(Res.string.download_image), fontSize = 11.sp)
                         }
-
                     }
 
                     Spacer(modifier = Modifier.padding(top = 30.dp))
@@ -230,8 +219,5 @@ internal fun PhotoDetail(
 @Preview
 @Composable
 private fun PreviewPhotoDetail() {
-    UnsplashKMPTheme {
-        PhotoDetail()
-    }
+    UnsplashKMPTheme { PhotoDetail() }
 }
-

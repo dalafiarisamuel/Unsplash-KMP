@@ -38,17 +38,11 @@ internal fun PhotoDetailScreenEntryPoint(
     photoId: String,
     viewModel: PhotoDetailViewModel = koinViewModel<PhotoDetailViewModel>(),
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.getSelectedPhotoById(photoId)
-    }
+    LaunchedEffect(Unit) { viewModel.getSelectedPhotoById(photoId) }
 
-    val writeStorage = rememberPermissionState(
-        Permission.WriteStorage
-    )
+    val writeStorage = rememberPermissionState(Permission.WriteStorage)
 
-    val gallery = rememberPermissionState(
-        Permission.Gallery
-    )
+    val gallery = rememberPermissionState(Permission.Gallery)
 
     val currentPlatform = remember { getPlatform() }
 
@@ -88,15 +82,13 @@ internal fun PhotoDetailScreenEntryPoint(
 
     if (showDialog) {
         Dialog(
-            onDismissRequest = { },
-            properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+            onDismissRequest = {},
+            properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         ) {
             Column(
-                modifier = Modifier
-                    .size(100.dp)
-                    .background(appDark, RoundedCornerShape(10.dp)),
+                modifier = Modifier.size(100.dp).background(appDark, RoundedCornerShape(10.dp)),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 CircularProgressIndicator(strokeWidth = 2.dp)
             }

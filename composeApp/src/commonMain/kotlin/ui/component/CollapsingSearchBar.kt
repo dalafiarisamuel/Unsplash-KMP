@@ -1,6 +1,5 @@
 package ui.component
 
-
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +22,6 @@ import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.search_images
 
-
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
@@ -45,37 +43,26 @@ internal fun CollapsibleSearchBar(
         toolbarOffset = toolbarOffset,
         minShrinkHeight = minShrinkHeight,
     ) {
-
-        Column(
-            modifier = Modifier
-                .wrapContentHeight()
-        ) {
-
+        Column(modifier = Modifier.wrapContentHeight()) {
             Text(
                 text = stringResource(Res.string.search_images),
                 color = appWhite,
                 fontSize = 13.sp,
                 fontStyle = FontStyle.Normal,
-                modifier = Modifier.padding(top = 25.dp)
+                modifier = Modifier.padding(top = 25.dp),
             )
 
-            Row(
-                modifier = Modifier
-                    .padding(top = 8.dp)
-            ) {
-
+            Row(modifier = Modifier.padding(top = 8.dp)) {
                 UnsplashSearchBox(
-                    modifier = Modifier
-                        .wrapContentHeight(),
+                    modifier = Modifier.wrapContentHeight(),
                     textValue = textValue,
                     keyboard = keyboard,
-                    keyboardAction = keyboardAction
+                    keyboardAction = keyboardAction,
                 ) {
                     textValueChange?.invoke(it)
                 }
             }
         }
-
     }
 }
 
@@ -84,7 +71,5 @@ internal fun CollapsibleSearchBar(
 @ExperimentalComposeUiApi
 @Composable
 private fun PreviewCollapsibleSearchBar() {
-    UnsplashKMPTheme {
-        CollapsibleSearchBar()
-    }
+    UnsplashKMPTheme { CollapsibleSearchBar() }
 }

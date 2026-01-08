@@ -20,7 +20,6 @@ import ui.download.PlatformDownloadImage
 import ui.state.ImageDownloadState
 import ui.state.PhotoDetailState
 
-
 internal class PhotoDetailViewModel(
     private val repository: ImageRepository,
     private val platformDownloadImage: PlatformDownloadImage,
@@ -29,28 +28,24 @@ internal class PhotoDetailViewModel(
     private val getPhotoByIdUseCase: GetPhotoByIdUseCase,
 ) : ViewModel(), KoinComponent {
 
-
     val uiState: StateFlow<PhotoDetailState>
         field = MutableStateFlow<PhotoDetailState>(PhotoDetailState())
 
     val imageDownloadState: StateFlow<ImageDownloadState>
         field = MutableStateFlow<ImageDownloadState>(ImageDownloadState.Idle)
 
-
     val isDownloading: StateFlow<Boolean>
         field = MutableStateFlow<Boolean>(false)
-
 
     init {
         handleLoadingState()
     }
 
     private fun handleLoadingState() {
-        imageDownloadState.map {
-            it is ImageDownloadState.Loading
-        }.onEach {
-            isDownloading.emit(it)
-        }.launchIn(viewModelScope)
+        imageDownloadState
+            .map { it is ImageDownloadState.Loading }
+            .onEach { isDownloading.emit(it) }
+            .launchIn(viewModelScope)
     }
 
     fun getSelectedPhotoById(photoId: String) {
@@ -59,52 +54,40 @@ internal class PhotoDetailViewModel(
             when (val result = repository.getPhoto(photoId = photoId)) {
                 is Resource.Success -> {
                     val photoFromCache = getPhotoByIdUseCase(photoId)
-                    val isFavourite =
-                        photoFromCache is Resource.Success && photoFromCache.result != null
+                    val isFavourite = photoFromCache is Resource.Success
                     uiState.update {
                         it.copy(
                             isLoading = false,
                             photo = result.result,
                             error = null,
-                            isImageFavourite = isFavourite
+                            isImageFavourite = isFavourite,
                         )
                     }
                 }
 
                 is Resource.Failure -> {
                     uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            photo = null,
-                            error = result.error
-                        )
+                        it.copy(isLoading = false, photo = null, error = result.error)
                     }
                 }
             }
         }
     }
 
-    fun saveOrRemovePhotoFromFavourite(
-        photo: UnsplashPhotoRemote
-    ) {
+    fun saveOrRemovePhotoFromFavourite(photo: UnsplashPhotoRemote) {
         viewModelScope.launch {
             if (uiState.value.isImageFavourite) {
                 val result = deletePhotoUseCase(photo)
                 if (result is Resource.Success && result.result > 0) {
-                    uiState.update {
-                        it.copy(isImageFavourite = false)
-                    }
+                    uiState.update { it.copy(isImageFavourite = false) }
                 }
             } else {
                 val result = savePhotoUseCase(photo)
                 if (result is Resource.Success) {
-                    uiState.update {
-                        it.copy(isImageFavourite = true)
-                    }
+                    uiState.update { it.copy(isImageFavourite = true) }
                 }
             }
         }
-
     }
 
     fun startDownload(photoUrl: String) {

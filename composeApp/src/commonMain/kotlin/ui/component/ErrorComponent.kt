@@ -12,7 +12,6 @@ import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.appWhite
@@ -22,22 +21,15 @@ internal fun ErrorComponent(modifier: Modifier = Modifier, message: String) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = Icons.Rounded.Warning,
             contentDescription = null,
-            modifier = Modifier
-                .size(40.dp)
-                .padding(top = 16.dp),
-            tint = appWhite
+            modifier = Modifier.size(40.dp).padding(top = 16.dp),
+            tint = appWhite,
         )
-        Text(
-            text = message,
-            color = appWhite,
-            modifier = Modifier.padding(top = 12.dp)
-        )
-
+        Text(text = message, color = appWhite, modifier = Modifier.padding(top = 12.dp))
     }
 }
 

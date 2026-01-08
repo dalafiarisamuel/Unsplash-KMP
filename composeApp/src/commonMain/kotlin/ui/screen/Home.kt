@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -36,7 +37,6 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import ui.component.ChipComponent
 import ui.component.CollapsibleSearchBar
-import ui.component.HomeScreenTitleAlignment
 import ui.component.UnsplashImageList
 import ui.component.getEdgeToEdgeTopPadding
 import ui.dialog.ImagePreviewDialog
@@ -64,10 +64,7 @@ internal fun HomeScreen(
     var toolbarOffsetHeightPx by rememberSaveable { mutableStateOf(0f) }
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
-            override fun onPreScroll(
-                available: Offset,
-                source: NestedScrollSource,
-            ): Offset {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 val delta = available.y
                 val newOffset = toolbarOffsetHeightPx + delta
                 toolbarOffsetHeightPx = newOffset.coerceIn(-toolbarHeightPx, 0f)
@@ -78,30 +75,27 @@ internal fun HomeScreen(
     }
 
     Column(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .fillMaxSize()
-            .padding(horizontal = 15.dp)
+        modifier =
+            Modifier.background(MaterialTheme.colors.background)
+                .fillMaxSize()
+                .padding(horizontal = 10.dp)
     ) {
-
         Spacer(modifier = Modifier.padding(top = 20.dp + getEdgeToEdgeTopPadding()))
 
         Text(
-            modifier = Modifier.align(HomeScreenTitleAlignment()),
+            modifier = Modifier.align(Alignment.Start),
             text = stringResource(Res.string.unsplash_images),
             color = appWhite,
             fontSize = 22.sp,
             fontStyle = FontStyle.Normal,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         CollapsibleSearchBar(
             toolbarOffset = toolbarOffsetHeightPx,
             toolbarHeight = toolbarHeight,
             keyboardAction = {
-                coroutine.launch(Dispatchers.Main) {
-                    lazyGridState.scrollToItem(0)
-                }
+                coroutine.launch(Dispatchers.Main) { lazyGridState.scrollToItem(0) }
                 dispatch(HomeScreenEvent.Search)
                 resetSearchInput()
             },
@@ -113,14 +107,10 @@ internal fun HomeScreen(
         )
 
         ChipComponent(
-            modifier = Modifier
-                .testTag("chip_group")
-                .padding(top = 20.dp),
+            modifier = Modifier.testTag("chip_group").padding(top = 20.dp),
             selectedText = state.searchFieldValue,
         ) {
-            coroutine.launch(Dispatchers.Main) {
-                lazyGridState.scrollToItem(0)
-            }
+            coroutine.launch(Dispatchers.Main) { lazyGridState.scrollToItem(0) }
             dispatch(HomeScreenEvent.SelectChip(it))
             resetSearchInput()
         }
@@ -130,21 +120,14 @@ internal fun HomeScreen(
             imageList = imageList,
             lazyGridState = lazyGridState,
             nestedScrollConnection = { nestedScrollConnection },
-            onItemClicked = {
-                it?.let { onImageClicked(it) }
-            },
-            onItemLongClicked = {
-                dispatch(HomeScreenEvent.OnImageLongClicked(it))
-            }
+            onItemClicked = { it?.let { onImageClicked(it) } },
+            onItemLongClicked = { dispatch(HomeScreenEvent.OnImageLongClicked(it)) },
         )
 
         if (state.isImagePreviewDialogVisible) {
-            ImagePreviewDialog(
-                photo = state.selectedImage
-            ) {
+            ImagePreviewDialog(photo = state.selectedImage) {
                 dispatch(HomeScreenEvent.ImagePreviewDialog.Dismiss)
             }
         }
     }
-
 }

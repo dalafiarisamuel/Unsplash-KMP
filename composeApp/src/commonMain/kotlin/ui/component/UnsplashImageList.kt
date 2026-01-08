@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -53,7 +52,6 @@ import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.ic_image_search
 import unsplashkmp.composeapp.generated.resources.searched_term_not_found
 
-
 @ExperimentalFoundationApi
 @Composable
 internal fun UnsplashImageList(
@@ -67,11 +65,11 @@ internal fun UnsplashImageList(
     val list = imageList.collectAsLazyPagingItems()
     val isListEmpty by derivedStateOf { list.itemCount <= 0 }
     if (list.loadState.refresh is LoadState.Loading) {
-        LoadingView(modifier = Modifier.fillMaxSize())
+        LoadingView(modifier = modifier)
     } else {
         Crossfade(targetState = isListEmpty, label = "") {
             if (it) {
-                EmptyListStateComponent(modifier = Modifier.fillMaxSize())
+                EmptyListStateComponent(modifier = modifier)
             } else {
                 PhotosList(
                     imageList = list,
@@ -96,22 +94,26 @@ private fun PhotosList(
 ) {
 
     val wind = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true)
-    val gridSize = when {
-        wind.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND) -> 2
-        wind.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> 2
-        wind.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) -> 2
-        else -> 2
-    }
-
+    val gridSize =
+        when {
+            wind.windowSizeClass.isWidthAtLeastBreakpoint(
+                WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND
+            ) -> 2
+            wind.windowSizeClass.isWidthAtLeastBreakpoint(
+                WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
+            ) -> 2
+            wind.windowSizeClass.isWidthAtLeastBreakpoint(
+                WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND
+            ) -> 2
+            else -> 2
+        }
 
     LazyVerticalStaggeredGrid(
         state = lazyGridState,
         verticalItemSpacing = 8.dp,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
-            .padding(top = 15.dp)
-            .nestedScroll(nestedScrollConnection()),
-        columns = StaggeredGridCells.Fixed(gridSize)
+        modifier = Modifier.padding(top = 15.dp).nestedScroll(nestedScrollConnection()),
+        columns = StaggeredGridCells.Fixed(gridSize),
     ) {
         lazyItems(imageList) { photo ->
             key(photo?.id) {
@@ -119,7 +121,7 @@ private fun PhotosList(
                     modifier = Modifier.animateItem(),
                     data = photo,
                     onImageClicked = onItemClicked,
-                    onImageLongClicked = onItemLongClicked
+                    onImageLongClicked = onItemLongClicked,
                 )
             }
         }
@@ -136,16 +138,13 @@ fun EmptyListStateComponent(
     Column(
         modifier = Modifier.then(modifier),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Image(
-            modifier = Modifier
-                .size(100.dp)
-                .background(color = appDark, shape = CircleShape),
+            modifier = Modifier.size(100.dp).background(color = appDark, shape = CircleShape),
             painter = painterResource(Res.drawable.ic_image_search),
             contentScale = ContentScale.Inside,
-            contentDescription = null
+            contentDescription = null,
         )
 
         Text(
@@ -153,11 +152,9 @@ fun EmptyListStateComponent(
             color = appWhite,
             fontSize = 13.sp,
             fontStyle = FontStyle.Normal,
-            modifier = Modifier.padding(top = 10.dp)
+            modifier = Modifier.padding(top = 10.dp),
         )
     }
-
-
 }
 
 @ExperimentalFoundationApi
@@ -176,26 +173,22 @@ private fun UnsplashImageStaggered(
     Card(
         elevation = 4.dp,
         shape = RoundedCornerShape(10.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .combinedClickable(
-                onClick = { onImageClicked(data) },
-                onLongClick = { onImageLongClicked(data) },
-            )
-            .then(modifier)
-
+        modifier =
+            Modifier.fillMaxWidth()
+                .combinedClickable(
+                    onClick = { onImageClicked(data) },
+                    onLongClick = { onImageLongClicked(data) },
+                )
+                .then(modifier),
     ) {
         AsyncImage(
             model = data?.urls?.small,
             contentDescription = data?.description,
             contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .aspectRatio(aspectRatio)
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 200.dp)
+            modifier =
+                Modifier.aspectRatio(aspectRatio).fillMaxWidth().defaultMinSize(minHeight = 200.dp),
         )
     }
-
 }
 
 @ExperimentalFoundationApi
@@ -203,9 +196,7 @@ private fun <T : Any> LazyStaggeredGridScope.lazyItems(
     lazyPagingItems: LazyPagingItems<T>,
     itemContent: @Composable LazyStaggeredGridItemScope.(value: T?) -> Unit,
 ) {
-    items(lazyPagingItems.itemCount) { index ->
-        itemContent(lazyPagingItems[index])
-    }
+    items(lazyPagingItems.itemCount) { index -> itemContent(lazyPagingItems[index]) }
 }
 
 @ExperimentalFoundationApi
@@ -214,11 +205,8 @@ private fun <T : Any> LazyStaggeredGridScope.lazyItemsIndexed(
     key: ((item: T?) -> Any)? = null,
     itemContent: @Composable LazyStaggeredGridItemScope.(value: T?) -> Unit,
 ) {
-    items(
-        lazyPagingItems.itemCount,
-        key?.let { { index -> key(lazyPagingItems[index]) } }
-    ) { index ->
+    items(lazyPagingItems.itemCount, key?.let { { index -> key(lazyPagingItems[index]) } }) { index
+        ->
         itemContent(lazyPagingItems[index])
     }
 }
-

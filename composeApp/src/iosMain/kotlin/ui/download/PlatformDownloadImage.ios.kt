@@ -48,13 +48,14 @@ internal actual class PlatformDownloadImage {
     private suspend fun fetchData(url: NSURL): Pair<NSData?, NSURLResponse?> =
         suspendCancellableCoroutine { continuation ->
             val session = NSURLSession.sharedSession
-            val task = session.dataTaskWithURL(url) { data, response, error ->
-                if (error != null) {
-                    continuation.resumeWithException(error.toKotlinException())
-                } else {
-                    continuation.resume(Pair(data, response))
+            val task =
+                session.dataTaskWithURL(url) { data, response, error ->
+                    if (error != null) {
+                        continuation.resumeWithException(error.toKotlinException())
+                    } else {
+                        continuation.resume(Pair(data, response))
+                    }
                 }
-            }
             task.resume()
         }
 

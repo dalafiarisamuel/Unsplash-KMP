@@ -38,16 +38,17 @@ internal fun PhotoLargeDisplay(
 ) {
     var isScaled: Boolean by remember { mutableStateOf(false) }
     var showShimmer: Boolean by remember { mutableStateOf(true) }
-    val scale: Float by animateFloatAsState(
-        targetValue = if (isScaled) 1.45f else 1f, animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow,
-            visibilityThreshold = 0.001f
+    val scale: Float by
+        animateFloatAsState(
+            targetValue = if (isScaled) 1.45f else 1f,
+            animationSpec =
+                spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow,
+                    visibilityThreshold = 0.001f,
+                ),
         )
-    )
-    val aspectRatio: Float by remember {
-        derivedStateOf { (imageSize.width / imageSize.height) }
-    }
+    val aspectRatio: Float by remember { derivedStateOf { (imageSize.width / imageSize.height) } }
     val painter: AsyncImagePainter = rememberAsyncImagePainter(imageUrl)
     val painterState by painter.state.collectAsState()
     if (painterState is AsyncImagePainter.State.Success) {
@@ -59,23 +60,24 @@ internal fun PhotoLargeDisplay(
             elevation = 1.dp,
             shape = RoundedCornerShape(10.dp),
             modifier = modifier,
-            onClick = { isScaled = !isScaled }) {
+            onClick = { isScaled = !isScaled },
+        ) {
             Image(
                 painter = painter,
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
-                modifier = Modifier
-                    .background(
-                        shimmerBrush(
-                            targetValue = 1300f,
-                            showShimmer = showShimmer,
-                            shimmerColorFrame = imageColor
+                modifier =
+                    Modifier.background(
+                            shimmerBrush(
+                                targetValue = 1300f,
+                                showShimmer = showShimmer,
+                                shimmerColorFrame = imageColor,
+                            )
                         )
-                    )
-                    .aspectRatio(aspectRatio)
-                    .scale(scale)
-                    .width(350.dp)
-                    .height(500.dp)
+                        .aspectRatio(aspectRatio)
+                        .scale(scale)
+                        .width(350.dp)
+                        .height(500.dp),
             )
         }
     }

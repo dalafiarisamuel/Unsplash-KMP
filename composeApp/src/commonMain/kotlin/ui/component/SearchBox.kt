@@ -1,6 +1,5 @@
 package ui.component
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -51,78 +50,66 @@ internal fun UnsplashSearchBox(
 ) {
 
     Row(
-        modifier = modifier
-            .background(
-                shape = RoundedCornerShape(27.5.dp),
-                color = colorDisabledGray
-            )
-            .border(
-                width = 1.dp,
-                color = colorGrayDivider,
-                shape = RoundedCornerShape(27.5.dp)
-            )
-            .wrapContentHeight()
+        modifier =
+            modifier
+                .background(shape = RoundedCornerShape(27.5.dp), color = colorDisabledGray)
+                .border(width = 1.dp, color = colorGrayDivider, shape = RoundedCornerShape(27.5.dp))
+                .wrapContentHeight()
     ) {
-
         TextField(
-            modifier = Modifier
-                .testTag("search_text_field")
-                .height(55.dp)
-                .fillMaxWidth()
-                .align(Alignment.CenterVertically),
+            modifier =
+                Modifier.testTag("search_text_field")
+                    .height(55.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.CenterVertically),
             placeholder = {
                 Text(
                     text = stringResource(Res.string.search_image_hint),
                     color = Color.DarkGray,
                     fontSize = 13.sp,
-                    fontStyle = FontStyle.Normal
+                    fontStyle = FontStyle.Normal,
                 )
             },
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = appWhite,
-                backgroundColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            ),
+            colors =
+                TextFieldDefaults.textFieldColors(
+                    textColor = appWhite,
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                ),
             textStyle = LocalTextStyle.current.copy(fontSize = 13.sp),
             value = textValue ?: "",
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences,
-                autoCorrectEnabled = false,
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Search
-            ),
-            keyboardActions = KeyboardActions(
-                onSearch = {
-                    keyboardAction?.invoke()
-                    keyboard?.hide()
-                }),
+            keyboardOptions =
+                KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    autoCorrectEnabled = false,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Search,
+                ),
+            keyboardActions =
+                KeyboardActions(
+                    onSearch = {
+                        keyboardAction?.invoke()
+                        keyboard?.hide()
+                    }
+                ),
             singleLine = true,
-            onValueChange = {
-                textValueChange?.invoke(it)
-            },
+            onValueChange = { textValueChange?.invoke(it) },
             leadingIcon = {
                 Image(
                     painter = painterResource(Res.drawable.ic_image),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(appWhite),
-                    modifier = Modifier
-                        .padding(start = 21.dp)
-                        .align(Alignment.CenterVertically)
+                    modifier = Modifier.padding(start = 21.dp).align(Alignment.CenterVertically),
                 )
             },
             trailingIcon = {
-                SearchButton(
-                    modifier = Modifier
-                        .testTag("search_button")
-                        .size(55.dp)
-                ) {
+                SearchButton(modifier = Modifier.testTag("search_button").size(55.dp)) {
                     keyboard?.hide()
                     keyboardAction?.invoke()
                 }
-            }
+            },
         )
     }
-
 }

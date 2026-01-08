@@ -9,6 +9,5 @@ internal actual fun platformModule(): Module {
     return module {
         single { PlatformDownloadImage(get()) }
         single { DatabaseFactory() }
-
     }
 }

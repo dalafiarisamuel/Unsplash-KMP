@@ -7,7 +7,6 @@ import data.remote.repository.ImageRepository
 import data.remote.repository.Resource
 import data.ui.model.Photo
 
-
 internal class ImagePagingSource(
     private val repository: ImageRepository,
     private val photoMapper: PhotoMapper,
@@ -25,15 +24,16 @@ internal class ImagePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         val position = params.key ?: STARTING_PAGE_INDEX
 
-        return when (val response =
-            repository.getImageSearchResult(query, position, params.loadSize)) {
+        return when (
+            val response = repository.getImageSearchResult(query, position, params.loadSize)
+        ) {
             is Resource.Failure -> LoadResult.Error(response.error)
             is Resource.Success -> {
                 val photos = photoMapper.mapToUIList(response.result.results)
                 LoadResult.Page(
                     data = photos,
                     prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
-                    nextKey = if (position >= response.result.totalPages) null else position + 1
+                    nextKey = if (position >= response.result.totalPages) null else position + 1,
                 )
             }
         }

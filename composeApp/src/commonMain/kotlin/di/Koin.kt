@@ -40,25 +40,23 @@ import org.koin.dsl.module
 import ui.viewmodel.HomeScreenViewModel
 import ui.viewmodel.PhotoDetailViewModel
 
-fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
-    startKoin {
-        appDeclaration()
-        modules(
-            networkModule(),
-            mapperModule(),
-            repositoryModule(),
-            viewModelModule(),
-            platformModule(),
-            sharedModule(),
-            useCaseModule()
-        )
-    }
+fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
+    appDeclaration()
+    modules(
+        networkModule(),
+        mapperModule(),
+        repositoryModule(),
+        viewModelModule(),
+        platformModule(),
+        sharedModule(),
+        useCaseModule(),
+    )
+}
 
 // called by iOS etc
 fun initKoin() = initKoin() {}
 
 private fun networkModule() = module {
-
     single {
         HttpClient {
             install(ContentNegotiation) {
@@ -116,11 +114,10 @@ private fun viewModelModule() = module {
 }
 
 private fun sharedModule() = module {
+    single { get<UnsplashPhotoDatabase>().getPhotoDao() }
     single {
-        get<UnsplashPhotoDatabase>().getPhotoDao()
-    }
-    single {
-        get<DatabaseFactory>().create()
+        get<DatabaseFactory>()
+            .create()
             .fallbackToDestructiveMigration(dropAllTables = true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)

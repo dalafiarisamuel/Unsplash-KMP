@@ -22,17 +22,17 @@ internal fun shimmerBrush(
     return if (showShimmer) {
         val shimmerColors = remember { returnShimmerColors(shimmerColorFrame) }
         val transition = rememberInfiniteTransition()
-        val translateAnimation = transition.animateFloat(
-            initialValue = 0f,
-            targetValue = targetValue,
-            animationSpec = infiniteRepeatable(
-                animation = tween(800), repeatMode = RepeatMode.Reverse
+        val translateAnimation =
+            transition.animateFloat(
+                initialValue = 0f,
+                targetValue = targetValue,
+                animationSpec =
+                    infiniteRepeatable(animation = tween(800), repeatMode = RepeatMode.Reverse),
             )
-        )
         Brush.linearGradient(
             colors = shimmerColors,
             start = Offset.Zero,
-            end = Offset(x = translateAnimation.value, y = 0f)
+            end = Offset(x = translateAnimation.value, y = 0f),
         )
     } else {
         Brush.linearGradient(

@@ -45,16 +45,12 @@ import ui.theme.complementary
 import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.ic_image
 
-
 @Composable
 internal fun ImagePreviewDialog(photo: Photo?, onDismissCLicked: () -> Unit) {
 
     Dialog(
         onDismissRequest = onDismissCLicked,
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = true
-        )
+        properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
     ) {
         DialogContent(
             imageUrl = photo?.urls?.regular,
@@ -62,10 +58,9 @@ internal fun ImagePreviewDialog(photo: Photo?, onDismissCLicked: () -> Unit) {
             blurHash = photo?.blurHash,
             imageWidth = photo?.width,
             imageHeight = photo?.height,
-            authorOrDescriptionText = photo?.description ?: photo?.alternateDescription
-            ?: photo?.user?.name
+            authorOrDescriptionText =
+                photo?.description ?: photo?.alternateDescription ?: photo?.user?.name,
         )
-
     }
 }
 
@@ -90,65 +85,60 @@ private fun DialogContent(
     val frameSize: Pair<Float, Float> by remember {
         derivedStateOf {
             when {
-                windowInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND) -> 600F to 700F
-                windowInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) -> 600F to 700F
-                windowInfo.windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) -> 400F to 500F
+                windowInfo.windowSizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND
+                ) -> 600F to 700F
+                windowInfo.windowSizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
+                ) -> 600F to 700F
+                windowInfo.windowSizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND
+                ) -> 400F to 500F
                 else -> 400F to 500F
             }
         }
     }
 
-    val animatedSize by animateSizeAsState(
-        targetValue = Size(frameSize.first, frameSize.second),
-        animationSpec = tween(durationMillis = 1000)
-    )
+    val animatedSize by
+        animateSizeAsState(
+            targetValue = Size(frameSize.first, frameSize.second),
+            animationSpec = tween(durationMillis = 1000),
+        )
 
-    Box(
-        modifier = Modifier
-            .size(width = animatedSize.width.dp, height = animatedSize.height.dp)
-    ) {
-
+    Box(modifier = Modifier.size(width = animatedSize.width.dp, height = animatedSize.height.dp)) {
         Card(
             backgroundColor = imageColorParsed,
             elevation = 0.dp,
             shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             AsyncImage(
                 model = imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .aspectRatio(aspectRatio)
-                    .fillMaxWidth()
-                    .defaultMinSize(minHeight = 200.dp)
+                modifier =
+                    Modifier.aspectRatio(aspectRatio)
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 200.dp),
             )
         }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .background(
-                    imageColorParsed,
-                    shape = RoundedCornerShape(
-                        bottomStart = 10.dp,
-                        bottomEnd = 10.dp
+            modifier =
+                Modifier.fillMaxWidth()
+                    .height(40.dp)
+                    .background(
+                        imageColorParsed,
+                        shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp),
                     )
-                )
-                .align(Alignment.BottomCenter)
+                    .align(Alignment.BottomCenter)
         ) {
-
             Image(
                 painter = painterResource(Res.drawable.ic_image),
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .align(Alignment.CenterVertically),
-                colorFilter = ColorFilter.tint(
-                    color = imageColorParseComplementary
-                )
+                modifier = Modifier.padding(start = 10.dp).align(Alignment.CenterVertically),
+                colorFilter = ColorFilter.tint(color = imageColorParseComplementary),
             )
 
             Text(
@@ -159,14 +149,12 @@ private fun DialogContent(
                 overflow = TextOverflow.Ellipsis,
                 softWrap = false,
                 fontStyle = FontStyle.Italic,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 10.dp, end = 10.dp)
-                    .align(Alignment.CenterVertically)
-                    .basicMarquee()
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .padding(start = 10.dp, end = 10.dp)
+                        .align(Alignment.CenterVertically)
+                        .basicMarquee(),
             )
-
         }
     }
-
 }

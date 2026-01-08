@@ -25,7 +25,7 @@ internal abstract class MviViewModel<Event, State>(defaultState: State) : ViewMo
     }
 
     protected inline fun <reified SpecificEvent : Event> on(
-        crossinline handle: suspend (event: SpecificEvent) -> Unit,
+        crossinline handle: suspend (event: SpecificEvent) -> Unit
     ) {
         events
             .filterIsInstance<SpecificEvent>()

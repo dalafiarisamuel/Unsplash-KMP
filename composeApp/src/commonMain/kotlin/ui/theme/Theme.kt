@@ -9,23 +9,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
-    primary = ColorWhite,
-    primaryVariant = ColorWhite,
-    secondary = ColorMatteBlack,
-    background = ColorMatteBlack,
-    onSecondary = ColorMatteBlack,
-    secondaryVariant = Color(0xFFF5F5FD)
-)
+private val DarkColorPalette =
+    darkColors(
+        primary = ColorWhite,
+        primaryVariant = ColorWhite,
+        secondary = ColorMatteBlack,
+        background = ColorMatteBlack,
+        onSecondary = ColorMatteBlack,
+        secondaryVariant = Color(0xFFF5F5FD),
+    )
 
-private val LightColorPalette = lightColors(
-    primary = ColorMatteBlack,
-    primaryVariant = ColorMatteBlack,
-    secondary = ColorWhite,
-    background = ColorWhite,
-    onSecondary = Color(0xFFF5F5FD),
-    secondaryVariant = Color(0xFFD4D8EB)
-)
+private val LightColorPalette =
+    lightColors(
+        primary = ColorMatteBlack,
+        primaryVariant = ColorMatteBlack,
+        secondary = ColorWhite,
+        background = ColorWhite,
+        onSecondary = Color(0xFFF5F5FD),
+        secondaryVariant = Color(0xFFD4D8EB),
+    )
 
 @ExperimentalFoundationApi
 @Composable
@@ -33,19 +35,16 @@ internal fun UnsplashKMPTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+    val colors =
+        if (darkTheme) {
+            DarkColorPalette
+        } else {
+            LightColorPalette
+        }
 
     PlatformAppearance(darkTheme)
 
-    MaterialTheme(
-        colors = colors,
-        typography = getTypography(),
-        shapes = Shapes
-    ) {
+    MaterialTheme(colors = colors, typography = getTypography(), shapes = Shapes) {
         CompositionLocalProvider(content = content)
     }
 }

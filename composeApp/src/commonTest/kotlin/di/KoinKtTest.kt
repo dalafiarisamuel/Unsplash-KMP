@@ -6,7 +6,6 @@ import data.mapper.PhotosUrlsMapper
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
-
 fun networkModule() = module {
     single {
         Json {

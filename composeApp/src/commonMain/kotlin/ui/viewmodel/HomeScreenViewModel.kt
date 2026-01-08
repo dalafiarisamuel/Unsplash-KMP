@@ -1,6 +1,5 @@
 package ui.viewmodel
 
-
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -13,7 +12,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
-import org.koin.core.component.KoinComponent
 import ui.event.HomeScreenEvent
 import ui.state.HomeScreenState
 import kotlin.time.Duration.Companion.seconds
@@ -22,12 +20,16 @@ import kotlin.time.Duration.Companion.seconds
 internal class HomeScreenViewModel(
     private val repository: ImageRepository,
     private val photoMapper: PhotoMapper,
-) : MviViewModel<HomeScreenEvent, HomeScreenState>(HomeScreenState()), KoinComponent {
+) : MviViewModel<HomeScreenEvent, HomeScreenState>(HomeScreenState()) {
 
     companion object {
-        private val DEFAULT_QUERY = listOf("Nigeria", "Cameras", "History", "Architecture", "Animals", "Travel", "Fashion")
+        private val DEFAULT_QUERY =
+            listOf("Nigeria", "Cameras", "History", "Architecture", "Animals", "Travel", "Fashion")
     }
-    private val randomDefaultQuery get() = DEFAULT_QUERY.random()
+
+    private val randomDefaultQuery
+        get() = DEFAULT_QUERY.random()
+
     private var currentQuery: MutableStateFlow<String> = MutableStateFlow(randomDefaultQuery)
 
     init {
@@ -48,53 +50,50 @@ internal class HomeScreenViewModel(
         currentQuery.value = query.ifEmpty { randomDefaultQuery }
     }
 
-    val photos = currentQuery
-        .debounce(1.5.seconds)
-        .flatMapLatest { queryString ->
-            state = state.copy(searchFieldValue = queryString)
-            getImageSearchResult(queryString)
-        }.cachedIn(viewModelScope)
+    val photos =
+        currentQuery
+            .debounce(1.5.seconds)
+            .flatMapLatest { queryString ->
+                state = state.copy(searchFieldValue = queryString)
+                getImageSearchResult(queryString)
+            }
+            .cachedIn(viewModelScope)
 
-    private fun getImageSearchResult(query: String) = Pager(
-        config = PagingConfig(
-            pageSize = ImagePagingSource.PAGE_SIZE,
-            enablePlaceholders = false
-        ),
-        pagingSourceFactory = {
-            ImagePagingSource(
-                repository = repository,
-                photoMapper = photoMapper,
-                query = query
+    private fun getImageSearchResult(query: String) =
+        Pager(
+                config =
+                    PagingConfig(
+                        pageSize = ImagePagingSource.PAGE_SIZE,
+                        enablePlaceholders = false,
+                    ),
+                pagingSourceFactory = {
+                    ImagePagingSource(
+                        repository = repository,
+                        photoMapper = photoMapper,
+                        query = query,
+                    )
+                },
             )
-        }
-    ).flow
+            .flow
 
     private fun handleSelectChipEvent() {
         on<HomeScreenEvent.SelectChip> {
-            state = state.copy(
-                searchFieldValue = it.chipValue
-            )
+            state = state.copy(searchFieldValue = it.chipValue)
             setSearchTerm(state.searchFieldValue)
         }
     }
 
     private fun handleSelectImage() {
-        on<HomeScreenEvent.SelectImage> {
-            state = state.copy(selectedImage = it.image)
-        }
+        on<HomeScreenEvent.SelectImage> { state = state.copy(selectedImage = it.image) }
     }
 
     private fun handleSearchEvent() {
-        on<HomeScreenEvent.Search> {
-            setSearchTerm(state.searchFieldValue)
-        }
+        on<HomeScreenEvent.Search> { setSearchTerm(state.searchFieldValue) }
     }
 
     private fun handleUpdateSearchFieldEvent() {
         on<HomeScreenEvent.UpdateSearchField> {
-            state = state.copy(
-                searchFieldValue = it.searchTerm
-            )
+            state = state.copy(searchFieldValue = it.searchTerm)
             setSearchTerm(state.searchFieldValue)
         }
     }
@@ -113,11 +112,7 @@ internal class HomeScreenViewModel(
 
     private fun handleOnImageClicked() {
         on<HomeScreenEvent.OnImageLongClicked> {
-            state = state.copy(
-                selectedImage = it.image,
-                isImagePreviewDialogVisible = true
-            )
+            state = state.copy(selectedImage = it.image, isImagePreviewDialogVisible = true)
         }
     }
-
 }
