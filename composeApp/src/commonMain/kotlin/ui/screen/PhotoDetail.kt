@@ -71,9 +71,6 @@ internal fun PhotoDetail(
     onDownloadImageClicked: (String?) -> Unit = {},
 ) {
 
-    val scrollableState = rememberScrollState()
-    val locale = Locale.current
-
     Column(
         modifier =
             Modifier.background(MaterialTheme.colors.background)
@@ -87,7 +84,7 @@ internal fun PhotoDetail(
             onBackPressed = onBackPressed,
         )
 
-        Column(modifier = Modifier.fillMaxWidth().verticalScroll(scrollableState)) {
+        Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
             when {
                 state.isLoading -> {
                     LinearProgressIndicator(
@@ -134,7 +131,7 @@ internal fun PhotoDetail(
                         val content = state.photo.description ?: state.photo.alternateDescription
 
                         Text(
-                            text = content.orEmpty().capitalize(locale),
+                            text = content.orEmpty().capitalize(Locale.current),
                             color = appWhite,
                             fontSize = 13.sp,
                             fontStyle = FontStyle.Normal,
