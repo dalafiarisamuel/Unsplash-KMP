@@ -14,7 +14,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import ui.theme.ColorPalatinateBlue
+import ui.theme.appWhite
 import ui.viewmodel.HomeScreenViewModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
@@ -23,6 +23,8 @@ internal fun HomeScreenEntryPoint(
     navigateToDetailScreen: (imageId: String) -> Unit = {},
     navigateToBookmarks: () -> Unit = {},
     resetSearchInput: () -> Unit = {},
+    flipTheme: () -> Unit = {},
+    isDarkTheme: Boolean = false,
     viewModel: HomeScreenViewModel = koinViewModel<HomeScreenViewModel>(),
 ) {
 
@@ -30,7 +32,11 @@ internal fun HomeScreenEntryPoint(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(modifier = Modifier.size(50.dp), onClick = navigateToBookmarks) {
-                Icon(imageVector = Icons.Rounded.Bookmarks, tint = ColorPalatinateBlue, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Rounded.Bookmarks,
+                    tint = appWhite,
+                    contentDescription = null,
+                )
             }
         },
         floatingActionButtonPosition = FabPosition.End,
@@ -40,6 +46,8 @@ internal fun HomeScreenEntryPoint(
             imageList = viewModel.photos,
             dispatch = viewModel::dispatch,
             resetSearchInput = resetSearchInput,
+            isDarkTheme = isDarkTheme,
+            flipTheme = flipTheme,
         ) { image ->
             navigateToDetailScreen(image.id)
         }

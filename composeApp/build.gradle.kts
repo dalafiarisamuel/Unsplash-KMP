@@ -15,15 +15,9 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
-    }
+    androidTarget { compilerOptions { jvmTarget.set(JvmTarget.JVM_11) } }
 
-    sourceSets.all {
-        languageSettings.enableLanguageFeature("ExplicitBackingFields")
-    }
+    sourceSets.all { languageSettings.enableLanguageFeature("ExplicitBackingFields") }
 
     targets.configureEach {
         compilations.configureEach {
@@ -35,11 +29,7 @@ kotlin {
 
     jvm("desktop")
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
+    listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
@@ -47,17 +37,12 @@ kotlin {
         }
     }
 
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
+    room { schemaDirectory("$projectDir/schemas") }
 
     sourceSets {
-
         val desktopMain by getting
 
-        sourceSets.commonMain {
-            kotlin.srcDir("build/generated/ksp/metadata")
-        }
+        sourceSets.commonMain { kotlin.srcDir("build/generated/ksp/metadata") }
 
         androidMain.dependencies {
             implementation(compose.preview)
@@ -113,23 +98,28 @@ kotlin {
         }
         desktopMain.dependencies {
             val osName = System.getProperty("os.name")
-            val targetOs = when {
-                osName == "Mac OS X" -> "macos"
-                osName.startsWith("Win") -> "windows"
-                osName.startsWith("Linux") -> "linux"
-                else -> error("Unsupported OS: $osName")
-            }
+            val targetOs =
+                when {
+                    osName == "Mac OS X" -> "macos"
+                    osName.startsWith("Win") -> "windows"
+                    osName.startsWith("Linux") -> "linux"
+                    else -> error("Unsupported OS: $osName")
+                }
 
-            val targetArch = when (val osArch = System.getProperty("os.arch")) {
-                "x86_64", "amd64" -> "x64"
-                "aarch64" -> "arm64"
-                else -> error("Unsupported arch: $osArch")
-            }
+            val targetArch =
+                when (val osArch = System.getProperty("os.arch")) {
+                    "x86_64",
+                    "amd64" -> "x64"
+                    "aarch64" -> "arm64"
+                    else -> error("Unsupported arch: $osArch")
+                }
 
             val version = "0.8.15"
             val target = "${targetOs}-${targetArch}"
             implementation("org.jetbrains.skiko:skiko-awt-runtime-$target:$version") {
-                because("navigation version >=2.8.0 requires skiko version 0.8.15 to work correctly on desktops")
+                because(
+                    "navigation version >=2.8.0 requires skiko version 0.8.15 to work correctly on desktops"
+                )
             }
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
@@ -152,26 +142,14 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
+    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
+    buildTypes { getByName("release") { isMinifyEnabled = false } }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    buildFeatures {
-        compose = true
-    }
-    dependencies {
-        debugImplementation(compose.uiTooling)
-    }
+    buildFeatures { compose = true }
+    dependencies { debugImplementation(compose.uiTooling) }
 }
 
 dependencies {
@@ -193,4 +171,3 @@ compose.desktop {
         }
     }
 }
-

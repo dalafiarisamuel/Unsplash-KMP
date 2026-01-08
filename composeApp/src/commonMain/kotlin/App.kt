@@ -116,7 +116,9 @@ fun App() {
                                     backStack.removeLastOrNull()
                                 }
                             },
-                            navigateToBookmarks = {}
+                            isDarkTheme = sharedRepository.isDarkThemeEnabled,
+                            flipTheme = { sharedRepository.flipTheme() },
+                            navigateToBookmarks = {},
                         )
                     }
 

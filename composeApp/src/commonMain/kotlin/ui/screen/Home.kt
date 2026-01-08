@@ -2,13 +2,21 @@ package ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +61,8 @@ internal fun HomeScreen(
     state: HomeScreenState = HomeScreenState(),
     imageList: Flow<PagingData<Photo>> = flowOf(PagingData.empty()),
     dispatch: (HomeScreenEvent) -> Unit = {},
+    flipTheme: () -> Unit = {},
+    isDarkTheme: Boolean = false,
     resetSearchInput: () -> Unit = {},
     onImageClicked: (Photo) -> Unit = {},
 ) {
@@ -80,16 +90,27 @@ internal fun HomeScreen(
                 .fillMaxSize()
                 .padding(horizontal = 10.dp)
     ) {
-        Spacer(modifier = Modifier.padding(top = 20.dp + getEdgeToEdgeTopPadding()))
+        Spacer(modifier = Modifier.padding(top = 10.dp + getEdgeToEdgeTopPadding()))
 
-        Text(
-            modifier = Modifier.align(Alignment.Start),
-            text = stringResource(Res.string.unsplash_images),
-            color = appWhite,
-            fontSize = 22.sp,
-            fontStyle = FontStyle.Normal,
-            fontWeight = FontWeight.Bold,
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                text = stringResource(Res.string.unsplash_images),
+                color = appWhite,
+                fontSize = 22.sp,
+                fontStyle = FontStyle.Normal,
+                fontWeight = FontWeight.Bold,
+            )
+
+            IconButton(onClick = flipTheme, modifier = Modifier.align(Alignment.CenterVertically)) {
+                val icon = if (isDarkTheme) Icons.Rounded.LightMode else Icons.Rounded.DarkMode
+                Icon(imageVector = icon, tint = appWhite, contentDescription = null)
+            }
+        }
 
         CollapsibleSearchBar(
             toolbarOffset = toolbarOffsetHeightPx,
