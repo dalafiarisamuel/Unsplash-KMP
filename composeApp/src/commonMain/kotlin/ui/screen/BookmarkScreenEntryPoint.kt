@@ -29,7 +29,10 @@ internal fun BookmarkScreenEntryPoint(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
-            FloatingActionButton(modifier = Modifier.size(50.dp), onClick = {}) {
+            FloatingActionButton(
+                modifier = Modifier.size(50.dp),
+                onClick = viewModel::clearAllPhoto,
+            ) {
                 Icon(
                     imageVector = Icons.Rounded.ClearAll,
                     tint = appWhite,

@@ -1,5 +1,5 @@
 <resources>
-    <string name="searched_term_not_found">Searched term not found</string>
+    <string name="nothing_to_display">Nothing to display</string>
     <string name="unsplash_images">Unsplash Images</string>
     <string name="search_images">Search Images</string>
     <string name="search_image_hint">Type a term, e.g dog</string>

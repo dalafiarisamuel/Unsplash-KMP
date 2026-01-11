@@ -12,7 +12,7 @@ interface UnsplashPhotoDao {
     @Upsert
     suspend fun insertPhoto(photoLocal: UnsplashPhotoLocal)
 
-    @Query("SELECT * FROM UnsplashPhotoLocal")
+    @Query("SELECT * FROM UnsplashPhotoLocal ORDER BY `databaseCreatedDate` DESC")
     fun getAllPhotoAsFlow(): Flow<List<UnsplashPhotoLocal>>
 
     @Query("SELECT * FROM UnsplashPhotoLocal WHERE id=:id")

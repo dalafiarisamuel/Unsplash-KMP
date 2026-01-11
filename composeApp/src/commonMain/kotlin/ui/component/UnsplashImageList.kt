@@ -33,6 +33,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.PhotoLibrary
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -46,6 +47,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -61,14 +64,12 @@ import androidx.window.core.layout.WindowSizeClass
 import coil3.compose.AsyncImage
 import data.ui.model.Photo
 import kotlinx.coroutines.flow.Flow
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.appDark
 import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.Res
-import unsplashkmp.composeapp.generated.resources.ic_image_search
-import unsplashkmp.composeapp.generated.resources.searched_term_not_found
+import unsplashkmp.composeapp.generated.resources.nothing_to_display
 
 private const val MINIMUM_SCROLL = -2_000f
 
@@ -209,7 +210,7 @@ private fun PhotosList(
 @Composable
 fun EmptyListStateComponent(
     modifier: Modifier = Modifier,
-    term: String = stringResource(Res.string.searched_term_not_found),
+    term: String = stringResource(Res.string.nothing_to_display),
 ) {
 
     Column(
@@ -218,10 +219,11 @@ fun EmptyListStateComponent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            modifier = Modifier.size(100.dp).background(color = appDark, shape = CircleShape),
-            painter = painterResource(Res.drawable.ic_image_search),
+            modifier = Modifier.size(100.dp).background(color = appWhite, shape = CircleShape),
+            imageVector = Icons.Rounded.PhotoLibrary,
             contentScale = ContentScale.Inside,
             contentDescription = null,
+            colorFilter = ColorFilter.tint(color = appDark, blendMode = BlendMode.SrcIn)
         )
 
         Text(
