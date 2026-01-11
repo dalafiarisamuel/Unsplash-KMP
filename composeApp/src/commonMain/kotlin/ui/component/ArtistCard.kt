@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -73,7 +74,7 @@ internal fun ArtistCard(modifier: Modifier = Modifier, unsplashUser: UnsplashUse
                     overflow = TextOverflow.Ellipsis,
                     text = unsplashUser.name,
                     color = appWhite,
-                    fontSize = 17.sp,
+                    fontSize = MaterialTheme.typography.subtitle1.fontSize,
                     fontStyle = FontStyle.Normal,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.basicMarquee(),
@@ -153,7 +154,7 @@ private fun PreviewArtistCard() {
                 totalCollections = 12,
                 totalLikes = 437,
                 totalPhotos = 5000,
-                portfolioUrl = "https://this-is-a-fake-url",
+                portfolioUrl = "https://github.com/dalafiarisamuel",
                 profileImage =
                     ProfileImage(
                         small = "https://this-is-a-fake-url",

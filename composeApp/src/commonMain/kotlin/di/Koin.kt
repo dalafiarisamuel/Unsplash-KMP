@@ -37,6 +37,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import ui.viewmodel.BookmarkScreenViewModel
 import ui.viewmodel.HomeScreenViewModel
 import ui.viewmodel.PhotoDetailViewModel
 
@@ -111,6 +112,7 @@ private fun useCaseModule() = module {
 private fun viewModelModule() = module {
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::PhotoDetailViewModel)
+    viewModelOf(::BookmarkScreenViewModel)
 }
 
 private fun sharedModule() = module {

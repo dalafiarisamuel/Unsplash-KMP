@@ -1,14 +1,22 @@
 package ui.component
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,16 +28,26 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.retain.retain
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
@@ -52,6 +70,8 @@ import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.ic_image_search
 import unsplashkmp.composeapp.generated.resources.searched_term_not_found
 
+private const val MINIMUM_SCROLL = -2_000f
+
 @ExperimentalFoundationApi
 @Composable
 internal fun UnsplashImageList(
@@ -60,7 +80,9 @@ internal fun UnsplashImageList(
     lazyGridState: LazyStaggeredGridState,
     nestedScrollConnection: () -> NestedScrollConnection,
     onItemClicked: (Photo?) -> Unit,
-    onItemLongClicked: (Photo?) -> Unit,
+    onItemLongClicked: (Photo?) -> Unit = {},
+    onScrollToTop: () -> Unit = {},
+    fixedGridCell: Boolean = true,
 ) {
     val list = imageList.collectAsLazyPagingItems()
     val isListEmpty by derivedStateOf { list.itemCount <= 0 }
@@ -77,6 +99,8 @@ internal fun UnsplashImageList(
                     nestedScrollConnection = nestedScrollConnection,
                     onItemClicked = onItemClicked,
                     onItemLongClicked = onItemLongClicked,
+                    onScrollToTop = onScrollToTop,
+                    fixedGridCell = fixedGridCell,
                 )
             }
         }
@@ -91,37 +115,90 @@ private fun PhotosList(
     nestedScrollConnection: () -> NestedScrollConnection,
     onItemClicked: (Photo?) -> Unit,
     onItemLongClicked: (Photo?) -> Unit,
+    onScrollToTop: () -> Unit = {},
+    fixedGridCell: Boolean,
 ) {
+
+    var isScrollToTopVisible by rememberSaveable { mutableStateOf(false) }
+
+    var totalScrolled by rememberSaveable { mutableStateOf(0f) }
+
+    val scrollButtonConnection = retain {
+        object : NestedScrollConnection {
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource,
+            ): Offset {
+                totalScrolled += consumed.y
+                isScrollToTopVisible = totalScrolled < MINIMUM_SCROLL
+
+                return super.onPostScroll(consumed, available, source)
+            }
+        }
+    }
 
     val wind = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true)
     val gridSize =
-        when {
-            wind.windowSizeClass.isWidthAtLeastBreakpoint(
-                WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND
-            ) -> 2
-            wind.windowSizeClass.isWidthAtLeastBreakpoint(
-                WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
-            ) -> 2
-            wind.windowSizeClass.isWidthAtLeastBreakpoint(
-                WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND
-            ) -> 2
-            else -> 2
+        if (fixedGridCell) {
+            2
+        } else {
+            when {
+                wind.windowSizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_LARGE_LOWER_BOUND
+                ) -> 5
+                wind.windowSizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND
+                ) -> 3
+                wind.windowSizeClass.isWidthAtLeastBreakpoint(
+                    WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND
+                ) -> 2
+                else -> 2
+            }
         }
 
-    LazyVerticalStaggeredGrid(
-        state = lazyGridState,
-        verticalItemSpacing = 8.dp,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(top = 15.dp).nestedScroll(nestedScrollConnection()),
-        columns = StaggeredGridCells.Fixed(gridSize),
-    ) {
-        lazyItems(imageList) { photo ->
-            key(photo?.id) {
-                UnsplashImageStaggered(
-                    modifier = Modifier.animateItem(),
-                    data = photo,
-                    onImageClicked = onItemClicked,
-                    onImageLongClicked = onItemLongClicked,
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyVerticalStaggeredGrid(
+            state = lazyGridState,
+            verticalItemSpacing = 8.dp,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(bottom = 30.dp),
+            modifier =
+                Modifier.padding(top = 15.dp)
+                    .nestedScroll(nestedScrollConnection())
+                    .nestedScroll(scrollButtonConnection),
+            columns = StaggeredGridCells.Fixed(gridSize),
+        ) {
+            lazyItems(imageList) { photo ->
+                key(photo?.id) {
+                    UnsplashImageStaggered(
+                        modifier = Modifier,
+                        data = photo,
+                        onImageClicked = onItemClicked,
+                        onImageLongClicked = onItemLongClicked,
+                    )
+                }
+            }
+        }
+
+        AnimatedVisibility(
+            visible = isScrollToTopVisible,
+            enter = fadeIn() + slideInVertically { it },
+            exit = fadeOut() + slideOutVertically { it },
+            modifier = Modifier.padding(vertical = 30.dp).align(Alignment.BottomCenter),
+        ) {
+            FloatingActionButton(
+                onClick = {
+                    totalScrolled = 0f
+                    isScrollToTopVisible = false
+                    onScrollToTop()
+                },
+                modifier = Modifier.size(32.dp),
+            ) {
+                Icon(
+                    Icons.Rounded.KeyboardArrowUp,
+                    tint = appWhite,
+                    contentDescription = "Scroll to top",
                 )
             }
         }

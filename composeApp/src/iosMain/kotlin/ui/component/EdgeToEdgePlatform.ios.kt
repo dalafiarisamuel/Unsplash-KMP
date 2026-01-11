@@ -4,5 +4,5 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 internal actual fun getEdgeToEdgeTopPadding(): Dp {
-    return 50.dp
+    return 60.dp
 }

@@ -10,4 +10,10 @@ internal sealed interface PhotoScreen: NavKey {
 
     @Serializable
     data class DetailScreen(val id: String) : PhotoScreen
+
+    @Serializable
+    data object BookmarkScreen : PhotoScreen
+
+    @Serializable
+    data class BookmarkDetailScreen(val id: String) : PhotoScreen
 }

@@ -63,4 +63,5 @@
     <string name="select_an_image_from_the_list">Select an image from the list</string>
     <string name="add_favourite">Bookmark</string>
     <string name="remove_favourite">Remove</string>
+    <string name="bookmarks">Bookmarks</string>
 </resources>

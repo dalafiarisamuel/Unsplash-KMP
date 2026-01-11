@@ -35,7 +35,7 @@ internal fun CollapsingToolbarBase(
     val animatedCardSize by
         animateDpAsState(
             targetValue = if (scrollDp <= minShrinkHeight) minShrinkHeight else scrollDp,
-            animationSpec = tween(300, easing = LinearOutSlowInEasing),
+            animationSpec = tween(400, easing = LinearOutSlowInEasing),
         )
     visibility.targetState = animatedCardSize > 70.0.dp
 

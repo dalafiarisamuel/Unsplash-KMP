@@ -20,8 +20,8 @@ import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -72,14 +72,15 @@ internal fun HomeScreen(
     val toolbarHeight = 105.dp
     val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
     var toolbarOffsetHeightPx by rememberSaveable { mutableStateOf(0f) }
-    val nestedScrollConnection = remember {
+    val nestedScrollConnection = retain {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 val delta = available.y
                 val newOffset = toolbarOffsetHeightPx + delta
+                val oldOffset = toolbarOffsetHeightPx
                 toolbarOffsetHeightPx = newOffset.coerceIn(-toolbarHeightPx, 0f)
-                // Returning Zero so we just observe the scroll but don't execute it
-                return Offset.Zero
+                val consumed = toolbarOffsetHeightPx - oldOffset
+                return Offset(x = 0f, y = consumed)
             }
         }
     }
@@ -116,9 +117,12 @@ internal fun HomeScreen(
             toolbarOffset = toolbarOffsetHeightPx,
             toolbarHeight = toolbarHeight,
             keyboardAction = {
-                coroutine.launch(Dispatchers.Main) { lazyGridState.scrollToItem(0) }
-                dispatch(HomeScreenEvent.Search)
-                resetSearchInput()
+                coroutine.launch(Dispatchers.Main) {
+                    toolbarOffsetHeightPx = 0f
+                    lazyGridState.animateScrollToItem(0)
+                    dispatch(HomeScreenEvent.Search)
+                    resetSearchInput()
+                }
             },
             textValue = state.searchFieldValue,
             textValueChange = {
@@ -131,9 +135,12 @@ internal fun HomeScreen(
             modifier = Modifier.testTag("chip_group").padding(top = 20.dp),
             selectedText = state.searchFieldValue,
         ) {
-            coroutine.launch(Dispatchers.Main) { lazyGridState.scrollToItem(0) }
-            dispatch(HomeScreenEvent.SelectChip(it))
-            resetSearchInput()
+            coroutine.launch(Dispatchers.Main) {
+                toolbarOffsetHeightPx = 0f
+                lazyGridState.animateScrollToItem(0)
+                dispatch(HomeScreenEvent.SelectChip(it))
+                resetSearchInput()
+            }
         }
 
         UnsplashImageList(
@@ -143,6 +150,12 @@ internal fun HomeScreen(
             nestedScrollConnection = { nestedScrollConnection },
             onItemClicked = { it?.let { onImageClicked(it) } },
             onItemLongClicked = { dispatch(HomeScreenEvent.OnImageLongClicked(it)) },
+            onScrollToTop = {
+                coroutine.launch(Dispatchers.Main) {
+                    toolbarOffsetHeightPx = 0f
+                    lazyGridState.animateScrollToItem(0)
+                }
+            },
         )
 
         if (state.isImagePreviewDialogVisible) {

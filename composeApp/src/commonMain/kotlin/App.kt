@@ -32,6 +32,8 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import ui.navigation.PhotoScreen
+import ui.navigation.SceneKeys
+import ui.screen.BookmarkScreenEntryPoint
 import ui.screen.HomeScreenEntryPoint
 import ui.screen.PhotoDetailScreenEntryPoint
 import ui.theme.UnsplashKMPTheme
@@ -79,6 +81,7 @@ fun App() {
                     entry<PhotoScreen.HomeScreen>(
                         metadata =
                             ListDetailSceneStrategy.listPane(
+                                sceneKey = SceneKeys.SCENE_HOME,
                                 detailPlaceholder = {
                                     Box(
                                         modifier =
@@ -98,7 +101,7 @@ fun App() {
                                             fontWeight = FontWeight.SemiBold,
                                         )
                                     }
-                                }
+                                },
                             )
                     ) {
                         HomeScreenEntryPoint(
@@ -118,16 +121,46 @@ fun App() {
                             },
                             isDarkTheme = sharedRepository.isDarkThemeEnabled,
                             flipTheme = { sharedRepository.flipTheme() },
-                            navigateToBookmarks = {},
+                            navigateToBookmarks = { backStack.add(PhotoScreen.BookmarkScreen) },
                         )
                     }
 
                     entry<PhotoScreen.DetailScreen>(
-                        metadata = ListDetailSceneStrategy.detailPane()
+                        metadata =
+                            ListDetailSceneStrategy.detailPane(sceneKey = SceneKeys.SCENE_HOME)
                     ) { backStackEntry ->
                         PhotoDetailScreenEntryPoint(
                             showNavigationBackIcon =
                                 true, // listDetailStrategy.directive.maxHorizontalPartitions == 1,
+                            navigateBack = { backStack.removeLastOrNull() },
+                            photoId = backStackEntry.id,
+                        )
+                    }
+
+                    entry<PhotoScreen.BookmarkScreen>(
+                        metadata =
+                            ListDetailSceneStrategy.listPane(sceneKey = SceneKeys.SCENE_BOOKMARKS)
+                    ) {
+                        BookmarkScreenEntryPoint(
+                            onBackPressed = { backStack.removeLastOrNull() },
+                            onItemClicked = {
+                                val lastItem = backStack.lastOrNull()
+                                if (lastItem is PhotoScreen.BookmarkDetailScreen) {
+                                    backStack[backStack.lastIndex] =
+                                        PhotoScreen.BookmarkDetailScreen(it.id)
+                                } else {
+                                    backStack.add(PhotoScreen.BookmarkDetailScreen(it.id))
+                                }
+                            },
+                        )
+                    }
+
+                    entry<PhotoScreen.BookmarkDetailScreen>(
+                        metadata =
+                            ListDetailSceneStrategy.detailPane(sceneKey = SceneKeys.SCENE_BOOKMARKS)
+                    ) { backStackEntry ->
+                        PhotoDetailScreenEntryPoint(
+                            showNavigationBackIcon = true,
                             navigateBack = { backStack.removeLastOrNull() },
                             photoId = backStackEntry.id,
                         )
