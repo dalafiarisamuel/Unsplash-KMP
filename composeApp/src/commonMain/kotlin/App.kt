@@ -12,9 +12,7 @@ import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSerializable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
@@ -24,10 +22,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.savedstate.compose.serialization.serializers.SnapshotStateListSerializer
+import androidx.savedstate.serialization.SavedStateConfiguration
 import data.ui.repository.SharedRepository
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
@@ -41,6 +42,20 @@ import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.select_an_image_from_the_list
 
+private val config = SavedStateConfiguration {
+    serializersModule = SerializersModule {
+        polymorphic(NavKey::class) {
+            subclass(PhotoScreen.HomeScreen::class, PhotoScreen.HomeScreen.serializer())
+            subclass(PhotoScreen.DetailScreen::class, PhotoScreen.DetailScreen.serializer())
+            subclass(PhotoScreen.BookmarkScreen::class, PhotoScreen.BookmarkScreen.serializer())
+            subclass(
+                PhotoScreen.BookmarkDetailScreen::class,
+                PhotoScreen.BookmarkDetailScreen.serializer(),
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 @Preview
@@ -53,10 +68,7 @@ fun App() {
         sharedRepository.isDarkThemeEnabled = isSystemInDarkTheme
     }
 
-    val backStack: MutableList<PhotoScreen> =
-        rememberSerializable(serializer = SnapshotStateListSerializer()) {
-            mutableStateListOf(PhotoScreen.HomeScreen)
-        }
+    val backStack = rememberNavBackStack(config, PhotoScreen.HomeScreen)
 
     val windowAdaptiveInfo = currentWindowAdaptiveInfo()
     val directive =
