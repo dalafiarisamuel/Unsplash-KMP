@@ -1,6 +1,5 @@
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -11,7 +10,8 @@ import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +26,6 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
-import data.ui.repository.SharedRepository
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
@@ -39,6 +38,7 @@ import ui.screen.HomeScreenEntryPoint
 import ui.screen.PhotoDetailScreenEntryPoint
 import ui.theme.UnsplashKMPTheme
 import ui.theme.appWhite
+import ui.viewmodel.SharedViewModel
 import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.select_an_image_from_the_list
 
@@ -59,14 +59,9 @@ private val config = SavedStateConfiguration {
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 @Preview
-fun App() {
+fun App(sharedViewModel: SharedViewModel = koinInject<SharedViewModel>()) {
 
-    val sharedRepository = koinInject<SharedRepository>()
-    val isSystemInDarkTheme = isSystemInDarkTheme()
-
-    LaunchedEffect(isSystemInDarkTheme()) {
-        sharedRepository.isDarkThemeEnabled = isSystemInDarkTheme
-    }
+    val isDarkTheme by sharedViewModel.isDarkMode.collectAsState()
 
     val backStack = rememberNavBackStack(config, PhotoScreen.HomeScreen)
 
@@ -79,7 +74,7 @@ fun App() {
 
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>(directive = directive)
 
-    UnsplashKMPTheme(darkTheme = sharedRepository.isDarkThemeEnabled) {
+    UnsplashKMPTheme(darkTheme = isDarkTheme) {
         NavDisplay(
             backStack = backStack,
             entryDecorators =
@@ -131,8 +126,8 @@ fun App() {
                                     backStack.removeLastOrNull()
                                 }
                             },
-                            isDarkTheme = sharedRepository.isDarkThemeEnabled,
-                            flipTheme = { sharedRepository.flipTheme() },
+                            isDarkTheme = isDarkTheme,
+                            flipTheme = { sharedViewModel.toggleTheme(isDarkTheme.not()) },
                             navigateToBookmarks = { backStack.add(PhotoScreen.BookmarkScreen) },
                         )
                     }

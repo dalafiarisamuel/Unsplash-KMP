@@ -1,17 +1,20 @@
 package di
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import data.local.database.DatabaseFactory
 import data.local.database.UnsplashPhotoDatabase
+import data.local.preference.SettingsPreferenceFactory
 import data.local.repository.UnsplashImageLocalRepository
 import data.mapper.PhotoCreatorMapper
 import data.mapper.PhotoMapper
 import data.mapper.PhotosUrlsMapper
 import data.remote.repository.ImageRepository
 import data.repository.ImageRepositoryImpl
-import data.repository.SharedRepositoryImpl
+import data.repository.PreferenceRepositoryImpl
 import data.repository.UnsplashImageLocalRepositoryImpl
-import data.ui.repository.SharedRepository
+import data.ui.repository.PreferenceRepository
 import de.jensklingenberg.ktorfit.Ktorfit
 import domain.usecase.ClearAllPhotosUseCase
 import domain.usecase.DeletePhotoUseCase
@@ -40,6 +43,7 @@ import org.koin.dsl.module
 import ui.viewmodel.BookmarkScreenViewModel
 import ui.viewmodel.HomeScreenViewModel
 import ui.viewmodel.PhotoDetailViewModel
+import ui.viewmodel.SharedViewModel
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
     appDeclaration()
@@ -97,7 +101,7 @@ private fun mapperModule() = module {
 
 private fun repositoryModule() = module {
     single<ImageRepository> { ImageRepositoryImpl(get()) }
-    single<SharedRepository> { SharedRepositoryImpl() }
+    single<PreferenceRepository> { PreferenceRepositoryImpl(get()) }
     singleOf(::UnsplashImageLocalRepositoryImpl).bind<UnsplashImageLocalRepository>()
 }
 
@@ -113,6 +117,7 @@ private fun viewModelModule() = module {
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::PhotoDetailViewModel)
     viewModelOf(::BookmarkScreenViewModel)
+    viewModelOf(::SharedViewModel)
 }
 
 private fun sharedModule() = module {
@@ -125,4 +130,5 @@ private fun sharedModule() = module {
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()
     }
+    single<DataStore<Preferences>> { get<SettingsPreferenceFactory>().createDataStore() }
 }
