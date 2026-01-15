@@ -13,6 +13,7 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 * Google Paging3
 * Ktorfit
 * Compose Navigation v3
+* Room Database
 
 ## Libraries
 
@@ -27,6 +28,7 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
   makes it easier for you to load data gradually and gracefully within your app
 - [Compose Navigation v3](https://developer.android.com/guide/navigation/navigation-3) - Navigation 3 is a new navigation library designed to work with Compose
 - [Koin](https://insert-koin.io/docs/reference/koin-mp/kmp/) - Kotlin Multiplatform Dependency Injection
+- [Room Database](https://developer.android.com/kotlin/multiplatform/room) - Room Database Kotlin Multiplatform Support 
 
 ## Prerequisite
 
