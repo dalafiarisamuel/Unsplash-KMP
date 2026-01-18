@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
-import platform.Foundation.NSUserDirectory
+import platform.Foundation.NSUserDomainMask
 
 actual class DatabaseFactory {
 
@@ -26,7 +26,7 @@ actual class DatabaseFactory {
         val documentDirectory =
             NSFileManager.defaultManager.URLForDirectory(
                 directory = NSDocumentDirectory,
-                inDomain = NSUserDirectory,
+                inDomain = NSUserDomainMask,
                 appropriateForURL = null,
                 create = false,
                 error = null,
