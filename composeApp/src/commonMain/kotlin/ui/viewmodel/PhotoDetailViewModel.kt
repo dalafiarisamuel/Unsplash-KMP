@@ -26,6 +26,7 @@ internal class PhotoDetailViewModel(
     private val savePhotoUseCase: SavePhotoUseCase,
     private val deletePhotoUseCase: DeletePhotoUseCase,
     private val getPhotoByIdUseCase: GetPhotoByIdUseCase,
+    photoId: String,
 ) : ViewModel(), KoinComponent {
 
     val uiState: StateFlow<PhotoDetailState>
@@ -39,6 +40,7 @@ internal class PhotoDetailViewModel(
 
     init {
         handleLoadingState()
+        getSelectedPhotoById(photoId)
     }
 
     private fun handleLoadingState() {
@@ -48,7 +50,7 @@ internal class PhotoDetailViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun getSelectedPhotoById(photoId: String) {
+    private fun getSelectedPhotoById(photoId: String) {
         uiState.update { it.copy(intentPhotoId = photoId) }
         viewModelScope.launch {
             when (val result = repository.getPhoto(photoId = photoId)) {

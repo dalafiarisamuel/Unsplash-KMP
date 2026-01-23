@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,6 +25,7 @@ import com.mohamedrejeb.calf.permissions.rememberPermissionState
 import getPlatform
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.core.parameter.parametersOf
 import ui.navigation.runWithPermission
 import ui.theme.appDark
 import ui.viewmodel.PhotoDetailViewModel
@@ -36,9 +36,8 @@ internal fun PhotoDetailScreenEntryPoint(
     navigateBack: () -> Unit,
     showNavigationBackIcon: Boolean = true,
     photoId: String,
-    viewModel: PhotoDetailViewModel = koinViewModel<PhotoDetailViewModel>(),
+    viewModel: PhotoDetailViewModel = koinViewModel<PhotoDetailViewModel> { parametersOf(photoId) },
 ) {
-    LaunchedEffect(Unit) { viewModel.getSelectedPhotoById(photoId) }
 
     val writeStorage = rememberPermissionState(Permission.WriteStorage)
 

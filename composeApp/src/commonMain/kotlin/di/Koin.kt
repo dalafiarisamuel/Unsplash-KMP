@@ -36,6 +36,7 @@ import networking.AuthorizationTokenInterceptor
 import networking.createApiInterface
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.bind
@@ -115,7 +116,16 @@ private fun useCaseModule() = module {
 
 private fun viewModelModule() = module {
     viewModelOf(::HomeScreenViewModel)
-    viewModelOf(::PhotoDetailViewModel)
+    viewModel {
+        PhotoDetailViewModel(
+            repository = get(),
+            platformDownloadImage = get(),
+            savePhotoUseCase = get(),
+            deletePhotoUseCase = get(),
+            getPhotoByIdUseCase = get(),
+            photoId = it.get<String>(),
+        )
+    }
     viewModelOf(::BookmarkScreenViewModel)
     viewModelOf(::SharedViewModel)
 }
