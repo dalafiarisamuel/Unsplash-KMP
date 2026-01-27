@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +24,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 
@@ -50,7 +50,7 @@ internal fun PhotoLargeDisplay(
         )
     val aspectRatio: Float by remember { derivedStateOf { (imageSize.width / imageSize.height) } }
     val painter: AsyncImagePainter = rememberAsyncImagePainter(imageUrl)
-    val painterState by painter.state.collectAsState()
+    val painterState by painter.state.collectAsStateWithLifecycle()
     if (painterState is AsyncImagePainter.State.Success) {
         showShimmer = false
     }

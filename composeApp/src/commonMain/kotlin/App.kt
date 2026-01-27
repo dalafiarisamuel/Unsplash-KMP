@@ -10,7 +10,6 @@ import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -61,7 +61,7 @@ private val config = SavedStateConfiguration {
 @Preview
 fun App(sharedViewModel: SharedViewModel = koinInject<SharedViewModel>()) {
 
-    val isDarkTheme by sharedViewModel.isDarkMode.collectAsState()
+    val isDarkTheme by sharedViewModel.isDarkMode.collectAsStateWithLifecycle()
 
     val backStack = rememberNavBackStack(config, PhotoScreen.HomeScreen)
 

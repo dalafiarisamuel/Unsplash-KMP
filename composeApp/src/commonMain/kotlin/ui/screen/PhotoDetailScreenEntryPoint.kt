@@ -12,13 +12,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
 import com.mohamedrejeb.calf.permissions.Permission
 import com.mohamedrejeb.calf.permissions.rememberPermissionState
@@ -45,11 +45,11 @@ internal fun PhotoDetailScreenEntryPoint(
 
     val currentPlatform = remember { getPlatform() }
 
-    val showDialog = viewModel.isDownloading.collectAsState().value
+    val showDialog = viewModel.isDownloading.collectAsStateWithLifecycle().value
 
     PhotoDetail(
         modifier = Modifier.fillMaxSize(),
-        state = viewModel.uiState.collectAsState().value,
+        state = viewModel.uiState.collectAsStateWithLifecycle().value,
         showNavigationBackIcon = showNavigationBackIcon,
         onBackPressed = navigateBack,
         onBookmarkClicked = viewModel::saveOrRemovePhotoFromFavourite,
