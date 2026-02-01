@@ -16,11 +16,17 @@ import data.repository.PreferenceRepositoryImpl
 import data.repository.UnsplashImageLocalRepositoryImpl
 import data.ui.repository.PreferenceRepository
 import de.jensklingenberg.ktorfit.Ktorfit
-import domain.usecase.ClearAllPhotosUseCase
-import domain.usecase.DeletePhotoUseCase
-import domain.usecase.GetAllPhotoAsFlowUseCase
-import domain.usecase.GetPhotoByIdUseCase
-import domain.usecase.SavePhotoUseCase
+import domain.usecase.photo.ClearAllPhotosUseCase
+import domain.usecase.photo.DeletePhotoUseCase
+import domain.usecase.photo.GetAllPhotoAsFlowUseCase
+import domain.usecase.photo.GetPhotoByIdUseCase
+import domain.usecase.photo.SavePhotoUseCase
+import domain.usecase.preference.ClearSavedSearchQueryUseCase
+import domain.usecase.preference.DeleteSavedSearchQueryUseCase
+import domain.usecase.preference.GetDarkThemeUseCase
+import domain.usecase.preference.GetSavedSearchQueryUseCase
+import domain.usecase.preference.SaveSearchQueryUseCase
+import domain.usecase.preference.SetDarkThemeUseCase
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -44,7 +50,7 @@ import org.koin.dsl.module
 import ui.viewmodel.BookmarkScreenViewModel
 import ui.viewmodel.HomeScreenViewModel
 import ui.viewmodel.PhotoDetailViewModel
-import ui.viewmodel.SharedViewModel
+import ui.viewmodel.PreferenceViewModel
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
     appDeclaration()
@@ -112,6 +118,12 @@ private fun useCaseModule() = module {
     singleOf(::GetAllPhotoAsFlowUseCase)
     singleOf(::GetPhotoByIdUseCase)
     singleOf(::SavePhotoUseCase)
+    singleOf(::ClearSavedSearchQueryUseCase)
+    singleOf(::GetSavedSearchQueryUseCase)
+    singleOf(::DeleteSavedSearchQueryUseCase)
+    singleOf(::GetDarkThemeUseCase)
+    singleOf(::SaveSearchQueryUseCase)
+    singleOf(::SetDarkThemeUseCase)
 }
 
 private fun viewModelModule() = module {
@@ -127,7 +139,7 @@ private fun viewModelModule() = module {
         )
     }
     viewModelOf(::BookmarkScreenViewModel)
-    viewModelOf(::SharedViewModel)
+    viewModelOf(::PreferenceViewModel)
 }
 
 private fun sharedModule() = module {

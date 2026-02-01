@@ -1,0 +1,87 @@
+package ui.component
+
+import androidx.compose.runtime.Composable
+import data.ui.model.ChipData
+import org.jetbrains.compose.resources.stringResource
+import unsplashkmp.composeapp.generated.resources.Res
+import unsplashkmp.composeapp.generated.resources.animals
+import unsplashkmp.composeapp.generated.resources.animals_emoji
+import unsplashkmp.composeapp.generated.resources.architecture
+import unsplashkmp.composeapp.generated.resources.architecture_emoji
+import unsplashkmp.composeapp.generated.resources.business_and_work
+import unsplashkmp.composeapp.generated.resources.business_and_work_emoji
+import unsplashkmp.composeapp.generated.resources.experimental
+import unsplashkmp.composeapp.generated.resources.experimental_emoji
+import unsplashkmp.composeapp.generated.resources.fashion
+import unsplashkmp.composeapp.generated.resources.fashion_emoji
+import unsplashkmp.composeapp.generated.resources.film
+import unsplashkmp.composeapp.generated.resources.film_emoji
+import unsplashkmp.composeapp.generated.resources.food_and_drink
+import unsplashkmp.composeapp.generated.resources.food_and_drink_emoji
+import unsplashkmp.composeapp.generated.resources.history
+import unsplashkmp.composeapp.generated.resources.history_emoji
+import unsplashkmp.composeapp.generated.resources.interior
+import unsplashkmp.composeapp.generated.resources.interior_emoji
+import unsplashkmp.composeapp.generated.resources.nature
+import unsplashkmp.composeapp.generated.resources.nature_emoji
+import unsplashkmp.composeapp.generated.resources.nigeria
+import unsplashkmp.composeapp.generated.resources.nigeria_emoji
+import unsplashkmp.composeapp.generated.resources.people
+import unsplashkmp.composeapp.generated.resources.people_emoji
+import unsplashkmp.composeapp.generated.resources.photography
+import unsplashkmp.composeapp.generated.resources.photography_emoji
+import unsplashkmp.composeapp.generated.resources.spirituality
+import unsplashkmp.composeapp.generated.resources.spirituality_emoji
+import unsplashkmp.composeapp.generated.resources.technology
+import unsplashkmp.composeapp.generated.resources.technology_emoji
+import unsplashkmp.composeapp.generated.resources.textures_and_patterns
+import unsplashkmp.composeapp.generated.resources.textures_and_patterns_emoji
+import unsplashkmp.composeapp.generated.resources.travel
+import unsplashkmp.composeapp.generated.resources.travel_emoji
+
+@Composable
+internal fun GetStaticChipData(): MutableSet<ChipData> {
+    return mutableSetOf(
+        ChipData(
+            stringResource(Res.string.photography_emoji),
+            stringResource(Res.string.photography),
+        ),
+        ChipData(stringResource(Res.string.nigeria_emoji), stringResource(Res.string.nigeria)),
+        ChipData(stringResource(Res.string.nature_emoji), stringResource(Res.string.nature)),
+        ChipData(stringResource(Res.string.fashion_emoji), stringResource(Res.string.fashion)),
+        ChipData(stringResource(Res.string.people_emoji), stringResource(Res.string.people)),
+        ChipData(
+            stringResource(Res.string.technology_emoji),
+            stringResource(Res.string.technology),
+        ),
+        ChipData(stringResource(Res.string.film_emoji), stringResource(Res.string.film)),
+        ChipData(stringResource(Res.string.travel_emoji), stringResource(Res.string.travel)),
+        ChipData(stringResource(Res.string.history_emoji), stringResource(Res.string.history)),
+        ChipData(stringResource(Res.string.animals_emoji), stringResource(Res.string.animals)),
+        ChipData(
+            stringResource(Res.string.food_and_drink_emoji),
+            stringResource(Res.string.food_and_drink),
+        ),
+        ChipData(
+            stringResource(Res.string.spirituality_emoji),
+            stringResource(Res.string.spirituality),
+        ),
+        ChipData(
+            stringResource(Res.string.architecture_emoji),
+            stringResource(Res.string.architecture),
+        ),
+        ChipData(
+            stringResource(Res.string.business_and_work_emoji),
+            stringResource(Res.string.business_and_work),
+        ),
+        ChipData(stringResource(Res.string.interior_emoji), stringResource(Res.string.interior)),
+        ChipData(
+            stringResource(Res.string.experimental_emoji),
+            stringResource(Res.string.experimental),
+        ),
+        ChipData(
+            stringResource(Res.string.textures_and_patterns_emoji),
+            stringResource(Res.string.textures_and_patterns),
+        ),
+    )
+}

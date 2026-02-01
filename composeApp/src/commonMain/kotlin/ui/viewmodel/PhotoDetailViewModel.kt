@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import data.remote.model.UnsplashPhotoRemote
 import data.remote.repository.ImageRepository
 import data.remote.repository.Resource
-import domain.usecase.DeletePhotoUseCase
-import domain.usecase.GetPhotoByIdUseCase
-import domain.usecase.SavePhotoUseCase
+import domain.usecase.photo.DeletePhotoUseCase
+import domain.usecase.photo.GetPhotoByIdUseCase
+import domain.usecase.photo.SavePhotoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn

@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
-import domain.usecase.ClearAllPhotosUseCase
-import domain.usecase.GetAllPhotoAsFlowUseCase
+import domain.usecase.photo.ClearAllPhotosUseCase
+import domain.usecase.photo.GetAllPhotoAsFlowUseCase
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 

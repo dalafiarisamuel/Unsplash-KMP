@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.PagingData
+import data.ui.model.ChipData
 import data.ui.model.Photo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -63,6 +64,7 @@ internal fun HomeScreen(
     dispatch: (HomeScreenEvent) -> Unit = {},
     flipTheme: () -> Unit = {},
     isDarkTheme: Boolean = false,
+    savedSearchQuery: List<ChipData> = emptyList(),
     resetSearchInput: () -> Unit = {},
     onImageClicked: (Photo) -> Unit = {},
 ) {
@@ -134,6 +136,8 @@ internal fun HomeScreen(
         ChipComponent(
             modifier = Modifier.testTag("chip_group").padding(top = 20.dp),
             selectedText = state.searchFieldValue,
+            savedSearchQuery = savedSearchQuery,
+            onAddMoreChipClicked = { dispatch(HomeScreenEvent.SearchQueryChip.OpenSaveQueryDialog) },
         ) {
             coroutine.launch(Dispatchers.Main) {
                 toolbarOffsetHeightPx = 0f

@@ -64,4 +64,6 @@
     <string name="add_favourite">Bookmark</string>
     <string name="remove_favourite">Remove</string>
     <string name="bookmarks">Bookmarks</string>
+    <string name="add_search_chip">Add Search Chip</string>
+    <string name="create_search_chip">Create Search Chip</string>
 </resources>

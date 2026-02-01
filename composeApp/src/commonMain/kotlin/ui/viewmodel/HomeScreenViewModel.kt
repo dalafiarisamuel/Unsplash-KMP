@@ -7,11 +7,20 @@ import androidx.paging.cachedIn
 import data.mapper.PhotoMapper
 import data.remote.repository.ImageRepository
 import data.source.ImagePagingSource
+import data.ui.model.ChipData
+import domain.usecase.preference.ClearSavedSearchQueryUseCase
+import domain.usecase.preference.DeleteSavedSearchQueryUseCase
+import domain.usecase.preference.GetSavedSearchQueryUseCase
+import domain.usecase.preference.SaveSearchQueryUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import ui.event.HomeScreenEvent
 import ui.state.HomeScreenState
 import kotlin.time.Duration.Companion.seconds
@@ -20,11 +29,15 @@ import kotlin.time.Duration.Companion.seconds
 internal class HomeScreenViewModel(
     private val repository: ImageRepository,
     private val photoMapper: PhotoMapper,
+    private val getSavedSearchQueryUseCase: GetSavedSearchQueryUseCase,
+    private val saveSearchQueryUseCase: SaveSearchQueryUseCase,
+    private val deleteSavedSearchQueryUseCase: DeleteSavedSearchQueryUseCase,
+    private val clearSavedSearchQueryUseCase: ClearSavedSearchQueryUseCase,
 ) : MviViewModel<HomeScreenEvent, HomeScreenState>(HomeScreenState()) {
 
     companion object {
         private val DEFAULT_QUERY =
-            listOf("Nigeria", "Cameras", "History", "Architecture", "Animals", "Travel", "Fashion")
+            listOf("Nigeria", "Cameras", "History", "Architecture", "Bronze", "Travel", "Fashion")
     }
 
     private val randomDefaultQuery
@@ -44,6 +57,12 @@ internal class HomeScreenViewModel(
         handleDismissImagePreviewDialogEvent()
 
         handleOnImageClicked()
+
+        handleOpenSaveSearchQueryDialogEvent()
+        handleClearAllSavedSearchQuery()
+        handleDeleteSavedSearchQuery()
+        handleSaveSearchQuery()
+        handleDismissSaveSearchQueryDialogEvent()
     }
 
     private fun setSearchTerm(query: String) {
@@ -52,12 +71,17 @@ internal class HomeScreenViewModel(
 
     val photos =
         currentQuery
-            .debounce(1.5.seconds)
+            .debounce(2.seconds)
             .flatMapLatest { queryString ->
                 state = state.copy(searchFieldValue = queryString)
                 getImageSearchResult(queryString)
             }
             .cachedIn(viewModelScope)
+
+    val savedSearchQuery =
+        getSavedSearchQueryUseCase()
+            .map { it.map { item -> ChipData("🤖", item) } }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), emptyList())
 
     private fun getImageSearchResult(query: String) =
         Pager(
@@ -113,6 +137,36 @@ internal class HomeScreenViewModel(
     private fun handleOnImageClicked() {
         on<HomeScreenEvent.OnImageLongClicked> {
             state = state.copy(selectedImage = it.image, isImagePreviewDialogVisible = true)
+        }
+    }
+
+    private fun handleSaveSearchQuery() {
+        on<HomeScreenEvent.SearchQueryChip.Save> {
+            viewModelScope.launch { saveSearchQueryUseCase(it.query) }
+        }
+    }
+
+    private fun handleDeleteSavedSearchQuery() {
+        on<HomeScreenEvent.SearchQueryChip.Delete> {
+            viewModelScope.launch { deleteSavedSearchQueryUseCase(it.query) }
+        }
+    }
+
+    private fun handleClearAllSavedSearchQuery() {
+        on<HomeScreenEvent.SearchQueryChip.ClearAll> {
+            viewModelScope.launch { clearSavedSearchQueryUseCase() }
+        }
+    }
+
+    private fun handleOpenSaveSearchQueryDialogEvent() {
+        on<HomeScreenEvent.SearchQueryChip.OpenSaveQueryDialog> {
+            state = state.copy(isSaveQueryDialogVisible = true)
+        }
+    }
+
+    private fun handleDismissSaveSearchQueryDialogEvent() {
+        on<HomeScreenEvent.SearchQueryChip.DismissSaveQueryDialog> {
+            state = state.copy(isSaveQueryDialogVisible = false)
         }
     }
 }

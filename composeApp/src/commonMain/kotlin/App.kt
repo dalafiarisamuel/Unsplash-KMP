@@ -38,7 +38,7 @@ import ui.screen.HomeScreenEntryPoint
 import ui.screen.PhotoDetailScreenEntryPoint
 import ui.theme.UnsplashKMPTheme
 import ui.theme.appWhite
-import ui.viewmodel.SharedViewModel
+import ui.viewmodel.PreferenceViewModel
 import unsplashkmp.composeapp.generated.resources.Res
 import unsplashkmp.composeapp.generated.resources.select_an_image_from_the_list
 
@@ -59,9 +59,9 @@ private val config = SavedStateConfiguration {
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 @Preview
-fun App(sharedViewModel: SharedViewModel = koinInject<SharedViewModel>()) {
+fun App(preferenceViewModel: PreferenceViewModel = koinInject<PreferenceViewModel>()) {
 
-    val isDarkTheme by sharedViewModel.isDarkMode.collectAsStateWithLifecycle()
+    val isDarkTheme by preferenceViewModel.isDarkMode.collectAsStateWithLifecycle()
 
     val backStack = rememberNavBackStack(config, PhotoScreen.HomeScreen)
 
@@ -127,7 +127,7 @@ fun App(sharedViewModel: SharedViewModel = koinInject<SharedViewModel>()) {
                                 }
                             },
                             isDarkTheme = isDarkTheme,
-                            flipTheme = { sharedViewModel.toggleTheme(isDarkTheme.not()) },
+                            flipTheme = { preferenceViewModel.toggleTheme(isDarkTheme.not()) },
                             navigateToBookmarks = { backStack.add(PhotoScreen.BookmarkScreen) },
                         )
                     }

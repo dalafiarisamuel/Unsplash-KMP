@@ -43,10 +43,10 @@ internal fun PhotoLargeDisplay(
 
     val scale by
         animateFloatAsState(
-            targetValue = if (isScaled) 1.7f else 1f,
+            targetValue = if (isScaled) 2.5f else 1f,
             animationSpec =
                 spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    dampingRatio = Spring.DampingRatioLowBouncy,
                     stiffness = Spring.StiffnessMediumLow,
                 ),
             finishedListener = { if (it == 1f) tapOffset = TransformOrigin.Center },

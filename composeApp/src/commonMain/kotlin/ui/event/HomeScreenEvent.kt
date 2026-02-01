@@ -14,10 +14,23 @@ internal sealed class HomeScreenEvent {
 
     sealed class ImagePreviewDialog : HomeScreenEvent() {
 
-        data object Dismiss : ImagePreviewDialog()
+        object Dismiss : ImagePreviewDialog()
 
-        data object Open : ImagePreviewDialog()
+        object Open : ImagePreviewDialog()
     }
 
-    data object Search : HomeScreenEvent()
+    object Search : HomeScreenEvent()
+
+    sealed class SearchQueryChip : HomeScreenEvent() {
+
+        object ClearAll : SearchQueryChip()
+
+        data class Delete(val query: String) : SearchQueryChip()
+
+        data class Save(val query: String) : SearchQueryChip()
+
+        object OpenSaveQueryDialog : SearchQueryChip()
+
+        object DismissSaveQueryDialog: SearchQueryChip()
+    }
 }

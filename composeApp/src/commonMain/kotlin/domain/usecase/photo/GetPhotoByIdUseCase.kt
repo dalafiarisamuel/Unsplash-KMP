@@ -1,4 +1,4 @@
-package domain.usecase
+package domain.usecase.photo
 
 import data.local.model.UnsplashPhotoLocal
 import data.local.repository.UnsplashImageLocalRepository
