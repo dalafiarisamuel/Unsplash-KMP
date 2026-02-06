@@ -22,7 +22,7 @@ kotlin {
     targets.configureEach {
         compilations.configureEach {
             compileTaskProvider.get().compilerOptions {
-                freeCompilerArgs.add("-Xexpect-actual-classes")
+                freeCompilerArgs.addAll("-Xexpect-actual-classes","-Xcontext-parameters")
             }
         }
     }

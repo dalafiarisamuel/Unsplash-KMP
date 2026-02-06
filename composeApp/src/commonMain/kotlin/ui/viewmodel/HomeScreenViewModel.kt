@@ -15,11 +15,9 @@ import domain.usecase.preference.SaveSearchQueryUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ui.event.HomeScreenEvent
 import ui.state.HomeScreenState
@@ -81,7 +79,7 @@ internal class HomeScreenViewModel(
     val savedSearchQuery =
         getSavedSearchQueryUseCase()
             .map { it.map { item -> ChipData("🤖", item) } }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), emptyList())
+            .stateInUi(emptyList())
 
     private fun getImageSearchResult(query: String) =
         Pager(
