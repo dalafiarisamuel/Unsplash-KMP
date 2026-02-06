@@ -54,6 +54,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
@@ -65,7 +66,6 @@ import coil3.compose.AsyncImage
 import data.ui.model.Photo
 import kotlinx.coroutines.flow.Flow
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.appDark
 import ui.theme.appWhite
 import unsplashkmp.composeapp.generated.resources.Res

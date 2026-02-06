@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -39,7 +40,6 @@ import androidx.window.core.layout.WindowSizeClass
 import coil3.compose.AsyncImage
 import data.ui.model.Photo
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.color
 import ui.theme.complementary
 import unsplashkmp.composeapp.generated.resources.Res

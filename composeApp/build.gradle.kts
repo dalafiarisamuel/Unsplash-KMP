@@ -45,22 +45,22 @@ kotlin {
         sourceSets.commonMain { kotlin.srcDir("build/generated/ksp/metadata") }
 
         androidMain.dependencies {
-            implementation(compose.preview)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
         }
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.materialIconsExtended)
-            implementation(compose.ui)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material)
+            implementation(libs.material.icons.extended)
+            implementation(libs.compose.ui)
             implementation(libs.coil)
             implementation(libs.coil.network.ktor)
             implementation(libs.coil.compose.core)
             implementation(libs.coil.compose)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.ktorfit)
             implementation(libs.ktor.json)
             implementation(libs.ktor.logging)
@@ -150,7 +150,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures { compose = true }
-    dependencies { debugImplementation(compose.uiTooling) }
+    dependencies { debugImplementation(libs.compose.ui.tooling.preview) }
 }
 
 dependencies {
