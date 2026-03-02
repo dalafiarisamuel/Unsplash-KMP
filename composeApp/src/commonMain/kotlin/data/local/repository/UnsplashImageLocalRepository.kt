@@ -10,4 +10,5 @@ interface UnsplashImageLocalRepository {
     suspend fun getPhotoById(id: String): Resource<UnsplashPhotoLocal?>
     suspend fun deletePhoto(photoLocal: UnsplashPhotoLocal): Resource<Int>
     suspend fun clearAllPhotos(): Resource<Unit>
+    fun observePhotoCount(): Flow<Int>
 }

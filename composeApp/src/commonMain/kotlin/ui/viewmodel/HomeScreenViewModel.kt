@@ -8,6 +8,7 @@ import data.mapper.PhotoMapper
 import data.remote.repository.ImageRepository
 import data.source.ImagePagingSource
 import data.ui.model.ChipData
+import domain.usecase.photo.ObservePhotoCountUseCase
 import domain.usecase.preference.ClearSavedSearchQueryUseCase
 import domain.usecase.preference.DeleteSavedSearchQueryUseCase
 import domain.usecase.preference.GetSavedSearchQueryUseCase
@@ -31,6 +32,7 @@ internal class HomeScreenViewModel(
     private val saveSearchQueryUseCase: SaveSearchQueryUseCase,
     private val deleteSavedSearchQueryUseCase: DeleteSavedSearchQueryUseCase,
     private val clearSavedSearchQueryUseCase: ClearSavedSearchQueryUseCase,
+    observePhotoCountUseCase: ObservePhotoCountUseCase,
 ) : MviViewModel<HomeScreenEvent, HomeScreenState>(HomeScreenState()) {
 
     companion object {
@@ -80,6 +82,8 @@ internal class HomeScreenViewModel(
         getSavedSearchQueryUseCase()
             .map { it.map { item -> ChipData("🤖", item) } }
             .stateInUi(emptyList())
+
+    val bookmarkPhotoCount = observePhotoCountUseCase().stateInUi(0)
 
     private fun getImageSearchResult(query: String) =
         Pager(

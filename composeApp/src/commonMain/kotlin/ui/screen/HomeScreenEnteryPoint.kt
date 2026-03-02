@@ -2,19 +2,15 @@ package ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Bookmarks
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -22,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
+import ui.component.BookmarkFab
 import ui.component.SaveNewChip
 import ui.event.HomeScreenEvent
 import ui.theme.appDark
-import ui.theme.appWhite
 import ui.viewmodel.HomeScreenViewModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
@@ -60,6 +56,8 @@ internal fun HomeScreenEntryPoint(
         }
     }
 
+    val bookmarkPhotoCount by viewModel.bookmarkPhotoCount.collectAsStateWithLifecycle()
+
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
         sheetBackgroundColor = appDark,
@@ -78,16 +76,7 @@ internal fun HomeScreenEntryPoint(
             modifier = Modifier.fillMaxSize(),
             floatingActionButton = {
                 if (viewModel.state.isSaveQueryDialogVisible.not()) {
-                    FloatingActionButton(
-                        modifier = Modifier.size(50.dp),
-                        onClick = navigateToBookmarks,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Bookmarks,
-                            tint = appWhite,
-                            contentDescription = null,
-                        )
-                    }
+                    BookmarkFab(bookmarkPhotoCount, navigateToBookmarks)
                 }
             },
             floatingActionButtonPosition = FabPosition.End,

@@ -23,4 +23,7 @@ interface UnsplashPhotoDao {
 
     @Query("DELETE FROM UnsplashPhotoLocal")
     suspend fun clearAllPhotos()
+
+    @Query("SELECT COUNT(*) FROM UnsplashPhotoLocal")
+    fun observePhotoCount(): Flow<Int>
 }

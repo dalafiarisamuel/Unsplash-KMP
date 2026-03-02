@@ -29,4 +29,8 @@ class UnsplashImageLocalRepositoryImpl(private val photoDao: UnsplashPhotoDao) :
         return resourceHelper { photoDao.clearAllPhotos() }
 
     }
+
+    override fun observePhotoCount(): Flow<Int> {
+        return photoDao.observePhotoCount()
+    }
 }

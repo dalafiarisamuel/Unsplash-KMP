@@ -20,6 +20,7 @@ import domain.usecase.photo.ClearAllPhotosUseCase
 import domain.usecase.photo.DeletePhotoUseCase
 import domain.usecase.photo.GetAllPhotoAsFlowUseCase
 import domain.usecase.photo.GetPhotoByIdUseCase
+import domain.usecase.photo.ObservePhotoCountUseCase
 import domain.usecase.photo.SavePhotoUseCase
 import domain.usecase.preference.ClearSavedSearchQueryUseCase
 import domain.usecase.preference.DeleteSavedSearchQueryUseCase
@@ -118,6 +119,7 @@ private fun useCaseModule() = module {
     singleOf(::GetAllPhotoAsFlowUseCase)
     singleOf(::GetPhotoByIdUseCase)
     singleOf(::SavePhotoUseCase)
+    singleOf(::ObservePhotoCountUseCase)
     singleOf(::ClearSavedSearchQueryUseCase)
     singleOf(::GetSavedSearchQueryUseCase)
     singleOf(::DeleteSavedSearchQueryUseCase)
