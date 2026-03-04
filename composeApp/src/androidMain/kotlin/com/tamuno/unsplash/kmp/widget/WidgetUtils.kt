@@ -30,3 +30,12 @@ fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int): Int {
 }
 
 data class WidgetPhoto(val id: String, val path: String)
+
+fun mapEntriesToPhotos(entries: Set<String>): List<WidgetPhoto> {
+    return entries.mapNotNull {
+        val parts = it.split("|")
+        if (parts.size == 2) {
+            WidgetPhoto(parts[0], parts[1])
+        } else null
+    }
+}

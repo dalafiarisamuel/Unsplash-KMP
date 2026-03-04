@@ -63,13 +63,7 @@ private fun WidgetContent() {
     val entries = prefs[PHOTOS_KEY] ?: emptySet()
     val size = LocalSize.current
 
-    val photos =
-        entries.mapNotNull {
-            val parts = it.split("|")
-            if (parts.size == 2) {
-                WidgetPhoto(parts[0], parts[1])
-            } else null
-        }
+    val photos = mapEntriesToPhotos(entries)
 
     Column(
         modifier = GlanceModifier.fillMaxSize().background(Color.White).padding(8.dp),
