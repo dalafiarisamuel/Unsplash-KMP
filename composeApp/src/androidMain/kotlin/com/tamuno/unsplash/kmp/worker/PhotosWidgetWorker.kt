@@ -16,6 +16,7 @@ import coil3.request.SuccessResult
 import coil3.toBitmap
 import com.tamuno.unsplash.kmp.widget.PHOTOS_KEY
 import com.tamuno.unsplash.kmp.widget.PhotosWidget
+import com.tamuno.unsplash.kmp.widget.TOTAL_FAVOURITES_KEY
 import domain.usecase.photo.GetAllPhotoAsFlowUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -31,9 +32,11 @@ internal class PhotosWidgetWorker(
 
     override suspend fun doWork(): Result {
 
-        val photos = getFavouritePhotosUseCase().first().take(10)
+        val allPhotos = getFavouritePhotosUseCase().first()
+        val totalCount = allPhotos.size
+        val photos = allPhotos.take(10)
 
-        Log.d("PhotosWidget", "Widget reading ${photos.size} entries")
+        Log.d("PhotosWidget", "Widget reading ${photos.size} entries out of $totalCount")
 
         val cacheDir = File(applicationContext.cacheDir, "widget")
         if (!cacheDir.exists()) cacheDir.mkdirs()
@@ -87,6 +90,7 @@ internal class PhotosWidgetWorker(
             ) { prefs ->
                 val mutablePrefs = prefs.toMutablePreferences()
                 mutablePrefs[PHOTOS_KEY] = entries
+                mutablePrefs[TOTAL_FAVOURITES_KEY] = totalCount
                 mutablePrefs
             }
         }
