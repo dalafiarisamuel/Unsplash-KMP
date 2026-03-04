@@ -137,6 +137,7 @@ private fun viewModelModule() = module {
             savePhotoUseCase = get(),
             deletePhotoUseCase = get(),
             getPhotoByIdUseCase = get(),
+            widgetUpdater = get(),
             photoId = it.get<String>(),
         )
     }
