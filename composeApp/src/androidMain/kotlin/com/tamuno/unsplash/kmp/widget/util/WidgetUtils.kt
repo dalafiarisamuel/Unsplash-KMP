@@ -1,4 +1,4 @@
-package com.tamuno.unsplash.kmp.widget
+package com.tamuno.unsplash.kmp.widget.util
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

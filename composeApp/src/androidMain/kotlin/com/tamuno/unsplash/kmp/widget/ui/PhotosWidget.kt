@@ -1,4 +1,4 @@
-package com.tamuno.unsplash.kmp.widget
+package com.tamuno.unsplash.kmp.widget.ui
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -37,7 +37,11 @@ import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.tamuno.unsplash.kmp.R
+import com.tamuno.unsplash.kmp.widget.data.PHOTOS_KEY
+import com.tamuno.unsplash.kmp.widget.data.TOTAL_FAVOURITES_KEY
 import com.tamuno.unsplash.kmp.widget.data.WidgetPhoto
+import com.tamuno.unsplash.kmp.widget.util.decodeSampledBitmap
+import com.tamuno.unsplash.kmp.widget.util.mapEntriesToPhotos
 import ui.theme.ColorCrimsonRed
 import java.io.File
 

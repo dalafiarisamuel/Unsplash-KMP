@@ -14,9 +14,9 @@ import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.toBitmap
-import com.tamuno.unsplash.kmp.widget.PHOTOS_KEY
-import com.tamuno.unsplash.kmp.widget.PhotosWidget
-import com.tamuno.unsplash.kmp.widget.TOTAL_FAVOURITES_KEY
+import com.tamuno.unsplash.kmp.widget.data.PHOTOS_KEY
+import com.tamuno.unsplash.kmp.widget.data.TOTAL_FAVOURITES_KEY
+import com.tamuno.unsplash.kmp.widget.ui.PhotosWidget
 import domain.usecase.photo.GetAllPhotoAsFlowUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

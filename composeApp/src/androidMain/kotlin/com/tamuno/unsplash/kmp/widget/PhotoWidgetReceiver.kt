@@ -2,13 +2,14 @@ package com.tamuno.unsplash.kmp.widget
 
 import android.content.Context
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import com.tamuno.unsplash.kmp.widget.ui.PhotosWidget
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ui.widget.PhotosWidgetUpdater
 
-internal class PhotoWidgetReceiver: GlanceAppWidgetReceiver(), KoinComponent {
+internal class PhotoWidgetReceiver : GlanceAppWidgetReceiver(), KoinComponent {
     override val glanceAppWidget = PhotosWidget()
-    
+
     private val widgetUpdater: PhotosWidgetUpdater by inject()
 
     override fun onEnabled(context: Context) {

@@ -1,4 +1,4 @@
-package com.tamuno.unsplash.kmp.widget
+package com.tamuno.unsplash.kmp.widget.data
 
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
