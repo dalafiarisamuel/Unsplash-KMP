@@ -14,6 +14,8 @@ import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalSize
+import androidx.glance.action.actionStartActivity
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.cornerRadius
@@ -37,6 +39,7 @@ import androidx.glance.layout.size
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import com.tamuno.unsplash.kmp.MainActivity
 import com.tamuno.unsplash.kmp.R
 import com.tamuno.unsplash.kmp.widget.data.PHOTOS_KEY
 import com.tamuno.unsplash.kmp.widget.data.TOTAL_FAVOURITES_KEY
@@ -82,7 +85,8 @@ private fun WidgetContent() {
             GlanceModifier.fillMaxSize()
                 .background(GlanceTheme.colors.widgetBackground)
                 .cornerRadius(16.dp)
-                .padding(8.dp),
+                .padding(8.dp)
+                .clickable(actionStartActivity<MainActivity>()),
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
     ) {
         Row(
@@ -92,16 +96,13 @@ private fun WidgetContent() {
             Image(
                 provider = ImageProvider(R.drawable.ic_favorite),
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(ColorProvider(day = ColorCrimsonRed, night = ColorCrimsonRed)),
+                colorFilter =
+                    ColorFilter.tint(ColorProvider(day = ColorCrimsonRed, night = ColorCrimsonRed)),
                 modifier = GlanceModifier.size(20.dp).padding(end = 6.dp),
             )
             Text(
                 text = "Favourites (${photos.size} / $totalCount)",
-                style =
-                    TextStyle(
-                        color = GlanceTheme.colors.onSurface,
-                        fontSize = 11.sp,
-                    ),
+                style = TextStyle(color = GlanceTheme.colors.onSurface, fontSize = 11.sp),
             )
         }
 
@@ -134,11 +135,15 @@ private fun WidgetContent() {
 @Composable
 private fun PhotoItem(photo: WidgetPhoto) {
 
-    val file = File(photo.path)
-
-    if (!file.exists()) return
-
-    val bitmap = decodeSampledBitmap(file.absolutePath, 200)
+    val bitmap =
+        remember(photo.path) {
+            val file = File(photo.path)
+            if (file.exists()) {
+                decodeSampledBitmap(file.absolutePath, 200)
+            } else {
+                null
+            }
+        }
 
     if (bitmap != null) {
         Box(modifier = GlanceModifier.padding(4.dp)) {
