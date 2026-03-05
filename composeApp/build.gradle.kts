@@ -50,8 +50,8 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.androidx.glance.appwidget)
             implementation(libs.androidx.glance.material3)
-            implementation("androidx.work:work-runtime-ktx:2.11.1")
-            implementation("io.insert-koin:koin-androidx-workmanager:4.1.1")
+            implementation(libs.androidx.work.runtime.ktx)
+            implementation(libs.koin.androidx.workmanager)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
