@@ -2,6 +2,7 @@ package com.tamuno.unsplash.kmp.widget.ui
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -74,7 +75,7 @@ private fun WidgetContent() {
     val totalCount = prefs[TOTAL_FAVOURITES_KEY] ?: 0
     val size = LocalSize.current
 
-    val photos = mapEntriesToPhotos(entries)
+    val photos = remember(entries) { mapEntriesToPhotos(entries) }
 
     Column(
         modifier =
