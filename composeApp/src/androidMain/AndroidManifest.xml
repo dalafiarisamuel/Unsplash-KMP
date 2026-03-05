@@ -29,6 +29,7 @@
 
         <receiver
             android:name=".widget.PhotoWidgetReceiver"
+            android:label="@string/photos_widget_name"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

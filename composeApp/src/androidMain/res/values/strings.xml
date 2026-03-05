@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Unsplash KMP</string>
+    <string name="photos_widget_name">Favorite Photos</string>
+    <string name="photos_widget_description">Shows your favorite Unsplash photos on your home screen.</string>
 </resources>

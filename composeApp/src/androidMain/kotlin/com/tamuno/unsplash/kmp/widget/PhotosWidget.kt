@@ -37,6 +37,7 @@ import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.tamuno.unsplash.kmp.R
+import com.tamuno.unsplash.kmp.widget.data.WidgetPhoto
 import ui.theme.ColorCrimsonRed
 import java.io.File
 
@@ -52,7 +53,7 @@ internal class PhotosWidget : GlanceAppWidget() {
                 DpSize(200.dp, 200.dp),
                 DpSize(300.dp, 300.dp),
                 DpSize(400.dp, 400.dp),
-                DpSize(400.dp, 600.dp),
+                DpSize(600.dp, 600.dp),
             )
         )
 

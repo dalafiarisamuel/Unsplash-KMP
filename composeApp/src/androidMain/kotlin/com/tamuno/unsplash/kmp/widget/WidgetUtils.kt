@@ -2,6 +2,7 @@ package com.tamuno.unsplash.kmp.widget
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.tamuno.unsplash.kmp.widget.data.WidgetPhoto
 
 fun decodeSampledBitmap(path: String, reqWidth: Int): Bitmap? {
     val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
@@ -16,7 +17,7 @@ fun decodeSampledBitmap(path: String, reqWidth: Int): Bitmap? {
     return BitmapFactory.decodeFile(path, options)
 }
 
-fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int): Int {
+private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int): Int {
     val width = options.outWidth
     var inSampleSize = 1
 
@@ -28,8 +29,6 @@ fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int): Int {
     }
     return inSampleSize
 }
-
-data class WidgetPhoto(val id: String, val path: String)
 
 fun mapEntriesToPhotos(entries: Set<String>): List<WidgetPhoto> {
     return entries.mapNotNull {

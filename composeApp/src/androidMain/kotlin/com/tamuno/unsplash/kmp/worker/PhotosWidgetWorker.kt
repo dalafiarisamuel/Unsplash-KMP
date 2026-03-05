@@ -34,7 +34,7 @@ internal class PhotosWidgetWorker(
 
         val allPhotos = getFavouritePhotosUseCase().first()
         val totalCount = allPhotos.size
-        val photos = allPhotos.take(10)
+        val photos = allPhotos.take(12)
 
         Log.d("PhotosWidget", "Widget reading ${photos.size} entries out of $totalCount")
 
@@ -76,8 +76,6 @@ internal class PhotosWidgetWorker(
                 entries.add("${photo.id}|${file.absolutePath}")
             }
         }
-
-        // NEW CORRECT STATE UPDATE (per GlanceId)
 
         val manager = GlanceAppWidgetManager(applicationContext)
         val glanceIds = manager.getGlanceIds(PhotosWidget::class.java)
