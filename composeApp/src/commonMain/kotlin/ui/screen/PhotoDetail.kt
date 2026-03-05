@@ -147,7 +147,7 @@ internal fun PhotoDetail(
                         modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
-                        val iconPainter =
+                        val iconVector =
                             if (state.isImageFavourite) Icons.Rounded.BookmarkRemove
                             else Icons.Rounded.BookmarkAdd
 
@@ -157,7 +157,7 @@ internal fun PhotoDetail(
                                 else Res.string.add_favourite
                             )
 
-                        val animatedIcon = animateScrollIconAsState(iconPainter)
+                        val animatedPainter = animateScrollIconAsState(iconVector)
 
                         OutlinedButton(
                             modifier = Modifier.height(height = 45.dp).width(width = 160.dp),
@@ -174,7 +174,7 @@ internal fun PhotoDetail(
                             onClick = { onBookmarkClicked(state.photo!!) },
                         ) {
                             Icon(
-                                painter = animatedIcon,
+                                painter = animatedPainter,
                                 tint = ColorPalatinateBlue,
                                 contentDescription = null,
                             )

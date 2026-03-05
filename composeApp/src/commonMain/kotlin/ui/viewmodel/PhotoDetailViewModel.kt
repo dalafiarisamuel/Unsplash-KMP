@@ -19,6 +19,7 @@ import org.koin.core.component.KoinComponent
 import ui.download.PlatformDownloadImage
 import ui.state.ImageDownloadState
 import ui.state.PhotoDetailState
+import ui.widget.PhotosWidgetUpdater
 
 internal class PhotoDetailViewModel(
     private val repository: ImageRepository,
@@ -26,6 +27,7 @@ internal class PhotoDetailViewModel(
     private val savePhotoUseCase: SavePhotoUseCase,
     private val deletePhotoUseCase: DeletePhotoUseCase,
     private val getPhotoByIdUseCase: GetPhotoByIdUseCase,
+    private val widgetUpdater: PhotosWidgetUpdater,
     photoId: String,
 ) : ViewModel(), KoinComponent {
 
@@ -82,11 +84,13 @@ internal class PhotoDetailViewModel(
                 val result = deletePhotoUseCase(photo)
                 if (result is Resource.Success && result.result > 0) {
                     uiState.update { it.copy(isImageFavourite = false) }
+                    widgetUpdater.update()
                 }
             } else {
                 val result = savePhotoUseCase(photo)
                 if (result is Resource.Success) {
                     uiState.update { it.copy(isImageFavourite = true) }
+                    widgetUpdater.update()
                 }
             }
         }
