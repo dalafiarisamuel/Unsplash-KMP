@@ -48,6 +48,8 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import ui.navigation.DeeplinkResolver
+import ui.navigation.Navigator
 import ui.viewmodel.BookmarkScreenViewModel
 import ui.viewmodel.HomeScreenViewModel
 import ui.viewmodel.PhotoDetailViewModel
@@ -146,6 +148,8 @@ private fun viewModelModule() = module {
 }
 
 private fun sharedModule() = module {
+    single { DeeplinkResolver() }
+    single { Navigator(get()) }
     single { get<UnsplashPhotoDatabase>().getPhotoDao() }
     single {
         get<DatabaseFactory>()

@@ -33,6 +33,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import ui.navigation.Navigator
 import ui.navigation.PhotoScreen
 import ui.navigation.SceneKeys
 import ui.screen.BookmarkScreenEntryPoint
@@ -62,19 +63,19 @@ private val config = SavedStateConfiguration {
 @Composable
 @Preview
 internal fun App(
-    initialScreen: PhotoScreen? = null,
-    onDeepLinkHandled: () -> Unit = {},
+    navigator: Navigator = koinInject<Navigator>(),
     preferenceViewModel: PreferenceViewModel = koinInject<PreferenceViewModel>(),
 ) {
 
     val isDarkTheme by preferenceViewModel.isDarkMode.collectAsStateWithLifecycle()
+    val navEvent by navigator.navigationEvents.collectAsStateWithLifecycle()
 
     val backStack = rememberNavBackStack(config, PhotoScreen.HomeScreen)
 
-    LaunchedEffect(initialScreen) {
-        initialScreen?.let { screen ->
+    LaunchedEffect(navEvent) {
+        navEvent?.let { screen ->
             handleNavigation(backStack, screen)
-            onDeepLinkHandled()
+            navigator.onNavigationHandled()
         }
     }
 

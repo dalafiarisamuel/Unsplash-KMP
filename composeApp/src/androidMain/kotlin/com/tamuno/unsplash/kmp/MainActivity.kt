@@ -6,22 +6,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import ui.navigation.PhotoScreen
+import org.koin.android.ext.android.inject
+import ui.navigation.Navigator
 
 class MainActivity : ComponentActivity() {
 
-    private var deepLinkScreen by mutableStateOf<PhotoScreen?>(null)
+    private val navigator: Navigator by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         handleIntent(intent)
-        setContent {
-            App(initialScreen = deepLinkScreen, onDeepLinkHandled = { deepLinkScreen = null })
-        }
+        setContent { App() }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -30,11 +26,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun handleIntent(intent: Intent?) {
-        val data = intent?.data
-        if (data?.scheme == "unsplashkmp" && data.host == "photo") {
-            data.getQueryParameter("id")?.let { id ->
-                deepLinkScreen = PhotoScreen.DetailScreen(id)
-            }
-        }
+        intent?.data?.toString()?.let { uriString -> navigator.handleDeeplink(uriString) }
     }
 }
