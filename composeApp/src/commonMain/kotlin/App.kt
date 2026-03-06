@@ -10,6 +10,7 @@ import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -59,11 +61,22 @@ private val config = SavedStateConfiguration {
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 @Preview
-fun App(preferenceViewModel: PreferenceViewModel = koinInject<PreferenceViewModel>()) {
+internal fun App(
+    initialScreen: PhotoScreen? = null,
+    onDeepLinkHandled: () -> Unit = {},
+    preferenceViewModel: PreferenceViewModel = koinInject<PreferenceViewModel>(),
+) {
 
     val isDarkTheme by preferenceViewModel.isDarkMode.collectAsStateWithLifecycle()
 
     val backStack = rememberNavBackStack(config, PhotoScreen.HomeScreen)
+
+    LaunchedEffect(initialScreen) {
+        initialScreen?.let { screen ->
+            handleNavigation(backStack, screen)
+            onDeepLinkHandled()
+        }
+    }
 
     val windowAdaptiveInfo = currentWindowAdaptiveInfo()
     val directive =
@@ -113,12 +126,7 @@ fun App(preferenceViewModel: PreferenceViewModel = koinInject<PreferenceViewMode
                     ) {
                         HomeScreenEntryPoint(
                             navigateToDetailScreen = {
-                                val lastItem = backStack.lastOrNull()
-                                if (lastItem is PhotoScreen.DetailScreen) {
-                                    backStack[backStack.lastIndex] = PhotoScreen.DetailScreen(it)
-                                } else {
-                                    backStack.add(PhotoScreen.DetailScreen(it))
-                                }
+                                handleNavigation(backStack, PhotoScreen.DetailScreen(it))
                             },
                             resetSearchInput = {
                                 val lastItem = backStack.lastOrNull()
@@ -128,7 +136,9 @@ fun App(preferenceViewModel: PreferenceViewModel = koinInject<PreferenceViewMode
                             },
                             isDarkTheme = isDarkTheme,
                             flipTheme = { preferenceViewModel.toggleTheme(isDarkTheme.not()) },
-                            navigateToBookmarks = { backStack.add(PhotoScreen.BookmarkScreen) },
+                            navigateToBookmarks = {
+                                handleNavigation(backStack, PhotoScreen.BookmarkScreen)
+                            },
                         )
                     }
 
@@ -151,13 +161,7 @@ fun App(preferenceViewModel: PreferenceViewModel = koinInject<PreferenceViewMode
                         BookmarkScreenEntryPoint(
                             onBackPressed = { backStack.removeLastOrNull() },
                             onItemClicked = {
-                                val lastItem = backStack.lastOrNull()
-                                if (lastItem is PhotoScreen.BookmarkDetailScreen) {
-                                    backStack[backStack.lastIndex] =
-                                        PhotoScreen.BookmarkDetailScreen(it.id)
-                                } else {
-                                    backStack.add(PhotoScreen.BookmarkDetailScreen(it.id))
-                                }
+                                handleNavigation(backStack, PhotoScreen.BookmarkDetailScreen(it.id))
                             },
                         )
                     }
@@ -174,5 +178,18 @@ fun App(preferenceViewModel: PreferenceViewModel = koinInject<PreferenceViewMode
                     }
                 },
         )
+    }
+}
+
+private fun handleNavigation(backStack: NavBackStack<NavKey>, screen: PhotoScreen) {
+    val lastItem = backStack.lastOrNull()
+    if (lastItem is PhotoScreen.DetailScreen && screen is PhotoScreen.DetailScreen) {
+        backStack[backStack.lastIndex] = screen
+    } else if (
+        lastItem is PhotoScreen.BookmarkDetailScreen && screen is PhotoScreen.BookmarkDetailScreen
+    ) {
+        backStack[backStack.lastIndex] = screen
+    } else if (lastItem != screen) {
+        backStack.add(screen)
     }
 }

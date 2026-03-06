@@ -1,11 +1,13 @@
 package com.tamuno.unsplash.kmp.widget.ui
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.datastore.preferences.core.Preferences
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
@@ -13,11 +15,13 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.LocalSize
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.SizeMode
+import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.GridCells
 import androidx.glance.appwidget.lazy.LazyVerticalGrid
@@ -85,8 +89,7 @@ private fun WidgetContent() {
             GlanceModifier.fillMaxSize()
                 .background(GlanceTheme.colors.widgetBackground)
                 .cornerRadius(16.dp)
-                .padding(8.dp)
-                .clickable(actionStartActivity<MainActivity>()),
+                .padding(8.dp),
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
     ) {
         Row(
@@ -107,7 +110,11 @@ private fun WidgetContent() {
         }
 
         if (photos.isEmpty()) {
-            Box(modifier = GlanceModifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier =
+                    GlanceModifier.fillMaxSize().clickable(actionStartActivity<MainActivity>()),
+                contentAlignment = Alignment.Center,
+            ) {
                 Text(
                     text = "No favourites yet",
                     style = TextStyle(color = GlanceTheme.colors.onSurfaceVariant),
@@ -134,7 +141,7 @@ private fun WidgetContent() {
 
 @Composable
 private fun PhotoItem(photo: WidgetPhoto) {
-
+    val context = LocalContext.current
     val bitmap =
         remember(photo.path) {
             val file = File(photo.path)
@@ -146,7 +153,19 @@ private fun PhotoItem(photo: WidgetPhoto) {
         }
 
     if (bitmap != null) {
-        Box(modifier = GlanceModifier.padding(4.dp)) {
+        Box(
+            modifier =
+                GlanceModifier.padding(4.dp)
+                    .clickable(
+                        actionStartActivity(
+                            Intent(Intent.ACTION_VIEW, "unsplashkmp://photo?id=${photo.id}".toUri())
+                                .apply {
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                    setPackage(context.packageName)
+                                }
+                        )
+                    )
+        ) {
             Image(
                 provider = ImageProvider(bitmap),
                 contentDescription = null,
