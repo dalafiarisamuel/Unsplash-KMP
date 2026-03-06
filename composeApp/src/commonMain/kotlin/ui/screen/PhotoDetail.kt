@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -144,8 +144,11 @@ internal fun PhotoDetail(
                     Spacer(modifier = Modifier.padding(top = 20.dp))
 
                     Row(
-                        modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier =
+                            Modifier.align(Alignment.CenterHorizontally)
+                                .widthIn(max = 450.dp)
+                                .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         val iconVector =
                             if (state.isImageFavourite) Icons.Rounded.BookmarkRemove
@@ -160,7 +163,7 @@ internal fun PhotoDetail(
                         val animatedPainter = animateScrollIconAsState(iconVector)
 
                         OutlinedButton(
-                            modifier = Modifier.height(height = 45.dp).width(width = 160.dp),
+                            modifier = Modifier.height(45.dp).weight(1f),
                             elevation =
                                 ButtonDefaults.elevation(
                                     defaultElevation = 0.dp,
@@ -179,10 +182,10 @@ internal fun PhotoDetail(
                                 contentDescription = null,
                             )
                             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                            Text(text = iconText, fontSize = 11.sp)
+                            Text(text = iconText, fontSize = 11.sp, maxLines = 1)
                         }
                         OutlinedButton(
-                            modifier = Modifier.height(height = 45.dp).width(width = 190.dp),
+                            modifier = Modifier.height(45.dp).weight(1f),
                             elevation =
                                 ButtonDefaults.elevation(
                                     defaultElevation = 0.dp,
@@ -201,7 +204,11 @@ internal fun PhotoDetail(
                                 contentDescription = null,
                             )
                             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                            Text(text = stringResource(Res.string.download_image), fontSize = 11.sp)
+                            Text(
+                                text = stringResource(Res.string.download_image),
+                                fontSize = 11.sp,
+                                maxLines = 1,
+                            )
                         }
                     }
 
