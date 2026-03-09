@@ -5,6 +5,7 @@ android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "35"
 androidx-activityCompose = "1.12.3"
+buildkonfigGradlePlugin = "0.17.1"
 calfPermissions = "0.5.5"
 compose-plugin = "1.10.0"
 datastorePreferencesCore = "1.2.0"
@@ -107,3 +108,4 @@ kmpIconGeneratorPlugin = { id = "io.github.qamarelsafadi.kmp.app.icon.generator"
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload"}
 room = { id = "androidx.room", version.ref = "room" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfigGradlePlugin" }

@@ -3,6 +3,7 @@ package di
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.tamuno.unsplash.kmp.BuildKonfig
 import data.local.database.DatabaseFactory
 import data.local.database.UnsplashPhotoDatabase
 import data.local.preference.SettingsPreferenceFactory
@@ -89,7 +90,7 @@ private fun networkModule() = module {
             }
 
             install(AuthorizationTokenInterceptor) {
-                tokenProvider = { "" }
+                tokenProvider = { BuildKonfig.API_TOKEN }
             }
         }
     }

@@ -1,5 +1,7 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -12,7 +14,10 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.kmpIconGeneratorPlugin)
     alias(libs.plugins.composeHotReload)
+    alias(libs.plugins.buildkonfig)
 }
+
+val apiToken = getLocalProperty("API_TOKEN")
 
 kotlin {
     androidTarget { compilerOptions { jvmTarget.set(JvmTarget.JVM_11) } }
@@ -22,7 +27,7 @@ kotlin {
     targets.configureEach {
         compilations.configureEach {
             compileTaskProvider.get().compilerOptions {
-                freeCompilerArgs.addAll("-Xexpect-actual-classes","-Xcontext-parameters")
+                freeCompilerArgs.addAll("-Xexpect-actual-classes", "-Xcontext-parameters")
             }
         }
     }
@@ -132,6 +137,21 @@ kotlin {
     }
 }
 
+buildkonfig {
+    packageName = "com.tamuno.unsplash.kmp"
+
+    defaultConfigs {
+        buildConfigField(STRING, "APP_NAME", "Unsplash KMP")
+        buildConfigField(STRING, "API_TOKEN", apiToken)
+    }
+
+    targetConfigs {
+        create("android") {}
+        create("ios") {}
+        create("desktop") {}
+    }
+}
+
 android {
     namespace = "com.tamuno.unsplash.kmp"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -175,4 +195,13 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+fun getLocalProperty(key: String): String {
+    val properties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { properties.load(it) }
+    }
+    return properties.getProperty(key) ?: ""
 }
