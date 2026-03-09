@@ -1,93 +1,132 @@
 # AGENTS.md - Unsplash KMP Project Guidelines
 
-This document serves as a guide for AI agents and developers working on the Unsplash KMP project. It outlines the architecture, coding standards, and project structure to ensure consistency across the codebase.
+This document serves as a guide for AI agents and developers working on the Unsplash KMP project. It
+outlines the architecture, coding standards, and project structure to ensure consistency across the
+codebase.
 
-## Project Overview
-Unsplash KMP is a Kotlin Multiplatform (KMP) application that allows users to browse and bookmark photos from Unsplash. It supports Android, iOS, and Desktop (JVM) using Compose Multiplatform.
+## Project Context
 
-## Architecture Rules
-The project follows **Clean Architecture** combined with the **MVI (Model-View-Intent)** pattern.
+Unsplash KMP is a Kotlin Multiplatform (KMP) application for browsing and bookmarking Unsplash
+photos. It targets Android, iOS, and Desktop (JVM) using Compose Multiplatform.
 
-- **Presentation Layer (`ui`)**: Uses Compose for UI and ViewModels for state management. ViewModels must extend `MviViewModel` and handle `State` and `Event`.
-- **Domain Layer (`domain`)**: Contains business logic encapsulated in `UseCase` classes. Use cases should perform a single task and be named `[Action][Entity]UseCase` (e.g., `SavePhotoUseCase`).
-- **Data Layer (`data`)**: Handles data sourcing from Remote (Ktorfit) and Local (Room/DataStore).
-    - Use **Mappers** to convert between Data models (Remote/Local) and Domain/UI models.
-    - Repositories should have an interface in the domain/data package and an implementation in the `data.repository` package.
+## Architecture Map
 
-## Coding Conventions
-- **Language**: Kotlin.
-- **UI Framework**: Compose Multiplatform.
-- **State Management**: Use `MviViewModel`. UI should observe `state` and dispatch `events`.
-- **Dependency Injection**: Koin. All new dependencies must be registered in `di/Koin.kt`.
-- **Concurrency**: Coroutines. Use `viewModelScope` in ViewModels and proper dispatchers (e.g., `Dispatchers.IO` for DB/Network).
-- **Naming**:
-    - ViewModels: `[Feature]ViewModel`.
-    - Screens: `[Feature]Screen`.
-    - UseCases: `[Action][Entity]UseCase`.
-    - Mappers: `to[TargetModel]()` or `[Model]Mapper`.
+The project follows **Clean Architecture** with a clear separation of concerns, combined with *
+*MVI (Model-View-Intent)** in the presentation layer.
 
-## Module Responsibilities
-- `commonMain`: Shared logic, UI, and data handling.
-- `androidMain`: Android-specific implementations (Widgets, WorkManager, Application class).
-- `iosMain`: iOS-specific configurations and framework exports.
-- `desktopMain`: Desktop-specific entry point and configurations.
+### Layer Responsibilities
 
-## Dependency Guidelines
-- All dependencies must be managed in `gradle/libs.versions.toml`.
-- Use **Version Catalogs** for all plugin and library declarations.
-- Prefer Multiplatform libraries (e.g., Ktor, Coil, Room, Koin).
+- **Presentation Layer (`ui`)**:
+    - **Compose Multiplatform**: For building the UI across platforms.
+    - **MVI Pattern**: ViewModels extend `MviViewModel` to manage `State` and handle `Event`
+      objects.
+    - **Navigation**: Managed via a custom `Navigator` and `DeeplinkResolver`.
+- **Domain Layer (`domain`)**:
+    - **UseCases**: Encapsulate single business actions (e.g., `SavePhotoUseCase`).
+    - **Domain Models**: Plain Kotlin objects representing business entities.
+- **Data Layer (`data`)**:
+    - **Repositories**: Interfaces defined for data access. Implementations (`*Impl`) reside in the
+      data layer.
+    - **Remote**: Ktorfit-based API interfaces (`ApiInterface`).
+    - **Local**: Room database and DataStore for caching and preferences.
+    - **Mappers**: Essential for converting between Remote/Local entities and Domain/UI models (
+      extending `UIModelMapper`).
 
-## Platform-Specific Rules
-- **Android**: Use `androidMain` for Glance Widgets and WorkManager tasks.
-- **iOS**: Ensure frameworks are properly exported in `build.gradle.kts`.
-- **Desktop**: Handle OS-specific Skiko requirements in `desktopMain`.
+## Coding Standards
 
-## Testing Guidelines
-- Shared logic tests go in `commonTest`.
-- Use `KoinTest` for dependency-related tests.
-- Mock network responses using `Ktor`'s `MockEngine`.
+- **Kotlin-First**: Leverage modern Kotlin features like Coroutines, Flow, and `context` parameters.
+- **Compose**: Use `internal` visibility for screen-level Composables. Prefer `Modifier` as the
+  first optional parameter.
+- **Naming Conventions**:
+    - ViewModels: `[Feature]ViewModel`
+    - Screens: `[Feature]Screen` (Composable)
+    - UseCases: `[Action][Entity]UseCase`
+    - Mappers: `[Source]To[Target]Mapper` or extending `UIModelMapper`.
+- **Dependency Injection**: Use **Koin**. Modules are split by responsibility (e.g.,
+  `networkModule`, `repositoryModule`) and initialized in `Koin.kt`.
+- **Visibility**: Use `internal` for classes and functions that don't need to be exposed outside
+  their module or package.
+
+## Dependency Rules
+
+- **Version Catalog**: All dependencies must be defined in `gradle/libs.versions.toml`.
+- **Multiplatform**: Prefer Multiplatform libraries (Ktor, Room, Coil, Koin, Multiplatform
+  Settings).
+- **Secrets**: Use `BuildKonfig` for API keys. Secrets are read from `local.properties` via a helper
+  function in `build.gradle.kts`.
+
+## Platform Constraints
+
+- **Expect/Actual**: Used for platform-specific logic like `DatabaseFactory`,
+  `PlatformDownloadImage`, and `PlatformAppearance`.
+- **Android**: Includes Glance-based App Widgets and WorkManager for background tasks.
+- **Desktop**: Requires specific `skiko` runtime configurations for navigation support.
+
+## Testing Expectations
+
+- **Unit Tests**: Located in `commonTest`.
+- **Repositories**: Test implementation details and mapping logic.
+- **Mocking**: Use `MockEngine` for Ktor and mock implementations for platform-specific interfaces.
 
 ## File Structure
+
 ```
 composeApp/src/commonMain/kotlin/
-├── data/           # Repositories, Models, Mappers, Remote/Local sources
-├── domain/         # UseCases, Domain Models
-├── ui/             # Compose Screens, ViewModels, Theme, Navigation
-├── di/             # Koin Modules
-├── networking/     # Ktor/Ktorfit setup
-└── Platform.kt     # Expect declarations
+├── data/           # mapper/, local/, remote/, repository/
+├── domain/         # model/, usecase/
+├── ui/             # component/, screen/, viewmodel/, navigation/, theme/
+├── di/             # Koin modules
+├── networking/     # Ktorfit/Ktor setup
+└── Platform.kt     # Common expect declarations
 ```
 
 ## Anti-patterns to Avoid
-- **No Hardcoded Secrets**: Use `BuildKonfig` and `local.properties`.
-- **No Direct Repo Access**: UI should interact with UseCases, not Repositories directly.
-- **No Logic in UI**: Compose functions should be as stateless as possible.
-- **No Platform Code in Common**: Use `expect`/`actual` or interfaces injected via Koin.
 
-## Examples
+- **Bypassing UseCases**: Do not call Repositories directly from ViewModels.
+- **Hardcoded Strings/Secrets**: Use `Res` for strings and `local.properties`/`BuildKonfig` for
+  keys.
+- **State in UI**: Keep Composables stateless; hoist state to ViewModels.
+- **Fat ViewModels**: Delegate logic to UseCases.
 
-### ViewModel (MVI)
+## Code Examples
+
+### MVI ViewModel
+
 ```kotlin
-class MyViewModel(private val myUseCase: MyUseCase) : MviViewModel<MyEvent, MyState>(MyState()) {
-    init {
-        on<MyEvent.LoadData> {
-            val result = myUseCase()
-            state = state.copy(data = result)
+internal abstract class MviViewModel<Event, State>(defaultState: State) : ViewModel() {
+    var state by mutableStateOf(defaultState)
+        protected set
+
+    fun dispatch(event: Event) { /* ... */
+    }
+
+    protected inline fun <reified SpecificEvent : Event> on(
+        crossinline handle: suspend (event: SpecificEvent) -> Unit
+    ) { /* ... */
+    }
+}
+```
+
+### Data Mapping
+
+```kotlin
+internal class PhotoMapper(
+    private val photosUrlsMapper: PhotosUrlsMapper,
+    private val photoCreatorMapper: PhotoCreatorMapper
+) : UIModelMapper<UnsplashPhotoRemote, Photo>() {
+    override fun mapToUI(entity: UnsplashPhotoRemote): Photo {
+        return with(entity) {
+            Photo(id, ..., photosUrlsMapper.mapToUI(urls), ...)
         }
     }
 }
 ```
 
-### UseCase
-```kotlin
-class SavePhotoUseCase(private val repository: UnsplashImageLocalRepository) {
-    suspend operator fun invoke(photo: UnsplashPhotoRemote) = repository.insertPhoto(photo.toLocal())
-}
-```
+### Koin Module Registration
 
-### Dependency Injection
 ```kotlin
-private fun useCaseModule() = module {
-    singleOf(::SavePhotoUseCase)
+private fun repositoryModule() = module {
+    single<ImageRepository> { ImageRepositoryImpl(get()) }
+    singleOf(::UnsplashImageLocalRepositoryImpl).bind<UnsplashImageLocalRepository>()
 }
 ```
