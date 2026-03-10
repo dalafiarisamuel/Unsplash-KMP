@@ -2,18 +2,19 @@ package ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import domain.usecase.preference.GetDarkThemeUseCase
-import domain.usecase.preference.SetDarkThemeUseCase
+import data.ui.model.Theme
+import domain.usecase.preference.GetThemeUseCase
+import domain.usecase.preference.SetThemeUseCase
 import kotlinx.coroutines.launch
 
 class PreferenceViewModel(
-    getDarkThemeUseCase: GetDarkThemeUseCase,
-    private val setDarkThemeUseCase: SetDarkThemeUseCase,
+    getThemeUseCase: GetThemeUseCase,
+    private val setThemeUseCase: SetThemeUseCase,
 ) : ViewModel() {
 
-    val isDarkMode = getDarkThemeUseCase().stateInUi(false)
+    val theme = getThemeUseCase().stateInUi(Theme.SYSTEM)
 
-    fun toggleTheme(enabled: Boolean) {
-        viewModelScope.launch { setDarkThemeUseCase(enabled) }
+    fun setTheme(theme: Theme) {
+        viewModelScope.launch { setThemeUseCase(theme) }
     }
 }

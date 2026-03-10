@@ -2,7 +2,7 @@
     <string name="nothing_to_display">Nothing to display</string>
     <string name="unsplash_images">Unsplash Images</string>
     <string name="search_images">Search Images</string>
-    <string name="search_image_hint">Type a term, e.g dog</string>
+    <string name="search_image_hint">Type a term, e.g. dog</string>
     <string name="nature">Nature</string>
     <string name="fashion">Fashion</string>
     <string name="people">People</string>
@@ -66,4 +66,9 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="add_search_chip">Add Search Chip</string>
     <string name="create_search_chip">Create Search Chip</string>
+    <string name="appearance">Appearance</string>
+    <string name="close">Close</string>
+    <string name="system">System</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
 </resources>

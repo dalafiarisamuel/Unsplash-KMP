@@ -1,7 +1,9 @@
 package ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FabPosition
 import androidx.compose.material.ModalBottomSheetLayout
@@ -16,11 +18,14 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import data.ui.model.Theme
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import ui.component.BookmarkFab
 import ui.component.SaveNewChip
+import ui.dialog.ThemeSelectionSheet
 import ui.event.HomeScreenEvent
+import ui.state.HomeScreenState
 import ui.theme.appDark
 import ui.viewmodel.HomeScreenViewModel
 
@@ -30,8 +35,8 @@ internal fun HomeScreenEntryPoint(
     navigateToDetailScreen: (imageId: String) -> Unit = {},
     navigateToBookmarks: () -> Unit = {},
     resetSearchInput: () -> Unit = {},
-    flipTheme: () -> Unit = {},
-    isDarkTheme: Boolean = false,
+    theme: Theme = Theme.SYSTEM,
+    setTheme: (Theme) -> Unit = {},
     viewModel: HomeScreenViewModel = koinViewModel<HomeScreenViewModel>(),
 ) {
 
@@ -42,8 +47,14 @@ internal fun HomeScreenEntryPoint(
             skipHalfExpanded = true,
         )
 
-    LaunchedEffect(viewModel.state.isSaveQueryDialogVisible) {
-        if (viewModel.state.isSaveQueryDialogVisible) {
+    LaunchedEffect(
+        viewModel.state.isSaveQueryDialogVisible,
+        viewModel.state.isThemeSelectionDialogVisible,
+    ) {
+        if (
+            viewModel.state.isSaveQueryDialogVisible ||
+                viewModel.state.isThemeSelectionDialogVisible
+        ) {
             modalBottomSheetState.show()
         } else {
             modalBottomSheetState.hide()
@@ -51,8 +62,13 @@ internal fun HomeScreenEntryPoint(
     }
 
     LaunchedEffect(modalBottomSheetState.isVisible) {
-        if (!modalBottomSheetState.isVisible && viewModel.state.isSaveQueryDialogVisible) {
-            viewModel.dispatch(HomeScreenEvent.SearchQueryChip.DismissSaveQueryDialog)
+        if (!modalBottomSheetState.isVisible) {
+            if (viewModel.state.isSaveQueryDialogVisible) {
+                viewModel.dispatch(HomeScreenEvent.SearchQueryChip.DismissSaveQueryDialog)
+            }
+            if (viewModel.state.isThemeSelectionDialogVisible) {
+                viewModel.dispatch(HomeScreenEvent.ThemeSelectionDialog.Dismiss)
+            }
         }
     }
 
@@ -63,10 +79,15 @@ internal fun HomeScreenEntryPoint(
         sheetBackgroundColor = appDark,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
-            SaveNewChip(
-                isDialogVisible = viewModel.state.isSaveQueryDialogVisible,
-                onSave = { query ->
+            HomeSheetContent(
+                state = viewModel.state,
+                theme = theme,
+                onSaveQuery = { query ->
                     viewModel.dispatch(HomeScreenEvent.SearchQueryChip.Save(query))
+                    coroutine.launch { modalBottomSheetState.hide() }
+                },
+                onThemeSelected = { selectedTheme ->
+                    setTheme(selectedTheme)
                     coroutine.launch { modalBottomSheetState.hide() }
                 },
             )
@@ -75,7 +96,10 @@ internal fun HomeScreenEntryPoint(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             floatingActionButton = {
-                if (viewModel.state.isSaveQueryDialogVisible.not()) {
+                if (
+                    viewModel.state.isSaveQueryDialogVisible.not() &&
+                        viewModel.state.isThemeSelectionDialogVisible.not()
+                ) {
                     BookmarkFab(bookmarkPhotoCount, navigateToBookmarks)
                 }
             },
@@ -86,12 +110,27 @@ internal fun HomeScreenEntryPoint(
                 imageList = viewModel.photos,
                 dispatch = viewModel::dispatch,
                 resetSearchInput = resetSearchInput,
-                isDarkTheme = isDarkTheme,
-                flipTheme = flipTheme,
+                theme = theme,
                 savedSearchQuery = viewModel.savedSearchQuery.collectAsStateWithLifecycle().value,
             ) { image ->
                 navigateToDetailScreen(image.id)
             }
         }
+    }
+}
+
+@Composable
+private fun HomeSheetContent(
+    state: HomeScreenState,
+    theme: Theme,
+    onSaveQuery: (String) -> Unit,
+    onThemeSelected: (Theme) -> Unit,
+) {
+    if (state.isSaveQueryDialogVisible) {
+        SaveNewChip(isDialogVisible = state.isSaveQueryDialogVisible, onSave = onSaveQuery)
+    } else if (state.isThemeSelectionDialogVisible) {
+        ThemeSelectionSheet(currentTheme = theme, onThemeSelected = onThemeSelected)
+    } else {
+        Spacer(modifier = Modifier.size(1.dp))
     }
 }

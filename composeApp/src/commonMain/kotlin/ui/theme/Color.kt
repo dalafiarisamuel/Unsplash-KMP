@@ -11,12 +11,14 @@ val ColorWhite = Color(0xFFFFFFFF)
 val ColorCrimsonRed = Color(0xFFD61A3C)
 val ColorPalatinateBlue = Color(0xFF2235E0)
 val ColorAquamarine = Color(0xFF66DDAA)
+val ColorLightGray = Color(0xFFE0E0E0)
 
 val String.color
     get() = RGB(this).run { Color(red = this.r, green = this.g, blue = this.b, alpha = this.alpha) }
 
 // dark theme colors
 val ColorMatteBlack = Color(0xFF212121)
+val ColorDarkGray = Color(0xFF424242)
 
 val appWhite
     @Composable @ReadOnlyComposable get() = MaterialTheme.colors.primary

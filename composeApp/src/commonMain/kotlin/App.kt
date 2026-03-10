@@ -1,5 +1,6 @@
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -29,6 +30,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
+import data.ui.model.Theme
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import org.jetbrains.compose.resources.stringResource
@@ -67,7 +69,13 @@ internal fun App(
     preferenceViewModel: PreferenceViewModel = koinInject<PreferenceViewModel>(),
 ) {
 
-    val isDarkTheme by preferenceViewModel.isDarkMode.collectAsStateWithLifecycle()
+    val selectedTheme by preferenceViewModel.theme.collectAsStateWithLifecycle()
+    val isDarkTheme =
+        when (selectedTheme) {
+            Theme.SYSTEM -> isSystemInDarkTheme()
+            Theme.LIGHT -> false
+            Theme.DARK -> true
+        }
     val navEvent by navigator.navigationEvents.collectAsStateWithLifecycle()
 
     val backStack = rememberNavBackStack(config, PhotoScreen.HomeScreen)
@@ -124,10 +132,10 @@ internal fun App(
                                     }
                                 },
                             )
-                    ) {
+                    ) { _ ->
                         HomeScreenEntryPoint(
-                            navigateToDetailScreen = {
-                                handleNavigation(backStack, PhotoScreen.DetailScreen(it))
+                            navigateToDetailScreen = { id ->
+                                handleNavigation(backStack, PhotoScreen.DetailScreen(id))
                             },
                             resetSearchInput = {
                                 val lastItem = backStack.lastOrNull()
@@ -135,8 +143,8 @@ internal fun App(
                                     backStack.removeLastOrNull()
                                 }
                             },
-                            isDarkTheme = isDarkTheme,
-                            flipTheme = { preferenceViewModel.toggleTheme(isDarkTheme.not()) },
+                            theme = selectedTheme,
+                            setTheme = { theme -> preferenceViewModel.setTheme(theme) },
                             navigateToBookmarks = {
                                 handleNavigation(backStack, PhotoScreen.BookmarkScreen)
                             },

@@ -33,4 +33,9 @@ internal sealed class HomeScreenEvent {
 
         object DismissSaveQueryDialog: SearchQueryChip()
     }
+
+    sealed class ThemeSelectionDialog : HomeScreenEvent() {
+        object Open : ThemeSelectionDialog()
+        object Dismiss : ThemeSelectionDialog()
+    }
 }

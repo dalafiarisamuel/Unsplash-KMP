@@ -2,10 +2,11 @@ package data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import data.ui.model.Theme
 import data.ui.repository.PreferenceRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -13,16 +14,16 @@ import kotlinx.coroutines.flow.map
 
 internal class PreferenceRepositoryImpl(private val dataStore: DataStore<Preferences>) :
     PreferenceRepository {
-    private val themeKey = booleanPreferencesKey("dark_theme")
+    private val themeKey = stringPreferencesKey("theme")
     private val savedSearchKey = stringSetPreferencesKey("saved_search_query")
 
-    override val isDarkMode: Flow<Boolean> =
+    override val theme: Flow<Theme> =
         dataStore.data
             .catch { emit(emptyPreferences()) }
-            .map { preferences -> preferences[themeKey] ?: false }
+            .map { preferences -> Theme.valueOfOrDefault(preferences[themeKey]) }
 
-    override suspend fun setDarkMode(enabled: Boolean) {
-        dataStore.edit { preferences -> preferences[themeKey] = enabled }
+    override suspend fun setTheme(theme: Theme) {
+        dataStore.edit { preferences -> preferences[themeKey] = theme.name }
     }
 
     override val savedSearchQuery: Flow<List<String>> =

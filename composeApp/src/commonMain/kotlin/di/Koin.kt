@@ -25,10 +25,10 @@ import domain.usecase.photo.ObservePhotoCountUseCase
 import domain.usecase.photo.SavePhotoUseCase
 import domain.usecase.preference.ClearSavedSearchQueryUseCase
 import domain.usecase.preference.DeleteSavedSearchQueryUseCase
-import domain.usecase.preference.GetDarkThemeUseCase
 import domain.usecase.preference.GetSavedSearchQueryUseCase
+import domain.usecase.preference.GetThemeUseCase
 import domain.usecase.preference.SaveSearchQueryUseCase
-import domain.usecase.preference.SetDarkThemeUseCase
+import domain.usecase.preference.SetThemeUseCase
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -126,9 +126,9 @@ private fun useCaseModule() = module {
     singleOf(::ClearSavedSearchQueryUseCase)
     singleOf(::GetSavedSearchQueryUseCase)
     singleOf(::DeleteSavedSearchQueryUseCase)
-    singleOf(::GetDarkThemeUseCase)
+    singleOf(::GetThemeUseCase)
     singleOf(::SaveSearchQueryUseCase)
-    singleOf(::SetDarkThemeUseCase)
+    singleOf(::SetThemeUseCase)
 }
 
 private fun viewModelModule() = module {

@@ -192,6 +192,6 @@ fun SaveNewChip(isDialogVisible: Boolean, onSave: (String) -> Unit) {
             Text(text = stringResource(Res.string.add_search_chip), fontSize = 11.sp)
         }
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }

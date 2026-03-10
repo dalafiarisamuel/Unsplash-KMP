@@ -1,12 +1,13 @@
 package data.ui.repository
 
+import data.ui.model.Theme
 import kotlinx.coroutines.flow.Flow
 
 interface PreferenceRepository {
 
-    val isDarkMode: Flow<Boolean>
+    val theme: Flow<Theme>
 
-    suspend fun setDarkMode(enabled: Boolean)
+    suspend fun setTheme(theme: Theme)
 
     val savedSearchQuery: Flow<List<String>>
 

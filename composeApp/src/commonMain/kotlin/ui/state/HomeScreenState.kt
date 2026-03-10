@@ -10,4 +10,5 @@ internal data class HomeScreenState(
     val isDownloadImageDialogVisible: Boolean = false,
     val searchFieldValue: String = "",
     val isSaveQueryDialogVisible: Boolean = false,
+    val isThemeSelectionDialogVisible: Boolean = false,
 )

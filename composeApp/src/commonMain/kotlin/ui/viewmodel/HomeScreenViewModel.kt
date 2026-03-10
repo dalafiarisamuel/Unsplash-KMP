@@ -63,6 +63,7 @@ internal class HomeScreenViewModel(
         handleDeleteSavedSearchQuery()
         handleSaveSearchQuery()
         handleDismissSaveSearchQueryDialogEvent()
+        handleThemeSelectionDialogEvents()
     }
 
     private fun setSearchTerm(query: String) {
@@ -169,6 +170,15 @@ internal class HomeScreenViewModel(
     private fun handleDismissSaveSearchQueryDialogEvent() {
         on<HomeScreenEvent.SearchQueryChip.DismissSaveQueryDialog> {
             state = state.copy(isSaveQueryDialogVisible = false)
+        }
+    }
+
+    private fun handleThemeSelectionDialogEvents() {
+        on<HomeScreenEvent.ThemeSelectionDialog.Open> {
+            state = state.copy(isThemeSelectionDialogVisible = true)
+        }
+        on<HomeScreenEvent.ThemeSelectionDialog.Dismiss> {
+            state = state.copy(isThemeSelectionDialogVisible = false)
         }
     }
 }

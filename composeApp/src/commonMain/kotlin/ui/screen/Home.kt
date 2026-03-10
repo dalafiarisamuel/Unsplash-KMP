@@ -15,22 +15,14 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.BrightnessAuto
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.retain.retain
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.PagingData
 import data.ui.model.ChipData
 import data.ui.model.Photo
+import data.ui.model.Theme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -62,30 +55,15 @@ internal fun HomeScreen(
     state: HomeScreenState = HomeScreenState(),
     imageList: Flow<PagingData<Photo>> = flowOf(PagingData.empty()),
     dispatch: (HomeScreenEvent) -> Unit = {},
-    flipTheme: () -> Unit = {},
-    isDarkTheme: Boolean = false,
+    theme: Theme = Theme.SYSTEM,
     savedSearchQuery: List<ChipData> = emptyList(),
     resetSearchInput: () -> Unit = {},
     onImageClicked: (Photo) -> Unit = {},
 ) {
 
+    val coroutineScope = rememberCoroutineScope()
     val lazyGridState = rememberLazyStaggeredGridState()
-    val coroutine = rememberCoroutineScope()
-    val toolbarHeight = 105.dp
-    val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
-    var toolbarOffsetHeightPx by rememberSaveable { mutableStateOf(0f) }
-    val nestedScrollConnection = retain {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = toolbarOffsetHeightPx + delta
-                val oldOffset = toolbarOffsetHeightPx
-                toolbarOffsetHeightPx = newOffset.coerceIn(-toolbarHeightPx, 0f)
-                val consumed = toolbarOffsetHeightPx - oldOffset
-                return Offset(x = 0f, y = consumed)
-            }
-        }
-    }
+    val toolbarState = rememberToolbarState(105.dp)
 
     Column(
         modifier =
@@ -109,18 +87,26 @@ internal fun HomeScreen(
                 fontWeight = FontWeight.Bold,
             )
 
-            IconButton(onClick = flipTheme, modifier = Modifier.align(Alignment.CenterVertically)) {
-                val icon = if (isDarkTheme) Icons.Rounded.LightMode else Icons.Rounded.DarkMode
+            IconButton(
+                onClick = { dispatch(HomeScreenEvent.ThemeSelectionDialog.Open) },
+                modifier = Modifier.align(Alignment.CenterVertically),
+            ) {
+                val icon =
+                    when (theme) {
+                        Theme.SYSTEM -> Icons.Rounded.BrightnessAuto
+                        Theme.LIGHT -> Icons.Rounded.LightMode
+                        Theme.DARK -> Icons.Rounded.DarkMode
+                    }
                 Icon(imageVector = icon, tint = appWhite, contentDescription = null)
             }
         }
 
         CollapsibleSearchBar(
-            toolbarOffset = toolbarOffsetHeightPx,
-            toolbarHeight = toolbarHeight,
+            toolbarOffset = toolbarState.offset,
+            toolbarHeight = toolbarState.height,
             keyboardAction = {
-                coroutine.launch(Dispatchers.Main) {
-                    toolbarOffsetHeightPx = 0f
+                coroutineScope.launch(Dispatchers.Main) {
+                    toolbarState.reset()
                     lazyGridState.animateScrollToItem(0)
                     dispatch(HomeScreenEvent.Search)
                     resetSearchInput()
@@ -139,8 +125,8 @@ internal fun HomeScreen(
             savedSearchQuery = savedSearchQuery,
             onAddMoreChipClicked = { dispatch(HomeScreenEvent.SearchQueryChip.OpenSaveQueryDialog) },
         ) {
-            coroutine.launch(Dispatchers.Main) {
-                toolbarOffsetHeightPx = 0f
+            coroutineScope.launch(Dispatchers.Main) {
+                toolbarState.reset()
                 lazyGridState.animateScrollToItem(0)
                 dispatch(HomeScreenEvent.SelectChip(it))
                 resetSearchInput()
@@ -151,12 +137,12 @@ internal fun HomeScreen(
             modifier = Modifier.fillMaxSize(),
             imageList = imageList,
             lazyGridState = lazyGridState,
-            nestedScrollConnection = { nestedScrollConnection },
+            nestedScrollConnection = { toolbarState.nestedScrollConnection },
             onItemClicked = { it?.let { onImageClicked(it) } },
             onItemLongClicked = { dispatch(HomeScreenEvent.OnImageLongClicked(it)) },
             onScrollToTop = {
-                coroutine.launch(Dispatchers.Main) {
-                    toolbarOffsetHeightPx = 0f
+                coroutineScope.launch(Dispatchers.Main) {
+                    toolbarState.reset()
                     lazyGridState.animateScrollToItem(0)
                 }
             },
