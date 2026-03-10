@@ -4,7 +4,7 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 
 ## Features
 
-* Jetpack Compose
+* Jetpack Compose & Compose Multiplatform
 * Coil KMP
 * MVI Architecture
 * Kotlin Coroutines with Flow
@@ -15,6 +15,9 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 * Compose Navigation v3
 * Room Database
 * Datastore
+* Glance App Widget (Android)*
+* Custom Search Chips
+* Theme Switching (System/Light/Dark)
 
 ## Libraries
 
@@ -31,6 +34,13 @@ A project to display images from [Unsplash](https://unsplash.com) API using Kotl
 - [Koin](https://insert-koin.io/docs/reference/koin-mp/kmp/) - Kotlin Multiplatform Dependency Injection
 - [Room Database](https://developer.android.com/kotlin/multiplatform/room) - Room Database Kotlin Multiplatform Support
 - [Datastore](https://developer.android.com/kotlin/multiplatform/datastore) - Datastore Kotlin Multiplatform Support
+
+## New Implementations
+
+|                                **Search Chip Creator**                                |                                  **Favourites Widget**                                  |                              **Theme Selector**                              |
+|:-------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------:|
+|                   ![Search Chip Creator](./images/chip_creator.png)                   |                  ![Favourites Widget](./images/favourites_widget.png)                   |                ![Theme Selector](./images/theme_selector.png)                |
+| Create and manage custom search chips for quick access to your favorite search terms. | Stay inspired with a home screen widget that showcases your bookmarked Unsplash photos. | Personalize your experience with support for System, Light, and Dark themes. |
 
 ## Prerequisite
 
