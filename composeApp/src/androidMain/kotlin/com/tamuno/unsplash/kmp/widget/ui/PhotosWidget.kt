@@ -51,6 +51,7 @@ import com.tamuno.unsplash.kmp.widget.data.WidgetPhoto
 import com.tamuno.unsplash.kmp.widget.util.decodeSampledBitmap
 import com.tamuno.unsplash.kmp.widget.util.mapEntriesToPhotos
 import ui.theme.ColorCrimsonRed
+import ui.theme.ColorWhite
 import java.io.File
 
 internal class PhotosWidget : GlanceAppWidget() {
@@ -87,7 +88,7 @@ private fun WidgetContent() {
     Column(
         modifier =
             GlanceModifier.fillMaxSize()
-                .background(GlanceTheme.colors.widgetBackground)
+                .background(ColorWhite)
                 .cornerRadius(16.dp)
                 .padding(8.dp),
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally,

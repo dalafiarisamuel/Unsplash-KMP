@@ -31,71 +31,73 @@ internal class PhotosWidgetWorker(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
+        return try {
+            val allPhotos = getFavouritePhotosUseCase().first()
+            val totalCount = allPhotos.size
+            val photos = allPhotos.take(12)
 
-        val allPhotos = getFavouritePhotosUseCase().first()
-        val totalCount = allPhotos.size
-        val photos = allPhotos.take(12)
+            Log.d("PhotosWidget", "Widget reading ${photos.size} entries out of $totalCount")
 
-        Log.d("PhotosWidget", "Widget reading ${photos.size} entries out of $totalCount")
+            val cacheDir = File(applicationContext.cacheDir, "widget")
+            if (!cacheDir.exists()) cacheDir.mkdirs()
 
-        val cacheDir = File(applicationContext.cacheDir, "widget")
-        if (!cacheDir.exists()) cacheDir.mkdirs()
+            val imageLoader = ImageLoader(applicationContext)
+            val entries = mutableSetOf<String>()
 
-        // Clean up old files to save space
-        cacheDir.listFiles()?.forEach { it.delete() }
+            for (photo in photos) {
+                val request =
+                    ImageRequest.Builder(applicationContext).data(photo.urls.small).size(400).build()
 
-        val imageLoader = ImageLoader(applicationContext)
-        val entries = mutableSetOf<String>()
+                val result = imageLoader.execute(request)
 
-        for (photo in photos) {
+                if (result is SuccessResult) {
+                    val bitmap = result.image.toBitmap()
+                    val targetWidth = 250
+                    val targetHeight = (bitmap.height * (targetWidth.toFloat() / bitmap.width)).toInt()
+                    val resized = bitmap.scale(targetWidth, targetHeight)
 
-            val request =
-                ImageRequest.Builder(applicationContext).data(photo.urls.small).size(400).build()
-
-            val result = imageLoader.execute(request)
-
-            if (result is SuccessResult) {
-
-                val bitmap = result.image.toBitmap()
-
-                // Resize to prevent TransactionTooLargeException and memory limits
-                // 250px is sufficient for a 2-3 column widget grid
-                val targetWidth = 250
-                val targetHeight = (bitmap.height * (targetWidth.toFloat() / bitmap.width)).toInt()
-
-                val resized = bitmap.scale(targetWidth, targetHeight)
-
-                val file = File(cacheDir, "${photo.id}.jpg")
-
-                withContext(Dispatchers.IO) {
-                    FileOutputStream(file).use {
-                        resized.compress(Bitmap.CompressFormat.JPEG, 80, it)
+                    val file = File(cacheDir, "${photo.id}.jpg")
+                    withContext(Dispatchers.IO) {
+                        FileOutputStream(file).use {
+                            resized.compress(Bitmap.CompressFormat.JPEG, 80, it)
+                        }
                     }
+                    entries.add("${photo.id}|${file.absolutePath}")
                 }
-
-                entries.add("${photo.id}|${file.absolutePath}")
             }
-        }
 
-        val manager = GlanceAppWidgetManager(applicationContext)
-        val glanceIds = manager.getGlanceIds(PhotosWidget::class.java)
+            // Update state
+            val manager = GlanceAppWidgetManager(applicationContext)
+            val glanceIds = manager.getGlanceIds(PhotosWidget::class.java)
 
-        glanceIds.forEach { glanceId ->
-            updateAppWidgetState(
-                context = applicationContext,
-                glanceId = glanceId,
-                definition = PreferencesGlanceStateDefinition,
-            ) { prefs ->
-                val mutablePrefs = prefs.toMutablePreferences()
-                mutablePrefs[PHOTOS_KEY] = entries
-                mutablePrefs[TOTAL_FAVOURITES_KEY] = totalCount
-                mutablePrefs
+            glanceIds.forEach { glanceId ->
+                updateAppWidgetState(
+                    context = applicationContext,
+                    glanceId = glanceId,
+                    definition = PreferencesGlanceStateDefinition,
+                ) { prefs ->
+                    val mutablePrefs = prefs.toMutablePreferences()
+                    mutablePrefs[PHOTOS_KEY] = entries
+                    mutablePrefs[TOTAL_FAVOURITES_KEY] = totalCount
+                    mutablePrefs
+                }
             }
+
+            // Explicitly update all instances
+            PhotosWidget().updateAll(applicationContext)
+            
+            // Clean up files that are no longer in the entries set
+            val activePaths = entries.map { it.split("|").last() }.toSet()
+            cacheDir.listFiles()?.forEach { file ->
+                if (file.absolutePath !in activePaths) {
+                    file.delete()
+                }
+            }
+
+            Result.success()
+        } catch (e: Exception) {
+            Log.e("PhotosWidget", "Error in worker", e)
+            Result.retry()
         }
-
-        // Trigger UI refresh
-        PhotosWidget().updateAll(applicationContext)
-
-        return Result.success()
     }
 }
