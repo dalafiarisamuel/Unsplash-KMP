@@ -28,7 +28,7 @@ import kotlin.time.Duration.Companion.seconds
 internal class HomeScreenViewModel(
     private val repository: ImageRepository,
     private val photoMapper: PhotoMapper,
-    private val getSavedSearchQueryUseCase: GetSavedSearchQueryUseCase,
+    getSavedSearchQueryUseCase: GetSavedSearchQueryUseCase,
     private val saveSearchQueryUseCase: SaveSearchQueryUseCase,
     private val deleteSavedSearchQueryUseCase: DeleteSavedSearchQueryUseCase,
     private val clearSavedSearchQueryUseCase: ClearSavedSearchQueryUseCase,
