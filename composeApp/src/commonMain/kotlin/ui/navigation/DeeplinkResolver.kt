@@ -5,7 +5,8 @@ import androidx.navigation3.runtime.NavKey
 internal class DeeplinkResolver(
     private val fallbackDestination: NavKey = PhotoScreen.HomeScreen,
     private val matchers: List<DeeplinkMatcher> = listOf(
-        PhotoDetailMatcher
+        PhotoDetailMatcher,
+        BookmarkMatcher
     )
 ) {
     fun resolve(deeplink: String): NavKey {

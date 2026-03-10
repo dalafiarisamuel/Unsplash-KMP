@@ -17,7 +17,6 @@ import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.LocalSize
-import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.SizeMode
@@ -28,7 +27,6 @@ import androidx.glance.appwidget.lazy.LazyVerticalGrid
 import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
-import androidx.glance.color.ColorProvider
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
@@ -42,15 +40,14 @@ import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.Text
+import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
-import com.tamuno.unsplash.kmp.MainActivity
 import com.tamuno.unsplash.kmp.R
 import com.tamuno.unsplash.kmp.widget.data.PHOTOS_KEY
 import com.tamuno.unsplash.kmp.widget.data.TOTAL_FAVOURITES_KEY
 import com.tamuno.unsplash.kmp.widget.data.WidgetPhoto
 import com.tamuno.unsplash.kmp.widget.util.decodeSampledBitmap
 import com.tamuno.unsplash.kmp.widget.util.mapEntriesToPhotos
-import ui.theme.ColorCrimsonRed
 import ui.theme.ColorWhite
 import java.io.File
 
@@ -82,40 +79,51 @@ private fun WidgetContent() {
     val entries = prefs[PHOTOS_KEY] ?: emptySet()
     val totalCount = prefs[TOTAL_FAVOURITES_KEY] ?: 0
     val size = LocalSize.current
+    val context = LocalContext.current
 
     val photos = remember(entries) { mapEntriesToPhotos(entries) }
 
     Column(
         modifier =
-            GlanceModifier.fillMaxSize()
-                .background(ColorWhite)
-                .cornerRadius(16.dp)
-                .padding(8.dp),
-        horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
+            GlanceModifier.fillMaxSize().background(ColorWhite).cornerRadius(16.dp).padding(8.dp),
+        horizontalAlignment = Alignment.Horizontal.Start,
     ) {
         Row(
-            modifier = GlanceModifier.padding(top = 8.dp, bottom = 12.dp),
+            modifier =
+                GlanceModifier.fillMaxWidth().padding(top = 8.dp, bottom = 12.dp, start = 8.dp),
             verticalAlignment = Alignment.Vertical.CenterVertically,
         ) {
-            Image(
-                provider = ImageProvider(R.drawable.ic_favorite),
-                contentDescription = null,
-                colorFilter =
-                    ColorFilter.tint(ColorProvider(day = ColorCrimsonRed, night = ColorCrimsonRed)),
-                modifier = GlanceModifier.size(20.dp).padding(end = 6.dp),
-            )
             Text(
                 text = "Favourites (${photos.size} / $totalCount)",
-                style = TextStyle(color = GlanceTheme.colors.onSurface, fontSize = 11.sp),
+                modifier = GlanceModifier.defaultWeight(),
+                style =
+                    TextStyle(
+                        color = GlanceTheme.colors.onSurface,
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Center,
+                    ),
+            )
+            Image(
+                provider = ImageProvider(R.drawable.ic_open_in_new),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurfaceVariant),
+                modifier =
+                    GlanceModifier.size(25.dp)
+                        .padding(end = 6.dp)
+                        .clickable(
+                            actionStartActivity(
+                                Intent(Intent.ACTION_VIEW, "unsplashkmp://bookmarks".toUri())
+                                    .apply {
+                                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                        setPackage(context.packageName)
+                                    }
+                            )
+                        ),
             )
         }
 
         if (photos.isEmpty()) {
-            Box(
-                modifier =
-                    GlanceModifier.fillMaxSize().clickable(actionStartActivity<MainActivity>()),
-                contentAlignment = Alignment.Center,
-            ) {
+            Box(modifier = GlanceModifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
                     text = "No favourites yet",
                     style = TextStyle(color = GlanceTheme.colors.onSurfaceVariant),
