@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.LruCache
 import com.tamuno.unsplash.kmp.widget.data.WidgetPhoto
+import java.io.File
 
 private val bitmapCache: LruCache<String, Bitmap> by lazy {
     val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
@@ -30,6 +31,15 @@ fun decodeSampledBitmap(path: String, reqWidth: Int): Bitmap? {
 
     return BitmapFactory.decodeFile(path, options)?.also {
         bitmapCache.put(cacheKey, it)
+    }
+}
+
+fun decodeBitmapFromFile(path: String): Bitmap? {
+    val file = File(path)
+    return if (file.exists()) {
+        decodeSampledBitmap(file.absolutePath, 200)
+    } else {
+        null
     }
 }
 

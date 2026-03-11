@@ -46,10 +46,9 @@ import com.tamuno.unsplash.kmp.R
 import com.tamuno.unsplash.kmp.widget.data.PHOTOS_KEY
 import com.tamuno.unsplash.kmp.widget.data.TOTAL_FAVOURITES_KEY
 import com.tamuno.unsplash.kmp.widget.data.WidgetPhoto
-import com.tamuno.unsplash.kmp.widget.util.decodeSampledBitmap
+import com.tamuno.unsplash.kmp.widget.util.decodeBitmapFromFile
 import com.tamuno.unsplash.kmp.widget.util.mapEntriesToPhotos
 import ui.theme.ColorWhite
-import java.io.File
 
 internal class PhotosWidget : GlanceAppWidget() {
 
@@ -151,15 +150,7 @@ private fun WidgetContent() {
 @Composable
 private fun PhotoItem(photo: WidgetPhoto) {
     val context = LocalContext.current
-    val bitmap =
-        remember(photo.path) {
-            val file = File(photo.path)
-            if (file.exists()) {
-                decodeSampledBitmap(file.absolutePath, 200)
-            } else {
-                null
-            }
-        }
+    val bitmap = remember(photo.path) { decodeBitmapFromFile(photo.path) }
 
     if (bitmap != null) {
         Box(
