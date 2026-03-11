@@ -20,7 +20,10 @@ The project follows **Clean Architecture** with a clear separation of concerns, 
     - **Compose Multiplatform**: For building the UI across platforms.
     - **MVI Pattern**: ViewModels extend `MviViewModel` to manage `State` and handle `Event`
       objects.
-    - **Navigation**: Managed via a custom `Navigator` and `DeeplinkResolver`.
+    - **Navigation**: Managed via **Navigation 3** using a custom `Navigator` and
+      `DeeplinkResolver`.
+        - **Deep Linking**: Uses `DeeplinkMatcher` implementations registered in `DeeplinkResolver`
+          to map URIs to `NavKey` destinations.
 - **Domain Layer (`domain`)**:
     - **UseCases**: Encapsulate single business actions (e.g., `SavePhotoUseCase`).
     - **Domain Models**: Plain Kotlin objects representing business entities.
@@ -28,7 +31,8 @@ The project follows **Clean Architecture** with a clear separation of concerns, 
     - **Repositories**: Interfaces defined for data access. Implementations (`*Impl`) reside in the
       data layer.
     - **Remote**: Ktorfit-based API interfaces (`ApiInterface`).
-    - **Local**: Room database and DataStore for caching and preferences.
+    - **Local**: Room database and DataStore for caching and preferences (e.g., Theme, Search
+      Chips).
     - **Mappers**: Essential for converting between Remote/Local entities and Domain/UI models (
       extending `UIModelMapper`).
 
@@ -37,6 +41,8 @@ The project follows **Clean Architecture** with a clear separation of concerns, 
 - **Kotlin-First**: Leverage modern Kotlin features like Coroutines, Flow, and `context` parameters.
 - **Compose**: Use `internal` visibility for screen-level Composables. Prefer `Modifier` as the
   first optional parameter.
+- **Navigation**: Destinations are defined as `@Serializable` `NavKey` objects (e.g.,
+  `PhotoScreen`).
 - **Naming Conventions**:
     - ViewModels: `[Feature]ViewModel`
     - Screens: `[Feature]Screen` (Composable)
@@ -50,8 +56,7 @@ The project follows **Clean Architecture** with a clear separation of concerns, 
 ## Dependency Rules
 
 - **Version Catalog**: All dependencies must be defined in `gradle/libs.versions.toml`.
-- **Multiplatform**: Prefer Multiplatform libraries (Ktor, Room, Coil, Koin, Multiplatform
-  Settings).
+- **Multiplatform**: Prefer Multiplatform libraries (Ktor, Room, Coil, Koin, Datastore).
 - **Secrets**: Use `BuildKonfig` for API keys. Secrets are read from `local.properties` via a helper
   function in `build.gradle.kts`.
 
@@ -59,7 +64,12 @@ The project follows **Clean Architecture** with a clear separation of concerns, 
 
 - **Expect/Actual**: Used for platform-specific logic like `DatabaseFactory`,
   `PlatformDownloadImage`, and `PlatformAppearance`.
-- **Android**: Includes Glance-based App Widgets and WorkManager for background tasks.
+- **Android**:
+    - **Glance App Widgets**: Used for home screen integration. Widgets communicate with the main
+      app via deep links (`unsplashkmp://...`).
+    - **Manifest**: Deep link hosts (e.g., `photo`, `bookmarks`) must be explicitly declared in
+      `AndroidManifest.xml`.
+    - **WorkManager**: Used for background tasks like widget data updates.
 - **Desktop**: Requires specific `skiko` runtime configurations for navigation support.
 
 ## Testing Expectations
@@ -85,10 +95,24 @@ composeApp/src/commonMain/kotlin/
 - **Bypassing UseCases**: Do not call Repositories directly from ViewModels.
 - **Hardcoded Strings/Secrets**: Use `Res` for strings and `local.properties`/`BuildKonfig` for
   keys.
+- **Hardcoded Deep Links**: Ensure new deep link paths are added to both a `DeeplinkMatcher` and the
+  `AndroidManifest.xml`.
 - **State in UI**: Keep Composables stateless; hoist state to ViewModels.
 - **Fat ViewModels**: Delegate logic to UseCases.
 
 ## Code Examples
+
+### Deeplink Matcher
+
+```kotlin
+internal object BookmarkMatcher : DeeplinkMatcher {
+    private val bookmarkRegex = """unsplashkmp://bookmarks""".toRegex()
+
+    override fun match(deeplink: String): NavKey? {
+        return if (bookmarkRegex.containsMatchIn(deeplink)) PhotoScreen.BookmarkScreen else null
+    }
+}
+```
 
 ### MVI ViewModel
 
