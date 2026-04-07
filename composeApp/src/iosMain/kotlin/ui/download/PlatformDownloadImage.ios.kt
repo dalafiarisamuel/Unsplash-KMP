@@ -13,8 +13,12 @@ import platform.Foundation.NSURLErrorDomain
 import platform.Foundation.NSURLResponse
 import platform.Foundation.NSURLSession
 import platform.Foundation.dataTaskWithURL
+import platform.Photos.PHAccessLevelAddOnly
+import platform.Photos.PHAssetChangeRequest
+import platform.Photos.PHAuthorizationStatusAuthorized
+import platform.Photos.PHAuthorizationStatusLimited
+import platform.Photos.PHPhotoLibrary
 import platform.UIKit.UIImage
-import platform.UIKit.UIImageWriteToSavedPhotosAlbum
 import ui.state.ImageDownloadState
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -30,14 +34,16 @@ internal actual class PlatformDownloadImage {
                 val (data, _) = fetchData(nsUrl)
 
                 if (data == null) {
-                    println("No data received")
                     return@withContext ImageDownloadState.Failure(Exception("No data was received"))
                 }
 
-                val image = UIImage(data = data)
+                val image =
+                    UIImage.imageWithData(data)
+                        ?: return@withContext ImageDownloadState.Failure(
+                            Exception("Invalid image data")
+                        )
 
                 saveImageToPhotos(image)
-                println("Image saved successfully")
                 ImageDownloadState.Success
             } catch (e: Exception) {
                 ImageDownloadState.Failure(e)
@@ -60,9 +66,30 @@ internal actual class PlatformDownloadImage {
         }
 
     private suspend fun saveImageToPhotos(image: UIImage) =
-        suspendCancellableCoroutine<Unit> { continuation ->
-            UIImageWriteToSavedPhotosAlbum(image, null, null, null)
-            continuation.resume(Unit)
+        suspendCancellableCoroutine { continuation ->
+            PHPhotoLibrary.requestAuthorizationForAccessLevel(PHAccessLevelAddOnly) { status ->
+                when (status) {
+                    PHAuthorizationStatusAuthorized,
+                    PHAuthorizationStatusLimited -> {
+                        PHPhotoLibrary.sharedPhotoLibrary()
+                            .performChanges(
+                                { PHAssetChangeRequest.creationRequestForAssetFromImage(image) },
+                                completionHandler = { success, error ->
+                                    if (success) {
+                                        continuation.resume(Unit)
+                                    } else {
+                                        continuation.resumeWithException(
+                                            error?.toKotlinException()
+                                                ?: Exception("Failed to save image to photos")
+                                        )
+                                    }
+                                },
+                            )
+                    }
+                    else ->
+                        continuation.resumeWithException(Exception("Photo library access denied"))
+                }
+            }
         }
 
     private fun NSError.toKotlinException(): Exception {

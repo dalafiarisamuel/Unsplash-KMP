@@ -23,12 +23,22 @@ import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
 import com.mohamedrejeb.calf.permissions.Permission
 import com.mohamedrejeb.calf.permissions.rememberPermissionState
 import getPlatform
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parametersOf
+import ui.dialog.DownloadResultDialog
 import ui.navigation.runWithPermission
+import ui.state.ImageDownloadState
 import ui.theme.appDark
 import ui.viewmodel.PhotoDetailViewModel
+import unsplashkmp.composeapp.generated.resources.Res
+import unsplashkmp.composeapp.generated.resources.done
+import unsplashkmp.composeapp.generated.resources.download_complete_message
+import unsplashkmp.composeapp.generated.resources.download_complete_title
+import unsplashkmp.composeapp.generated.resources.download_failed_message
+import unsplashkmp.composeapp.generated.resources.download_failed_title
+import unsplashkmp.composeapp.generated.resources.okay
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -46,6 +56,8 @@ internal fun PhotoDetailScreenEntryPoint(
     val currentPlatform = remember { getPlatform() }
 
     val showDialog = viewModel.isDownloading.collectAsStateWithLifecycle().value
+
+    val downloadState = viewModel.imageDownloadState.collectAsStateWithLifecycle().value
 
     PhotoDetail(
         modifier = Modifier.fillMaxSize(),
@@ -92,5 +104,25 @@ internal fun PhotoDetailScreenEntryPoint(
                 CircularProgressIndicator(strokeWidth = 2.dp)
             }
         }
+    }
+
+    when (downloadState) {
+        is ImageDownloadState.Success ->
+            DownloadResultDialog(
+                title = stringResource(Res.string.download_complete_title),
+                message = stringResource(Res.string.download_complete_message),
+                buttonLabel = stringResource(Res.string.done),
+                onDismiss = viewModel::resetDownloadState,
+            )
+        is ImageDownloadState.Failure ->
+            DownloadResultDialog(
+                title = stringResource(Res.string.download_failed_title),
+                message =
+                    downloadState.exception.message
+                        ?: stringResource(Res.string.download_failed_message),
+                buttonLabel = stringResource(Res.string.okay),
+                onDismiss = viewModel::resetDownloadState,
+            )
+        else -> Unit
     }
 }

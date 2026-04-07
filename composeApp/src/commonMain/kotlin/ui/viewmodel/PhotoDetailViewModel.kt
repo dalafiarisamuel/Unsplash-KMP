@@ -96,6 +96,10 @@ internal class PhotoDetailViewModel(
         }
     }
 
+    fun resetDownloadState() {
+        viewModelScope.launch { imageDownloadState.emit(ImageDownloadState.Idle) }
+    }
+
     fun startDownload(photoUrl: String) {
         viewModelScope.launch {
             imageDownloadState.emit(ImageDownloadState.Loading)

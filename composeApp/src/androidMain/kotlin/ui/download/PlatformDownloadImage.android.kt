@@ -3,20 +3,24 @@ package ui.download
 import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
+import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import ui.state.ImageDownloadState
 
 internal actual class PlatformDownloadImage(private val context: Context) {
     actual suspend fun downloadImage(imageLink: String): ImageDownloadState {
-        withContext(Dispatchers.Default) { delay(3.seconds) }
-        return withContext(Dispatchers.Main) {
+        return withContext(Dispatchers.IO) {
             try {
                 val uri = imageLink.toUri()
-                val fileName = "${uri.pathSegments[0]}.jpeg"
+                val ext =
+                    MimeTypeMap.getFileExtensionFromUrl(imageLink).takeIf { it.isNotEmpty() }
+                        ?: uri.getQueryParameter("fm")
+                        ?: "jpg"
+                val baseName =
+                    (uri.lastPathSegment ?: uri.hashCode().toString()).substringBeforeLast('.')
+                val fileName = "$baseName.$ext"
 
                 val request =
                     DownloadManager.Request(uri)

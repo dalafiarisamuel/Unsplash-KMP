@@ -1,10 +1,10 @@
 package ui.download
 
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.onDownload
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.Url
+import io.ktor.http.contentType
 import io.ktor.utils.io.toByteArray
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,17 +15,21 @@ import java.nio.file.Paths
 internal actual class PlatformDownloadImage(private val client: HttpClient) {
     actual suspend fun downloadImage(imageLink: String): ImageDownloadState {
         return try {
-            val fileName = "${Url(imageLink).rawSegments[1]}.jpeg"
+            val url = Url(imageLink)
+            val baseName =
+                url.segments.lastOrNull { it.isNotEmpty() }?.substringBeforeLast('.')
+                    ?: url.hashCode().toString()
 
-            val response =
-                client.get(imageLink) {
-                    onDownload { bytesSentTotal, contentLength ->
-                        println("Downloaded $bytesSentTotal of $contentLength")
-                    }
-                }
+            val response = client.get(imageLink)
+
+            val ext =
+                response.contentType()?.contentSubtype?.removePrefix("x-")?.replace("jpeg", "jpg")
+                    ?: url.parameters["fm"]
+                    ?: "jpg"
+
             val body = response.bodyAsChannel()
             val result = body.toByteArray()
-            saveImageToFile(result, fileName)
+            saveImageToFile(result, "$baseName.$ext")
             ImageDownloadState.Success
         } catch (e: Exception) {
             ImageDownloadState.Failure(e)

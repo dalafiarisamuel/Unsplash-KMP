@@ -71,4 +71,10 @@
     <string name="system">System</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>
+    <string name="download_complete_title">Download complete</string>
+    <string name="download_complete_message">The image has been saved successfully.</string>
+    <string name="download_failed_title">Download failed</string>
+    <string name="download_failed_message">An unexpected error occurred.</string>
+    <string name="okay">Okay</string>
+    <string name="done">Done</string>
 </resources>
